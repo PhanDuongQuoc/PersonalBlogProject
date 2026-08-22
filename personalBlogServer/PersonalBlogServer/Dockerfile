@@ -10,6 +10,8 @@ WORKDIR /app
 
 COPY --from=build /app/publish .
 
+ENV DOTNET_hostBuilder__reloadConfigOnChange=false
+
 EXPOSE 10000
 
 ENTRYPOINT ["sh", "-c", "dotnet PersonalBlogServer.dll --urls http://0.0.0.0:${PORT:-10000}"]
