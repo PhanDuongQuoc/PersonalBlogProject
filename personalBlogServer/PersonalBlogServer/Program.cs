@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.HttpOverrides;
 using PersonalBlogServer.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,11 +8,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Database
 // ============================================
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(
-        builder.Configuration.GetConnectionString("DefaultConnection")
-    )
-);
 var connectionString =
     builder.Configuration.GetConnectionString("DefaultConnection");
 
@@ -73,12 +69,15 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 var app = builder.Build();
+var enableSwagger =
+    app.Environment.IsDevelopment() ||
+    app.Configuration.GetValue<bool>("Swagger:Enabled");
 
 // ============================================
 // Swagger
 // ============================================
 
-if (app.Environment.IsDevelopment())
+if (enableSwagger)
 {
     app.UseSwagger();
     app.UseSwaggerUI();
@@ -88,12 +87,21 @@ if (app.Environment.IsDevelopment())
 // Middleware
 // ============================================
 
-app.UseHttpsRedirection();
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+});
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseCors("AllowFrontend");
 
 app.UseAuthorization();
 
+app.MapGet("/", () => Results.Redirect("/swagger"));
 app.MapControllers();
 
 app.Run();
