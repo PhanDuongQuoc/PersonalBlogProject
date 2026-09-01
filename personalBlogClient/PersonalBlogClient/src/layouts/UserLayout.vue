@@ -1,13 +1,6 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
-    <q-header elevated class="bg-dark text-white">
-      <q-toolbar>
-        <q-toolbar-title>User Layout</q-toolbar-title>
-
-        <q-btn flat no-caps to="/login" label="Login" />
-        <q-btn flat no-caps to="/admin" label="Admin" />
-      </q-toolbar>
-    </q-header>
+  <q-layout view="lHh Lpr lFf" class="portfolio-layout">
+    <portfolio-header />
 
     <q-page-container>
       <router-view />
@@ -16,23 +9,9 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
-import api from '@/boot/ApiGateway/axios'
-
-const loadData = async () => {
-  try {
-    console.log('Calling API...')
-
-    const response = await api.get('/Users')
-
-    console.log('API response:', response)
-    console.log('Users data:', response.data)
-  } catch (error) {
-    console.error('API error:', error)
-  }
-}
-
-onMounted(() => {
-  loadData()
-})
+import PortfolioHeader from '@/components/portfolio/PortfolioHeader.vue';
 </script>
+
+<style scoped lang="scss">
+.portfolio-layout { background: transparent; }
+</style>

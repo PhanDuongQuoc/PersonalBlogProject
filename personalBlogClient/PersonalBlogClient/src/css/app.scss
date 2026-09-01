@@ -1,1 +1,111 @@
-// app global css
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #081126;
+  color: #eef2ff;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+body.portfolio-light {
+  background: #f5f7fb;
+  color: #15213c;
+}
+
+body.portfolio-light .portfolio-header,
+body.portfolio-light .portfolio-content,
+body.portfolio-light .load-state {
+  background: #f5f7fb;
+  color: #15213c;
+}
+
+body.portfolio-light .portfolio-header,
+body.portfolio-light .about-section,
+body.portfolio-light .profile-section,
+body.portfolio-light .writing-section,
+body.portfolio-light .footer,
+body.portfolio-light .footer small {
+  border-color: #d9e1ee;
+}
+
+body.portfolio-light .brand span,
+body.portfolio-light .desktop-nav a,
+body.portfolio-light .theme-button,
+body.portfolio-light .hero h1,
+body.portfolio-light .section-title h2,
+body.portfolio-light .profile-details strong,
+body.portfolio-light .profile-details a,
+body.portfolio-light .article-card h3 {
+  color: #15213c;
+}
+
+body.portfolio-light .intro,
+body.portfolio-light .section-title p,
+body.portfolio-light .hero-stats,
+body.portfolio-light .article-bottom,
+body.portfolio-light .category-card p,
+body.portfolio-light .footer strong {
+  color: #52637d;
+}
+
+body.portfolio-light .profile-section {
+  background: #edf2f8;
+}
+
+body.portfolio-light .category-card,
+body.portfolio-light .article-card,
+body.portfolio-light .profile-details,
+body.portfolio-light .empty-state {
+  background: #fff;
+  border-color: #d9e1ee;
+}
+
+body.portfolio-light .category-card h3 {
+  color: #15213c;
+}
+
+body.portfolio-light .post-visual {
+  background: linear-gradient(135deg, #dce8fa, #aabfe0);
+}
+
+body.portfolio-light .visual-1 {
+  background: linear-gradient(135deg, #d9f3eb, #9bd8c2);
+}
+
+body.portfolio-light .visual-2 {
+  background: linear-gradient(135deg, #e7e2fa, #bdb1ed);
+}
+
+body.portfolio-light .footer {
+  background: #edf2f8;
+  color: #15213c;
+}
+
+body.portfolio-light .mobile-drawer {
+  background: linear-gradient(180deg, #ffffff, #edf2f8);
+  border-color: #d9e1ee;
+  box-shadow: 18px 0 40px rgba(24, 43, 72, 0.18);
+  color: #15213c;
+}
+
+body.portfolio-light .mobile-brand span,
+body.portfolio-light .mobile-navigation a.active,
+body.portfolio-light .mobile-navigation a:hover {
+  color: #15213c;
+}
+
+body.portfolio-light .mobile-drawer-top .q-btn,
+body.portfolio-light .mobile-navigation a,
+body.portfolio-light .drawer-setting {
+  color: #52637d;
+}
+
+body.portfolio-light .mobile-navigation a.active,
+body.portfolio-light .mobile-navigation a:hover {
+  background: rgba(70, 224, 175, 0.16);
+}
+
+body.portfolio-light .mobile-drawer-footer {
+  border-color: #d9e1ee;
+}
