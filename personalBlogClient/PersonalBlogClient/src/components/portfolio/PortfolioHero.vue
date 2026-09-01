@@ -2,7 +2,9 @@
   <section id="top" class="hero">
     <div class="hero-copy">
       <p class="eyebrow">{{ profile.role }} · @{{ profile.username }}</p>
-      <h1>{{ text.heroLead }}<br />{{ text.heroMiddle }}<br /><em>{{ text.heroEnd }}</em></h1>
+      <p class="hero-greeting">{{ heroText.greeting }}</p>
+      <h1 class="hero-name">{{ profile.name }}</h1>
+      <p class="hero-slogan">{{ heroText.prefix }} <span class="typewriter">{{ displayedRole }}</span></p>
       <p class="intro">{{ text.heroDescription.replace('{name}', profile.name) }}</p>
       <div class="hero-actions">
         <q-btn unelevated no-caps class="primary-action" href="#posts" :label="text.viewPosts" />
@@ -21,12 +23,39 @@
 </template>
 
 <script setup lang="ts">
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import type { PublicLandingResponse } from '@/types/public-landing';
 import profilePortraitCutout from '@/assets/portfolio/profile-portrait-cutout-clean.png';
 import { usePortfolioLocale } from '@/composables/usePortfolioLocale';
 
 defineProps<Pick<PublicLandingResponse, 'profile' | 'stats'>>();
-const { text } = usePortfolioLocale();
+const { locale, text } = usePortfolioLocale();
+const heroText = computed(() => locale.value === 'vi'
+  ? { greeting: 'Xin chào mọi người, mình là!', prefix: 'Mình là một', role: 'Web Developer' }
+  : { greeting: "Hey everyone, It's Me!", prefix: "I'm a", role: 'Web Developer' });
+const displayedRole = ref('');
+let typeTimer: number | undefined;
+
+const playTypewriter = () => {
+  window.clearInterval(typeTimer);
+  displayedRole.value = '';
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    displayedRole.value = heroText.value.role;
+    return;
+  }
+
+  let index = 0;
+  typeTimer = window.setInterval(() => {
+    index += 1;
+    displayedRole.value = heroText.value.role.slice(0, index);
+    if (index >= heroText.value.role.length) window.clearInterval(typeTimer);
+  }, 105);
+};
+
+onMounted(playTypewriter);
+onBeforeUnmount(() => window.clearInterval(typeTimer));
+watch(() => heroText.value.role, playTypewriter);
 </script>
 
 <style scoped lang="scss">
@@ -44,5 +73,75 @@ h1 {
 .intro {
   font-size: 1rem;
   line-height: 1.7;
+}
+
+.portrait-panel {
+  align-self: center;
+  animation: portrait-float 4.8s ease-in-out 1s infinite;
+  transform: translateY(-18px);
+}
+
+@keyframes portrait-float {
+  0%, 100% { transform: translateY(-18px); }
+  50% { transform: translateY(-28px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portrait-panel {
+    animation: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .portrait-panel {
+    animation: none;
+    transform: none;
+  }
+}
+
+.eyebrow {
+  display: none;
+}
+
+.hero-greeting {
+  color: #f1f4ff;
+  font-size: clamp(1.25rem, 2vw, 1.7rem);
+  font-weight: 600;
+  margin: 0;
+}
+
+.hero-name {
+  font-size: clamp(2.8rem, 5vw, 4rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+  margin: 18px 0 10px;
+}
+
+.hero-slogan {
+  color: #f1f4ff;
+  font-size: clamp(1.65rem, 3vw, 2.35rem);
+  font-weight: 700;
+  line-height: 1.25;
+  margin: 0 0 34px;
+}
+
+.typewriter {
+  animation: blink-caret .75s step-end infinite;
+  border-right: 2px solid #46e0af;
+  color: #46e0af;
+  display: inline-block;
+  vertical-align: bottom;
+  white-space: nowrap;
+}
+
+@keyframes blink-caret {
+  50% { border-color: transparent; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .typewriter {
+    animation: none;
+  }
 }
 </style>
