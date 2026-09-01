@@ -16,15 +16,19 @@ const routes: RouteRecordRaw[] = [
     ]
   },
   {
-    path: "/user",
+    path: "/home",
     component: () => import("@/layouts/UserLayout.vue"),
     children: [
       { path: "", component: () => import("@/pages/user/UserHomePage.vue") }
     ]
   },
   {
+    path: "/user",
+    redirect: "/home"
+  },
+  {
     path: "/",
-    redirect: "/login"
+    redirect: "/home"
   },
 
   // Always leave this as last one,

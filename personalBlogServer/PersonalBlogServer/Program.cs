@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.HttpOverrides;
 using PersonalBlogServer.Models;
+using PersonalBlogServer.Services.Public;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +25,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // ============================================
 
 builder.Services.AddControllers();
+builder.Services.AddScoped<IPublicLandingService, PublicLandingService>();
 
 // ============================================
 // Swagger
