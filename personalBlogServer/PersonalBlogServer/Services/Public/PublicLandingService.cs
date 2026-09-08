@@ -26,7 +26,6 @@ public sealed class PublicLandingService : IPublicLandingService
 
         var owner = await users
             .OrderBy(user => user.CreatedAt)
-            .Select(user => new { user.Id, user.Username, user.DisplayName, user.AvatarUrl, user.Role, user.Email })
             .FirstOrDefaultAsync(cancellationToken);
 
         if (owner is null)
@@ -73,13 +72,28 @@ public sealed class PublicLandingService : IPublicLandingService
             owner.Username,
             owner.DisplayName ?? owner.Username,
             owner.Role,
+            owner.JobTitle ?? "Fullstack Web Developer",
+            owner.Bio,
+            owner.Location,
+            owner.Phone,
             owner.AvatarUrl,
-            owner.Email);
+            owner.Email,
+            owner.CvUrl,
+            owner.GithubUrl,
+            owner.LinkedinUrl,
+            owner.FacebookUrl,
+            owner.TwitterUrl,
+            owner.WebsiteUrl,
+            owner.YearsOfExperience ?? 0);
 
         return new PublicLandingResponse(
             profile,
             featuredPosts,
             categories,
-            new PublicLandingStatsResponse(publishedPostCount, categories.Count, totalViewCount));
+            new PublicLandingStatsResponse(
+                publishedPostCount,
+                categories.Count,
+                totalViewCount,
+                owner.YearsOfExperience ?? 0));
     }
 }

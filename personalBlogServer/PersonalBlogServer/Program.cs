@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.HttpOverrides;
 using PersonalBlogServer.Models;
 using PersonalBlogServer.Services.Public;
 
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
 var builder = WebApplication.CreateBuilder(args);
 
 // ============================================
@@ -26,6 +28,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddControllers();
 builder.Services.AddScoped<IPublicLandingService, PublicLandingService>();
+builder.Services.AddScoped<IPublicAboutService, PublicAboutService>();
+builder.Services.AddScoped<IPublicPostService, PublicPostService>();
 
 // ============================================
 // Swagger

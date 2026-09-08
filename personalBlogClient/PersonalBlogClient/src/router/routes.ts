@@ -23,6 +23,20 @@ const routes: RouteRecordRaw[] = [
     ]
   },
   {
+    path: "/about",
+    component: () => import("@/layouts/UserLayout.vue"),
+    children: [
+      { path: "", component: () => import("@/pages/user/UserAboutPage.vue") }
+    ]
+  },
+  {
+    path: "/posts/:slug",
+    component: () => import("@/layouts/UserLayout.vue"),
+    children: [
+      { path: "", component: () => import("@/pages/user/UserPostDetailPage.vue") }
+    ]
+  },
+  {
     path: "/user",
     redirect: "/home"
   },
