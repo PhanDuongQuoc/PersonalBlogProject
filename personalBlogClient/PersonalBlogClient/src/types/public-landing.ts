@@ -3,8 +3,19 @@ export interface PublicProfile {
   username: string;
   name: string;
   role: string;
+  jobTitle: string | null;
+  bio: string | null;
+  location: string | null;
+  phone: string | null;
   avatarUrl: string | null;
   email: string;
+  cvUrl: string | null;
+  githubUrl: string | null;
+  linkedinUrl: string | null;
+  facebookUrl: string | null;
+  twitterUrl: string | null;
+  websiteUrl: string | null;
+  yearsOfExperience: number;
 }
 
 export interface PublicPost {
@@ -30,5 +41,6 @@ export interface PublicLandingResponse {
     publishedPostCount: number;
     categoryCount: number;
     totalViewCount: number;
+    yearsOfExperience: number;
   };
 }

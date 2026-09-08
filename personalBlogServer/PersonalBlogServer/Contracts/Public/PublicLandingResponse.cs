@@ -11,8 +11,19 @@ public sealed record PublicProfileResponse(
     string Username,
     string Name,
     string Role,
+    string? JobTitle,
+    string? Bio,
+    string? Location,
+    string? Phone,
     string? AvatarUrl,
-    string Email);
+    string Email,
+    string? CvUrl,
+    string? GithubUrl,
+    string? LinkedinUrl,
+    string? FacebookUrl,
+    string? TwitterUrl,
+    string? WebsiteUrl,
+    int YearsOfExperience);
 
 public sealed record PublicPostResponse(
     int Id,
@@ -29,4 +40,5 @@ public sealed record PublicCategoryResponse(string Name, string Slug, int PostCo
 public sealed record PublicLandingStatsResponse(
     int PublishedPostCount,
     int CategoryCount,
-    int TotalViewCount);
+    int TotalViewCount,
+    int YearsOfExperience);
