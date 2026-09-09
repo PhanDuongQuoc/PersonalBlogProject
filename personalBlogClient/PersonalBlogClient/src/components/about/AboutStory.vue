@@ -8,7 +8,7 @@
     <div class="story-grid">
       <div class="story-card main-narrative">
         <div class="card-icon-badge">
-          <q-icon name="auto_stories" size="24px" />
+          <q-icon name="auto_stories" size="22px" />
         </div>
         <p class="story-text">
           {{ story || defaultStory }}
@@ -58,29 +58,31 @@ const defaultStory = computed(() => locale.value === 'vi'
 
 <style scoped lang="scss">
 .about-story-section {
-  border-top: 1px solid #202b4a;
-  padding: 74px 78px;
+  border-bottom: 1px solid var(--border-hairline);
+  padding: 64px 0;
 }
 
 .story-header {
-  margin-bottom: 34px;
+  margin-bottom: 30px;
 }
 
 .section-eyebrow {
-  color: #46e0af;
+  font-family: var(--font-mono);
+  color: var(--accent-primary);
   font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.13em;
+  font-weight: 700;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
 .section-heading {
-  color: #f1f4ff;
-  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
-  font-weight: 900;
-  letter-spacing: -0.05em;
+  font-family: var(--font-headline);
+  color: var(--text-primary);
+  font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
   line-height: 1.15;
-  margin: 10px 0 0;
+  margin: 8px 0 0;
 }
 
 .story-grid {
@@ -91,28 +93,29 @@ const defaultStory = computed(() => locale.value === 'vi'
 }
 
 .story-card {
-  background: #151f37;
-  border: 1px solid #26324e;
-  border-radius: 4px;
+  background: var(--bg-surface-low);
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-lg);
   padding: 32px;
-  position: relative;
+  box-shadow: var(--shadow-card);
 }
 
 .card-icon-badge {
   align-items: center;
-  background: rgba(70, 224, 175, 0.12);
-  border-radius: 8px;
-  color: #46e0af;
+  background: var(--accent-primary-container);
+  border-radius: var(--radius-md);
+  color: var(--accent-primary);
   display: inline-flex;
-  height: 44px;
+  height: 42px;
   justify-content: center;
   margin-bottom: 20px;
-  width: 44px;
+  width: 42px;
 }
 
 .story-text {
-  color: #d2e0f2;
-  font-size: 1.05rem;
+  font-family: var(--font-body);
+  color: var(--text-secondary);
+  font-size: 1rem;
   line-height: 1.8;
   margin: 0;
   white-space: pre-line;
@@ -125,20 +128,21 @@ const defaultStory = computed(() => locale.value === 'vi'
 }
 
 .side-card {
-  background: #0f182e;
-  border: 1px solid #22304d;
-  border-radius: 4px;
+  background: var(--bg-surface-low);
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-lg);
   display: flex;
   flex: 1;
   flex-direction: column;
   justify-content: center;
   padding: 24px 26px;
+  box-shadow: var(--shadow-card);
   transition: transform 0.2s ease, border-color 0.2s ease;
-}
 
-.side-card:hover {
-  border-color: #38517c;
-  transform: translateY(-2px);
+  &:hover {
+    border-color: rgba(16, 185, 129, 0.35);
+    transform: translateY(-2px);
+  }
 }
 
 .side-card-header {
@@ -146,32 +150,30 @@ const defaultStory = computed(() => locale.value === 'vi'
   display: flex;
   gap: 12px;
   margin-bottom: 10px;
-}
 
-.card-icon {
-  color: #35d6ff;
-}
+  .card-icon {
+    color: var(--accent-primary);
+  }
 
-.side-card h3 {
-  color: #f1f4ff;
-  font-size: 1.05rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  margin: 0;
+  h3 {
+    font-family: var(--font-headline);
+    color: var(--text-primary);
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    margin: 0;
+  }
 }
 
 .side-card p {
-  color: #9db3ca;
+  font-family: var(--font-body);
+  color: var(--text-secondary);
   font-size: 0.88rem;
   line-height: 1.6;
   margin: 0;
 }
 
 @media (max-width: 860px) {
-  .about-story-section {
-    padding: 58px 24px;
-  }
-
   .story-grid {
     grid-template-columns: 1fr;
   }

@@ -40,7 +40,7 @@
           <div class="skill-name-row">
             <q-icon
               :name="getSkillIcon(skill)"
-              size="22px"
+              size="20px"
               class="skill-icon"
             />
             <span class="skill-title">{{ skill.name }}</span>
@@ -107,64 +107,66 @@ const getSkillIcon = (skill: PublicAboutSkill): string => {
 
 <style scoped lang="scss">
 .about-skills-section {
-  border-top: 1px solid #202b4a;
-  padding: 74px 78px;
+  border-bottom: 1px solid var(--border-hairline);
+  padding: 64px 0;
 }
 
 .skills-header {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  margin-bottom: 34px;
+  gap: 18px;
+  margin-bottom: 30px;
 }
 
 .section-eyebrow {
-  color: #46e0af;
+  font-family: var(--font-mono);
+  color: var(--accent-primary);
   font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.13em;
+  font-weight: 700;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
 .section-heading {
-  color: #f1f4ff;
-  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
-  font-weight: 900;
-  letter-spacing: -0.05em;
+  font-family: var(--font-headline);
+  color: var(--text-primary);
+  font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
   line-height: 1.15;
-  margin: 10px 0 0;
+  margin: 8px 0 0;
 }
 
 .category-tabs {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 8px;
+  margin-top: 6px;
 }
 
 .tab-btn {
-  background: #111a33;
-  border: 1px solid #26385a;
-  border-radius: 4px;
-  color: #9eb4cc;
+  font-family: var(--font-headline);
+  background: var(--bg-surface-low);
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
   cursor: pointer;
-  font-family: inherit;
-  font-size: 0.78rem;
-  font-weight: 700;
-  padding: 8px 16px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 6px 14px;
   transition: all 0.2s ease;
-}
 
-.tab-btn:hover {
-  background: #182647;
-  border-color: #3f5d8f;
-  color: #e2ecfa;
-}
+  &:hover {
+    background: var(--bg-surface-high);
+    color: var(--text-primary);
+  }
 
-.tab-btn.active {
-  background: #46e0af;
-  border-color: #46e0af;
-  color: #071126;
+  &.active {
+    background: var(--accent-primary);
+    border-color: var(--accent-primary);
+    color: var(--accent-on-primary);
+    font-weight: 700;
+  }
 }
 
 .skills-grid {
@@ -174,19 +176,20 @@ const getSkillIcon = (skill: PublicAboutSkill): string => {
 }
 
 .skill-card {
-  background: #151f37;
-  border: 1px solid #26324e;
-  border-radius: 4px;
+  background: var(--bg-surface-low);
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-lg);
   display: flex;
   flex-direction: column;
   gap: 12px;
   padding: 20px 22px;
+  box-shadow: var(--shadow-card);
   transition: transform 0.2s ease, border-color 0.2s ease;
-}
 
-.skill-card:hover {
-  border-color: #38517c;
-  transform: translateY(-2px);
+  &:hover {
+    border-color: rgba(16, 185, 129, 0.35);
+    transform: translateY(-2px);
+  }
 }
 
 .skill-top {
@@ -202,34 +205,36 @@ const getSkillIcon = (skill: PublicAboutSkill): string => {
 }
 
 .skill-icon {
-  color: #35d6ff;
+  color: var(--accent-primary);
 }
 
 .skill-title {
-  color: #f1f4ff;
+  font-family: var(--font-headline);
+  color: var(--text-primary);
   font-size: 0.95rem;
-  font-weight: 800;
-  letter-spacing: -0.01em;
+  font-weight: 700;
 }
 
 .skill-percent {
-  color: #46e0af;
+  font-family: var(--font-mono);
+  color: var(--accent-primary);
   font-size: 0.85rem;
   font-weight: 800;
 }
 
 .skill-category-tag {
-  color: #7b94ad;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
   margin-top: -4px;
   text-transform: uppercase;
 }
 
 .skill-progress-bg {
-  background: #0d152a;
-  border-radius: 4px;
+  background: var(--bg-surface-high);
+  border-radius: var(--radius-pill);
   height: 6px;
   overflow: hidden;
   position: relative;
@@ -237,28 +242,24 @@ const getSkillIcon = (skill: PublicAboutSkill): string => {
 }
 
 .skill-progress-fill {
-  background: linear-gradient(90deg, #35d6ff, #46e0af);
-  border-radius: 4px;
+  background: var(--accent-primary);
+  border-radius: var(--radius-pill);
   height: 100%;
   transition: width 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .empty-skills {
   align-items: center;
-  background: #151f37;
-  border: 1px dashed #355071;
-  border-radius: 4px;
-  color: #a9c1d3;
+  background: var(--bg-surface-low);
+  border: 1px dashed var(--border-subtle);
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
   display: flex;
   gap: 14px;
   padding: 28px;
 }
 
 @media (max-width: 760px) {
-  .about-skills-section {
-    padding: 58px 24px;
-  }
-
   .skills-grid {
     grid-template-columns: 1fr;
   }

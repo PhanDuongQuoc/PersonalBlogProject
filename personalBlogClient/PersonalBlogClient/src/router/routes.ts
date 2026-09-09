@@ -30,6 +30,20 @@ const routes: RouteRecordRaw[] = [
     ]
   },
   {
+    path: "/topics",
+    component: () => import("@/layouts/UserLayout.vue"),
+    children: [
+      { path: "", component: () => import("@/pages/user/UserTopicsPage.vue") }
+    ]
+  },
+  {
+    path: "/topics/:slug",
+    component: () => import("@/layouts/UserLayout.vue"),
+    children: [
+      { path: "", component: () => import("@/pages/user/UserTopicDetailPage.vue") }
+    ]
+  },
+  {
     path: "/posts/:slug",
     component: () => import("@/layouts/UserLayout.vue"),
     children: [
