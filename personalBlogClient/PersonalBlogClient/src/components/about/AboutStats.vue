@@ -3,7 +3,7 @@
     <div class="stats-grid">
       <div class="stat-card">
         <div class="stat-icon-wrap">
-          <q-icon name="work_history" size="24px" />
+          <q-icon name="work_history" size="22px" />
         </div>
         <div class="stat-info">
           <strong>{{ stats.yearsOfExperience }}+</strong>
@@ -13,7 +13,7 @@
 
       <div class="stat-card">
         <div class="stat-icon-wrap">
-          <q-icon name="article" size="24px" />
+          <q-icon name="article" size="22px" />
         </div>
         <div class="stat-info">
           <strong>{{ stats.publishedPostCount }}</strong>
@@ -23,7 +23,7 @@
 
       <div class="stat-card">
         <div class="stat-icon-wrap">
-          <q-icon name="folder_open" size="24px" />
+          <q-icon name="folder_open" size="22px" />
         </div>
         <div class="stat-info">
           <strong>{{ stats.categoryCount }}</strong>
@@ -33,7 +33,7 @@
 
       <div class="stat-card">
         <div class="stat-icon-wrap">
-          <q-icon name="visibility" size="24px" />
+          <q-icon name="visibility" size="22px" />
         </div>
         <div class="stat-info">
           <strong>{{ stats.totalViewCount }}</strong>
@@ -54,8 +54,8 @@ const { text } = usePortfolioLocale();
 
 <style scoped lang="scss">
 .about-stats-section {
-  border-top: 1px solid #202b4a;
-  padding: 60px 78px;
+  border-bottom: 1px solid var(--border-hairline);
+  padding: 48px 0;
 }
 
 .stats-grid {
@@ -66,48 +66,54 @@ const { text } = usePortfolioLocale();
 
 .stat-card {
   align-items: center;
-  background: #151f37;
-  border: 1px solid #26324e;
-  border-radius: 4px;
+  background: var(--bg-surface-low);
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-lg);
   display: flex;
   gap: 16px;
-  padding: 22px 24px;
+  padding: 20px 22px;
+  box-shadow: var(--shadow-card);
   transition: transform 0.2s ease, border-color 0.2s ease;
-}
 
-.stat-card:hover {
-  border-color: #38517c;
-  transform: translateY(-2px);
+  &:hover {
+    border-color: rgba(16, 185, 129, 0.35);
+    transform: translateY(-2px);
+  }
 }
 
 .stat-icon-wrap {
   align-items: center;
-  background: rgba(53, 214, 255, 0.1);
-  border-radius: 8px;
-  color: #35d6ff;
+  background: var(--accent-primary-container);
+  border-radius: var(--radius-md);
+  color: var(--accent-primary);
   display: flex;
-  height: 48px;
+  height: 44px;
   justify-content: center;
-  width: 48px;
+  width: 44px;
+  flex-shrink: 0;
 }
 
 .stat-info {
   display: flex;
   flex-direction: column;
-}
 
-.stat-info strong {
-  color: #46e0af;
-  font-size: 1.65rem;
-  font-weight: 900;
-  line-height: 1.1;
-}
+  strong {
+    font-family: var(--font-mono);
+    color: var(--accent-primary);
+    font-size: 1.5rem;
+    font-weight: 800;
+    line-height: 1.1;
+  }
 
-.stat-info span {
-  color: #a0b6cc;
-  font-size: 0.75rem;
-  font-weight: 700;
-  margin-top: 4px;
+  span {
+    font-family: var(--font-mono);
+    color: var(--text-muted);
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-top: 4px;
+  }
 }
 
 @media (max-width: 900px) {
@@ -116,11 +122,7 @@ const { text } = usePortfolioLocale();
   }
 }
 
-@media (max-width: 760px) {
-  .about-stats-section {
-    padding: 48px 24px;
-  }
-
+@media (max-width: 600px) {
   .stats-grid {
     grid-template-columns: 1fr;
   }

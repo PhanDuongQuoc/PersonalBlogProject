@@ -1,11 +1,13 @@
 <template>
   <q-header class="portfolio-header">
     <q-toolbar class="portfolio-toolbar">
+      <!-- Brand / Logo -->
       <router-link class="brand" to="/home" :aria-label="text.goTop">
-        {{ brand }}<span>Portfolio</span>
+        {{ brand }}<span class="brand-suffix">Portfolio</span>
       </router-link>
 
-      <div class="desktop-nav">
+      <!-- Desktop Navigation -->
+      <nav class="desktop-nav">
         <a
           v-for="item in navigation"
           :key="item.key"
@@ -15,8 +17,9 @@
         >
           {{ item.label }}
         </a>
-      </div>
+      </nav>
 
+      <!-- Language Switcher -->
       <q-btn-toggle
         v-model="locale"
         unelevated
@@ -26,6 +29,8 @@
         :options="[{ label: 'VI', value: 'vi' }, { label: 'EN', value: 'en' }]"
         @update:model-value="setLocale"
       />
+
+      <!-- Theme Switcher -->
       <q-btn
         flat
         round
@@ -35,14 +40,18 @@
         :aria-label="isDark ? text.lightMode : text.darkMode"
         @click="toggleTheme"
       />
-      <q-btn
-        unelevated
-        no-caps
-        class="contact-button"
+
+      <!-- Action CTA Button -->
+      <a
         href="#contact"
-        :label="text.resume"
+        class="header-cta-btn"
         @click.prevent="scrollToContact"
-      />
+      >
+        <span>{{ text.resume }}</span>
+        <q-icon name="arrow_forward" size="14px" />
+      </a>
+
+      <!-- Mobile Hamburger Button -->
       <q-btn
         flat
         round
@@ -54,14 +63,16 @@
       />
     </q-toolbar>
 
+    <!-- Mobile Slide Drawer -->
     <q-dialog v-model="mobileMenuOpen" position="left" full-height persistent>
       <aside class="mobile-drawer" @click.stop @mousedown.stop @touchstart.stop>
         <div class="mobile-drawer-top">
           <router-link class="mobile-brand" to="/home" @click="mobileMenuOpen = false">
             {{ brand }}<span>Portfolio</span>
           </router-link>
-          <q-btn flat round dense icon="close" aria-label="Close navigation menu" @click="mobileMenuOpen = false" />
+          <q-btn flat round dense icon="close" aria-label="Close menu" @click="mobileMenuOpen = false" />
         </div>
+
         <nav class="mobile-navigation">
           <a
             v-for="item in navigation"
@@ -70,10 +81,11 @@
             :class="{ active: isItemActive(item) }"
             @click.stop.prevent="handleNavClick(item)"
           >
-            <q-icon :name="item.icon" size="20px" />
+            <q-icon :name="item.icon" size="20px" class="nav-ico" />
             <span>{{ item.label }}</span>
           </a>
         </nav>
+
         <div class="mobile-drawer-footer">
           <div class="drawer-setting">
             <span>{{ locale === 'vi' ? 'Ngôn ngữ' : 'Language' }}</span>
@@ -82,16 +94,20 @@
               unelevated
               no-caps
               dense
+              class="drawer-lang-toggle"
               :options="[{ label: 'VI', value: 'vi' }, { label: 'EN', value: 'en' }]"
               @update:model-value="setLocale"
             />
           </div>
+
           <button class="drawer-setting drawer-theme" type="button" @click="toggleTheme">
             <span>{{ isDark ? text.lightMode : text.darkMode }}</span>
-            <q-icon :name="isDark ? 'light_mode' : 'dark_mode'" size="20px" />
+            <q-icon :name="isDark ? 'light_mode' : 'dark_mode'" size="20px" class="theme-ico" />
           </button>
+
           <a class="drawer-resume" href="#contact" @click.stop.prevent="scrollToContact">
-            {{ text.resume }} <q-icon name="arrow_forward" />
+            <span>{{ text.resume }}</span>
+            <q-icon name="arrow_forward" size="16px" />
           </a>
         </div>
       </aside>
@@ -119,14 +135,12 @@ interface NavItem {
 const navigation = computed<NavItem[]>(() => [
   { key: 'home', label: text.value.home, target: '/home', icon: 'home', route: '/home' },
   { key: 'about', label: text.value.about, target: '/about', icon: 'person_outline', route: '/about' },
-  { key: 'topics', label: text.value.topics, target: '#topics', icon: 'folder_open' },
-  { key: 'posts', label: text.value.posts, target: '#posts', icon: 'article' },
+  { key: 'topics', label: text.value.topics, target: '/topics', icon: 'folder_open', route: '/topics' },
   { key: 'contact', label: text.value.contact, target: '#contact', icon: 'mail_outline' }
 ]);
 
 const brand = 'PDQ';
 const isDark = ref(true);
-const activeSection = ref('#top');
 const mobileMenuOpen = ref(false);
 
 const isItemActive = (item: NavItem) => {
@@ -135,6 +149,9 @@ const isItemActive = (item: NavItem) => {
   }
   if (item.key === 'about') {
     return route.path === '/about';
+  }
+  if (item.key === 'topics') {
+    return route.path.startsWith('/topics');
   }
   return false;
 };
@@ -150,6 +167,14 @@ const handleNavClick = async (item: NavItem) => {
     return;
   }
 
+  if (item.key === 'topics') {
+    if (route.path !== '/topics') {
+      await router.push({ path: '/topics', query: route.query });
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+
   if (item.key === 'home') {
     if (route.path !== '/home') {
       await router.push({ path: '/home', query: route.query });
@@ -158,7 +183,7 @@ const handleNavClick = async (item: NavItem) => {
     return;
   }
 
-  // Anchor targets (#topics, #posts, #contact)
+  // Anchor targets (#posts, #contact)
   if (route.path !== '/home') {
     await router.push({ path: '/home', query: route.query, hash: item.target });
     setTimeout(() => {
@@ -187,6 +212,12 @@ const toggleTheme = () => {
   applyTheme();
 };
 
+const closeMobileMenuOnDesktop = () => {
+  if (window.innerWidth > 860) {
+    mobileMenuOpen.value = false;
+  }
+};
+
 onMounted(() => {
   isDark.value = localStorage.getItem('portfolio-theme') !== 'light';
   applyTheme();
@@ -197,61 +228,279 @@ onMounted(() => {
 onBeforeUnmount(() => {
   window.removeEventListener('resize', closeMobileMenuOnDesktop);
 });
-
-const closeMobileMenuOnDesktop = () => {
-  if (window.innerWidth > 860) {
-    mobileMenuOpen.value = false;
-  }
-};
 </script>
 
 <style scoped lang="scss">
-.portfolio-header { background: #081126; border-bottom: 1px solid #202b4a; color: #f2f5ff; }
-.portfolio-toolbar { max-width: 1060px; min-height: 76px; margin: auto; padding: 0 32px; }
-.brand { color: #46e0af; font-size: 1.45rem; font-weight: 900; letter-spacing: -.06em; text-decoration: none; }
-.brand span { color: #f2f5ff; }
-.desktop-nav { display: flex; gap: 28px; margin-left: auto; margin-right: 36px; }
-.desktop-nav a { color: #b9c6d9; font-size: .79rem; font-weight: 600; padding: 28px 0 25px; position: relative; text-decoration: none; }
-.desktop-nav a:hover, .desktop-nav a.active { color: #46e0af; }.desktop-nav a.active::after { background: #46e0af; bottom: 17px; content: ''; height: 2px; left: 0; position: absolute; right: 0; }
-.language-toggle { border: 1px solid #2a4960; border-radius: 2px; color: #b9cce0; font-size: .68rem; margin-right: 12px; }.language-toggle :deep(.q-btn) { min-height: 28px; padding: 0 8px; }.language-toggle :deep(.q-btn--active), .mobile-drawer :deep(.q-btn--active) { background: #46e0af; color: #071126; }.theme-button { color: #b9cce0; margin-right: 12px; }.contact-button { background: #46e0af; border-radius: 2px; color: #071126; font-size: .73rem; font-weight: 800; min-width: 92px; }.mobile-menu-button { display: none; }
-.mobile-drawer { background: linear-gradient(180deg, #151f3b, #0d162c); border-right: 1px solid #2c3f68; box-shadow: 18px 0 40px rgba(0, 0, 0, .28); color: #eff4ff; display: flex; flex-direction: column; height: 100vh; padding: 26px 18px; pointer-events: auto; touch-action: manipulation; width: min(82vw, 310px); }.mobile-drawer-top { align-items: center; display: flex; justify-content: space-between; padding: 4px 6px 28px; }.mobile-brand { color: #46e0af; font-size: 1.28rem; font-weight: 800; letter-spacing: -.04em; text-decoration: none; }.mobile-brand span { color: #f1f4ff; }.mobile-drawer-top .q-btn { color: #aab9d4; }.mobile-navigation { display: grid; gap: 7px; }.mobile-navigation a { align-items: center; border-left: 3px solid transparent; color: #aebcdb; cursor: pointer; display: flex; font-size: .95rem; font-weight: 600; gap: 17px; min-height: 48px; padding: 0 14px; text-decoration: none; touch-action: manipulation; }.mobile-navigation a.active, .mobile-navigation a:hover { background: rgba(70, 224, 175, .09); border-left-color: #46e0af; color: #f2f6ff; }.mobile-drawer-footer { border-top: 1px solid #2a3b60; display: grid; gap: 15px; margin-top: auto; padding: 22px 8px 4px; }.drawer-setting { align-items: center; color: #b8c6df; display: flex; font-size: .82rem; justify-content: space-between; }.drawer-theme { background: none; border: 0; cursor: pointer; font-family: inherit; padding: 0; text-align: left; }.drawer-theme .q-icon { color: #46e0af; }.drawer-resume { align-items: center; background: #46e0af; color: #071126; cursor: pointer; display: flex; font-size: .78rem; font-weight: 800; justify-content: space-between; margin-top: 6px; padding: 12px 14px; text-decoration: none; touch-action: manipulation; }
-@media (max-width: 860px) { 
-  .portfolio-toolbar { padding: 0 20px; } 
-  .desktop-nav, .language-toggle, .theme-button, .contact-button { display: none; } 
-  .mobile-menu-button { color: #46e0af; display: inline-flex; margin-left: auto; } 
-}
-@media (max-width: 500px) { 
-  .portfolio-toolbar { padding: 0 16px; min-height: 64px; } 
+.portfolio-header {
+  background: var(--glass-header-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--glass-header-border);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  transition: all 0.3s ease;
 }
 
-:global(body.portfolio-light) .portfolio-header {
-  background: #ffffff !important;
-  border-bottom: 1px solid #eaedf3 !important;
-  color: #0a1733 !important;
+.portfolio-toolbar {
+  max-width: 1140px;
+  min-height: 72px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
 
-  .brand span {
-    color: #0a1733 !important;
+/* Brand */
+.brand {
+  font-family: var(--font-headline);
+  color: var(--accent-primary);
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.brand-suffix {
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 1.3rem;
+  letter-spacing: -0.03em;
+}
+
+/* Desktop Navigation */
+.desktop-nav {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  margin-left: auto;
+  margin-right: 28px;
+}
+
+.desktop-nav a {
+  font-family: var(--font-headline);
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 24px 0;
+  position: relative;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--accent-primary);
   }
 
-  .desktop-nav a {
-    color: #0a1733 !important;
-    font-weight: 700;
+  &.active {
+    color: var(--accent-primary);
 
-    &:hover {
-      color: #0f9f74 !important;
-    }
-
-    &.active {
-      color: #0f9f74 !important;
-
-      &::after {
-        background: #0f9f74 !important;
-      }
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 18px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--accent-primary);
+      border-radius: 2px;
     }
   }
+}
 
-  .theme-button {
-    color: #0a1733 !important;
+/* Controls */
+.language-toggle {
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  margin-right: 12px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+
+  :deep(.q-btn) {
+    min-height: 28px;
+    padding: 0 8px;
+    color: var(--text-secondary);
+  }
+
+  :deep(.q-btn--active) {
+    background: var(--accent-primary);
+    color: var(--accent-on-primary);
+    font-weight: 800;
+  }
+}
+
+.theme-button {
+  color: var(--text-secondary);
+  margin-right: 16px;
+  transition: color 0.2s ease, transform 0.2s ease;
+
+  &:hover {
+    color: var(--accent-primary);
+    transform: rotate(15deg);
+  }
+}
+
+.header-cta-btn {
+  font-family: var(--font-headline);
+  font-size: 0.84rem;
+  font-weight: 700;
+  background: var(--accent-primary);
+  color: var(--accent-on-primary);
+  border-radius: var(--radius-md);
+  padding: 8px 18px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+
+  &:hover {
+    background: var(--accent-primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+  }
+}
+
+.mobile-menu-button {
+  display: none;
+}
+
+/* Mobile Drawer */
+.mobile-drawer {
+  background: var(--bg-surface-high);
+  border-right: 1px solid var(--border-hairline);
+  box-shadow: 18px 0 40px rgba(0, 0, 0, 0.35);
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding: 24px 20px;
+  width: min(82vw, 320px);
+  pointer-events: auto;
+}
+
+.mobile-drawer-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border-hairline);
+}
+
+.mobile-brand {
+  font-family: var(--font-headline);
+  color: var(--accent-primary);
+  font-size: 1.3rem;
+  font-weight: 800;
+  text-decoration: none;
+
+  span {
+    color: var(--text-primary);
+  }
+}
+
+.mobile-navigation {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 18px;
+}
+
+.mobile-navigation a {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  font-family: var(--font-headline);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: all 0.2s ease;
+
+  .nav-ico {
+    color: var(--text-muted);
+    transition: color 0.2s ease;
+  }
+
+  &:hover,
+  &.active {
+    background: var(--accent-primary-container);
+    color: var(--accent-primary);
+
+    .nav-ico {
+      color: var(--accent-primary);
+    }
+  }
+}
+
+.mobile-drawer-footer {
+  margin-top: auto;
+  border-top: 1px solid var(--border-hairline);
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.drawer-setting {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.drawer-theme {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 0;
+  font-family: inherit;
+
+  .theme-ico {
+    color: var(--accent-primary);
+  }
+}
+
+.drawer-resume {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--accent-primary);
+  color: var(--accent-on-primary);
+  border-radius: var(--radius-md);
+  padding: 12px 18px;
+  font-family: var(--font-headline);
+  font-size: 0.86rem;
+  font-weight: 700;
+  text-decoration: none;
+  margin-top: 6px;
+}
+
+@media (max-width: 860px) {
+  .portfolio-toolbar {
+    padding: 0 20px;
+  }
+  .desktop-nav,
+  .language-toggle,
+  .theme-button,
+  .header-cta-btn {
+    display: none;
+  }
+  .mobile-menu-button {
+    color: var(--accent-primary);
+    display: inline-flex;
+    margin-left: auto;
+  }
+}
+
+@media (max-width: 500px) {
+  .portfolio-toolbar {
+    padding: 0 16px;
+    min-height: 64px;
   }
 }
 </style>

@@ -1,8 +1,8 @@
 <template>
-  <div class="section-title">
-    <span>{{ eyebrow }}</span>
-    <h2>{{ title }}</h2>
-    <p v-if="description">{{ description }}</p>
+  <div class="section-title-wrap">
+    <span class="section-eyebrow">{{ eyebrow }}</span>
+    <h2 class="section-main-heading">{{ title }}</h2>
+    <p v-if="description" class="section-desc">{{ description }}</p>
   </div>
 </template>
 
@@ -11,7 +11,37 @@ defineProps<{ eyebrow: string; title: string; description?: string }>();
 </script>
 
 <style scoped lang="scss">
-.section-title span { color: #46e0af; font-size: .72rem; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }
-h2 { color: #f1f4ff; font-size: clamp(2rem, 4vw, 3rem); font-weight: 900; letter-spacing: -.06em; line-height: 1.05; margin: 10px 0; }
-p { color: #a9c1d3; font-size: .9rem; line-height: 1.65; margin: 0; max-width: 570px; }
+.section-title-wrap {
+  margin-bottom: 24px;
+}
+
+.section-eyebrow {
+  font-family: var(--font-mono);
+  color: var(--accent-primary);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  display: inline-block;
+  margin-bottom: 6px;
+}
+
+.section-main-heading {
+  font-family: var(--font-headline);
+  color: var(--text-primary);
+  font-size: clamp(1.85rem, 3.8vw, 2.6rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.12;
+  margin: 0 0 10px;
+}
+
+.section-desc {
+  font-family: var(--font-body);
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 620px;
+}
 </style>

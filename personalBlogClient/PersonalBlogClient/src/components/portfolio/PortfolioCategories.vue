@@ -1,11 +1,12 @@
 <template>
   <div class="technical-index-table">
-    <article
+    <router-link
       v-for="(category, idx) in categories"
       :key="category.slug"
+      :to="`/topics/${category.slug}`"
       class="index-row-item"
     >
-      <!-- Index Number -->
+      <!-- Index Number (01, 02, etc.) -->
       <span class="index-num">0{{ idx + 1 }}</span>
 
       <!-- Topic Title & Slug -->
@@ -28,7 +29,15 @@
       <div class="index-arrow-col">
         <q-icon name="arrow_forward" size="16px" class="row-arrow-icon" />
       </div>
-    </article>
+    </router-link>
+
+    <!-- View All Topics Link -->
+    <div class="topics-more-action">
+      <router-link to="/topics" class="view-all-topics-btn">
+        <span>{{ text.viewAllTopics }}</span>
+        <q-icon name="arrow_forward" size="16px" class="action-arrow" />
+      </router-link>
+    </div>
   </div>
 </template>
 
@@ -50,8 +59,8 @@ const { text } = usePortfolioLocale();
 .technical-index-table {
   display: flex;
   flex-direction: column;
-  margin-top: 32px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin-top: 28px;
+  border-top: 1px solid var(--border-hairline);
 }
 
 .index-row-item {
@@ -60,55 +69,87 @@ const { text } = usePortfolioLocale();
   align-items: center;
   gap: 20px;
   padding: 20px 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid var(--border-hairline);
+  text-decoration: none;
+  cursor: pointer;
   transition: all 0.2s ease;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.02);
+    background: var(--accent-primary-container);
     padding-left: 20px;
 
     .index-num {
-      color: #46e0af;
+      color: var(--accent-primary);
     }
 
     .index-topic-name {
-      color: #46e0af;
+      color: var(--accent-primary);
     }
 
     .row-arrow-icon {
       transform: translateX(4px);
-      color: #46e0af;
+      color: var(--accent-primary);
+    }
+  }
+}
+
+.topics-more-action {
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px 8px 0;
+}
+
+.view-all-topics-btn {
+  font-family: var(--font-headline);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--accent-primary);
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 700;
+  transition: all 0.2s ease;
+
+  .action-arrow {
+    transition: transform 0.2s ease;
+  }
+
+  &:hover {
+    .action-arrow {
+      transform: translateX(4px);
     }
   }
 }
 
 .index-num {
-  font-family: monospace;
+  font-family: var(--font-mono);
   font-size: 0.85rem;
   font-weight: 700;
-  color: #64748b;
+  color: var(--text-muted);
   transition: color 0.2s ease;
 }
 
 .index-main-info {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
 }
 
 .index-topic-name {
+  font-family: var(--font-headline);
   font-size: 1.15rem;
   font-weight: 700;
-  color: #f1f5f9;
-  line-height: 1.2;
+  color: var(--text-primary);
+  line-height: 1.25;
   margin: 0;
+  letter-spacing: -0.015em;
   transition: color 0.2s ease;
 }
 
 .index-topic-slug {
-  font-family: monospace;
-  font-size: 0.75rem;
-  color: #64748b;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  color: var(--text-muted);
 }
 
 .index-stat-col {
@@ -117,16 +158,17 @@ const { text } = usePortfolioLocale();
 }
 
 .count-pill {
+  font-family: var(--font-mono);
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 0.78rem;
+  font-size: 0.74rem;
   font-weight: 600;
-  color: #cbd5e1;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-secondary);
+  background: var(--bg-surface-high);
+  border: 1px solid var(--border-subtle);
   padding: 4px 10px;
-  border-radius: 4px;
+  border-radius: var(--radius-pill);
 }
 
 .index-arrow-col {
@@ -136,7 +178,7 @@ const { text } = usePortfolioLocale();
 }
 
 .row-arrow-icon {
-  color: #475569;
+  color: var(--text-muted);
   transition: all 0.2s ease;
 }
 
@@ -152,10 +194,6 @@ const { text } = usePortfolioLocale();
   .index-topic-name {
     font-size: 1.02rem;
   }
-  .count-pill {
-    font-size: 0.72rem;
-    padding: 3px 8px;
-  }
 }
 
 @media (max-width: 420px) {
@@ -167,51 +205,6 @@ const { text } = usePortfolioLocale();
   .index-stat-col {
     grid-column: 2 / -1;
     margin-top: 4px;
-  }
-}
-</style>
-
-<!-- Global Light Mode overrides -->
-<style lang="scss">
-body.portfolio-light {
-  .technical-index-table {
-    border-color: #e2e8f0 !important;
-  }
-
-  .index-row-item {
-    border-color: #f1f5f9 !important;
-
-    &:hover {
-      background: #f8fafc !important;
-
-      .index-num,
-      .index-topic-name,
-      .row-arrow-icon {
-        color: #0f9f74 !important;
-      }
-    }
-  }
-
-  .index-num {
-    color: #94a3b8 !important;
-  }
-
-  .index-topic-name {
-    color: #0f172a !important;
-  }
-
-  .index-topic-slug {
-    color: #64748b !important;
-  }
-
-  .count-pill {
-    background: #f1f5f9 !important;
-    border-color: #e2e8f0 !important;
-    color: #475569 !important;
-  }
-
-  .row-arrow-icon {
-    color: #94a3b8 !important;
   }
 }
 </style>

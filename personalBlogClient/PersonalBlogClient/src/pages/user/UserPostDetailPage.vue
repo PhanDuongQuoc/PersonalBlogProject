@@ -15,11 +15,11 @@
       <header class="editorial-header">
         <div class="header-eyebrow-row">
           <span class="category-pill">{{ post.category.name }}</span>
-          <span class="meta-dot">·</span>
+          <span class="meta-dot">/</span>
           <span class="read-time">{{ calculateReadTime(post.content) }} {{ text.minRead }}</span>
-          <span class="meta-dot">·</span>
+          <span class="meta-dot">/</span>
           <span class="publish-date">{{ formatDate(post.publishedAt) }}</span>
-          <span class="meta-dot">·</span>
+          <span class="meta-dot">/</span>
           <span class="views-metric">{{ post.viewCount }} {{ text.viewsCount }}</span>
         </div>
 
@@ -56,7 +56,7 @@
               :class="{ 'is-following': isFollowing }"
               @click="toggleFollow"
             >
-              {{ isFollowing ? 'Following' : text.followBtn }}
+              {{ isFollowing ? text.following : text.followBtn }}
             </q-btn>
             <router-link to="/about" class="dossier-link">
               <span>Dossier #{{ post.author.id }}</span>
@@ -169,7 +169,7 @@
           <section id="comments-section" class="editorial-comments-section">
             <div class="comments-section-header">
               <div class="header-left">
-                <span class="section-kicker">Discussion & Feedback</span>
+                <span class="section-kicker">{{ text.discussionKicker }}</span>
                 <h2 class="comments-heading">{{ text.commentsSection }} ({{ post.comments.length }})</h2>
               </div>
             </div>
@@ -212,7 +212,7 @@
                       v-model="commentForm.name"
                       type="text"
                       required
-                      placeholder="e.g. John Doe"
+                      :placeholder="text.namePlaceholder"
                       class="composer-input"
                     />
                   </div>
@@ -221,7 +221,7 @@
                     <input
                       v-model="commentForm.email"
                       type="email"
-                      placeholder="e.g. john@example.com"
+                      :placeholder="text.emailPlaceholder"
                       class="composer-input"
                     />
                   </div>
@@ -233,7 +233,7 @@
                     v-model="commentForm.content"
                     required
                     rows="4"
-                    placeholder="Share your thoughts, questions or feedback on this article..."
+                    :placeholder="text.commentPlaceholder"
                     class="composer-textarea"
                   ></textarea>
                 </div>
@@ -292,7 +292,7 @@
                 {{ post.author.bio || 'Investigating robust computational architectures, modern web frameworks and reliable backend systems.' }}
               </p>
               <div class="dossier-footer">
-                <span class="dossier-subscribers">{{ post.viewCount * 12 + 150 }} Readers</span>
+                <span class="dossier-subscribers">{{ post.viewCount * 12 + 150 }} {{ text.readersCount }}</span>
                 <router-link to="/about" class="dossier-action-link">
                   <span>{{ text.viewDossier }}</span>
                   <q-icon name="arrow_forward" size="14px" />
@@ -306,7 +306,7 @@
                 <q-icon name="mail_outline" size="16px" />
                 <span>{{ text.newsletterTitle }}</span>
               </div>
-              <h4 class="newsletter-heading">Get essays like this in your inbox.</h4>
+              <h4 class="newsletter-heading">{{ text.newsletterHeading }}</h4>
               <p class="newsletter-description">
                 {{ text.newsletterDesc }}
               </p>
@@ -315,7 +315,7 @@
                   v-model="newsletterEmail"
                   type="email"
                   required
-                  placeholder="Enter your email address"
+                  :placeholder="text.newsletterEmailPlaceholder"
                   class="newsletter-input"
                 />
                 <button type="submit" class="newsletter-submit-btn">
@@ -331,7 +331,7 @@
             <!-- Widget 4: Trending in Category / Related Posts -->
             <div v-if="post.relatedPosts && post.relatedPosts.length" class="sidebar-card trending-card">
               <div class="trending-header">
-                <span class="trending-kicker">Trending in {{ post.category.name }}</span>
+                <span class="trending-kicker">{{ text.trendingInCategory.replace('{category}', post.category.name) }}</span>
               </div>
               <div class="trending-list">
                 <router-link
@@ -361,7 +361,7 @@
     </div>
 
     <div v-else class="editorial-load-state">
-      <q-spinner color="teal" size="44px" />
+      <q-spinner color="teal-4" size="44px" />
       <p>{{ text.loading }}</p>
     </div>
 
@@ -646,10 +646,10 @@ const submitComment = async () => {
 }
 
 .post-page-container {
-  background: #081126;
+  background: transparent;
   margin: 0 auto;
   max-width: 1180px;
-  padding: 40px 36px 90px;
+  padding: 40px 32px 90px;
 }
 
 // 1. Editorial Navigation Bar
@@ -658,11 +658,12 @@ const submitComment = async () => {
   display: flex;
   gap: 10px;
   margin-bottom: 28px;
+  font-family: var(--font-body);
 }
 
 .bc-link {
   align-items: center;
-  color: #46e0af;
+  color: var(--accent-primary);
   display: inline-flex;
   font-size: 0.82rem;
   font-weight: 700;
@@ -676,18 +677,18 @@ const submitComment = async () => {
 }
 
 .bc-separator {
-  color: #2e4162;
+  color: var(--text-muted);
 }
 
 .bc-category {
-  color: #8da1b9;
+  color: var(--text-secondary);
   font-size: 0.82rem;
   font-weight: 600;
 }
 
 // 2. Editorial Header
 .editorial-header {
-  border-bottom: 1px solid #1c2b4a;
+  border-bottom: 1px solid var(--border-hairline);
   margin-bottom: 44px;
   padding-bottom: 36px;
 }
@@ -698,44 +699,46 @@ const submitComment = async () => {
   flex-wrap: wrap;
   gap: 10px;
   margin-bottom: 18px;
+  font-family: var(--font-mono);
 }
 
 .category-pill {
-  background: rgba(70, 224, 175, 0.1);
-  border: 1px solid rgba(70, 224, 175, 0.3);
-  border-radius: 4px;
-  color: #46e0af;
+  background: var(--accent-primary-container);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  border-radius: var(--radius-sm);
+  color: var(--accent-primary);
   font-size: 0.72rem;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 0.08em;
   padding: 4px 10px;
   text-transform: uppercase;
 }
 
 .meta-dot {
-  color: #3b5072;
+  color: var(--text-muted);
 }
 
 .read-time,
 .publish-date,
 .views-metric {
-  color: #8da1b9;
+  color: var(--text-secondary);
   font-size: 0.82rem;
   font-weight: 600;
 }
 
 .editorial-title {
-  color: #f1f4ff;
-  font-family: inherit;
+  font-family: var(--font-headline);
+  color: var(--text-primary);
   font-size: clamp(2.3rem, 4.4vw, 3.6rem);
-  font-weight: 900;
-  letter-spacing: -0.04em;
+  font-weight: 800;
+  letter-spacing: -0.035em;
   line-height: 1.15;
   margin: 0 0 18px;
 }
 
 .editorial-lead {
-  color: #9db3cc;
+  font-family: var(--font-body);
+  color: var(--text-secondary);
   font-size: clamp(1.05rem, 1.8vw, 1.25rem);
   font-weight: 400;
   line-height: 1.7;
@@ -759,8 +762,8 @@ const submitComment = async () => {
 }
 
 .author-avatar {
-  background: #15223e;
-  border: 2px solid #283e66;
+  background: var(--bg-surface-high);
+  border: 2px solid var(--border-subtle);
   position: relative;
 }
 
@@ -781,20 +784,21 @@ const submitComment = async () => {
   gap: 6px;
 
   strong {
-    color: #f1f4ff;
+    font-family: var(--font-headline);
+    color: var(--text-primary);
     font-size: 0.96rem;
     font-weight: 700;
   }
 }
 
 .verified-icon {
-  color: #46e0af;
+  color: var(--accent-primary);
 }
 
 .author-title {
-  color: #7d96b3;
-  font-size: 0.78rem;
-  font-weight: 500;
+  font-family: var(--font-body);
+  color: var(--text-secondary);
+  font-size: 0.82rem;
 }
 
 .author-right {
@@ -804,10 +808,11 @@ const submitComment = async () => {
 }
 
 .follow-btn {
-  background: rgba(70, 224, 175, 0.12);
-  border: 1px solid rgba(70, 224, 175, 0.35);
-  border-radius: 4px;
-  color: #46e0af;
+  font-family: var(--font-headline);
+  background: var(--accent-primary-container);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  border-radius: var(--radius-sm);
+  color: var(--accent-primary);
   font-size: 0.76rem;
   font-weight: 700;
   padding: 6px 16px;
@@ -815,19 +820,20 @@ const submitComment = async () => {
 
   &:hover,
   &.is-following {
-    background: #46e0af;
-    color: #071126;
+    background: var(--accent-primary);
+    color: var(--accent-on-primary);
   }
 }
 
 .dossier-link {
-  color: #7d96b3;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
   font-size: 0.78rem;
   font-weight: 600;
   text-decoration: none;
 
   &:hover {
-    color: #46e0af;
+    color: var(--accent-primary);
   }
 }
 
@@ -854,10 +860,10 @@ const submitComment = async () => {
 
 .rail-btn {
   align-items: center;
-  background: #111b33;
-  border: 1px solid #233556;
+  background: var(--bg-surface-low);
+  border: 1px solid var(--border-hairline);
   border-radius: 50%;
-  color: #9db3cc;
+  color: var(--text-secondary);
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -865,21 +871,23 @@ const submitComment = async () => {
   justify-content: center;
   transition: all 0.2s ease;
   width: 44px;
+  box-shadow: var(--shadow-card);
 
   &:hover {
-    background: #18284d;
-    border-color: #46e0af;
-    color: #46e0af;
+    background: var(--bg-surface-high);
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
     transform: scale(1.05);
   }
 
   &.is-active {
-    background: rgba(70, 224, 175, 0.15);
-    border-color: #46e0af;
-    color: #46e0af;
+    background: var(--accent-primary-container);
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
   }
 
   .btn-count {
+    font-family: var(--font-mono);
     font-size: 0.65rem;
     font-weight: 800;
     line-height: 1;
@@ -887,6 +895,7 @@ const submitComment = async () => {
   }
 
   .font-icon {
+    font-family: var(--font-headline);
     font-size: 0.85rem;
     font-weight: 900;
   }
@@ -902,8 +911,8 @@ const submitComment = async () => {
 }
 
 .media-frame {
-  border-radius: 12px;
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
   max-height: 480px;
   overflow: hidden;
   position: relative;
@@ -919,21 +928,22 @@ const submitComment = async () => {
 
 .media-placeholder-gradient {
   align-items: center;
-  background: linear-gradient(135deg, #15223e, #0e172a);
-  border: 1px solid #233556;
+  background: linear-gradient(135deg, var(--bg-surface-lowest), var(--bg-surface-high));
+  border: 1px solid var(--border-hairline);
   display: flex;
   height: 320px;
   justify-content: center;
   width: 100%;
 
   .ph-icon {
-    color: #3b5072;
+    color: var(--text-muted);
   }
 }
 
 .media-caption {
-  color: #7d96b3;
-  font-size: 0.8rem;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  font-size: 0.78rem;
   font-style: italic;
   line-height: 1.5;
   margin: 12px 0 0;
@@ -942,6 +952,7 @@ const submitComment = async () => {
 
 // Article Prose Styling
 .article-content-body {
+  font-family: var(--font-body);
   font-size: 1.05rem;
   line-height: 1.85;
 
@@ -953,9 +964,9 @@ const submitComment = async () => {
 
 .prose-content {
   :deep(.drop-cap-p::first-letter) {
-    color: #46e0af;
+    color: var(--accent-primary);
     float: left;
-    font-family: Georgia, serif;
+    font-family: var(--font-headline);
     font-size: 3.6rem;
     font-weight: 900;
     line-height: 0.8;
@@ -964,15 +975,16 @@ const submitComment = async () => {
   }
 
   :deep(.article-p) {
-    color: #c4d6ea;
+    color: var(--text-primary);
     margin-bottom: 24px;
   }
 
   :deep(.article-h2) {
-    color: #f1f4ff;
+    font-family: var(--font-headline);
+    color: var(--text-primary);
     font-size: 1.65rem;
     font-weight: 800;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.025em;
     line-height: 1.3;
     margin: 44px 0 18px;
     padding-top: 14px;
@@ -980,18 +992,20 @@ const submitComment = async () => {
   }
 
   :deep(.article-h3) {
-    color: #e2ecfa;
+    font-family: var(--font-headline);
+    color: var(--text-primary);
     font-size: 1.35rem;
     font-weight: 700;
+    letter-spacing: -0.015em;
     margin: 32px 0 14px;
     scroll-margin-top: 100px;
   }
 
   :deep(.article-blockquote) {
-    background: #0f1a30;
-    border-left: 3px solid #46e0af;
-    border-radius: 0 8px 8px 0;
-    color: #dce8fa;
+    background: var(--bg-surface-low);
+    border-left: 3px solid var(--accent-primary);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    color: var(--text-primary);
     font-style: italic;
     margin: 30px 0;
     padding: 18px 24px;
@@ -1001,7 +1015,7 @@ const submitComment = async () => {
 // Tags Section
 .tags-section {
   align-items: center;
-  border-top: 1px solid #1c2b4a;
+  border-top: 1px solid var(--border-hairline);
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
@@ -1011,9 +1025,10 @@ const submitComment = async () => {
 
 .tags-header {
   align-items: center;
-  color: #7d96b3;
+  color: var(--text-muted);
   display: inline-flex;
-  font-size: 0.85rem;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
   font-weight: 700;
   gap: 6px;
 }
@@ -1025,24 +1040,25 @@ const submitComment = async () => {
 }
 
 .editorial-tag-pill {
-  background: #111b33;
-  border: 1px solid #233556;
-  border-radius: 4px;
-  color: #46e0af;
-  font-size: 0.78rem;
+  font-family: var(--font-mono);
+  background: var(--accent-secondary-container);
+  border: 1px solid var(--accent-secondary-border);
+  border-radius: var(--radius-pill);
+  color: var(--accent-secondary-text);
+  font-size: 0.76rem;
   font-weight: 600;
-  padding: 4px 10px;
+  padding: 4px 12px;
   transition: all 0.2s ease;
 
   &:hover {
-    background: #18284d;
-    border-color: #46e0af;
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
   }
 }
 
 // Comments Stream
 .editorial-comments-section {
-  border-top: 1px solid #1c2b4a;
+  border-top: 1px solid var(--border-hairline);
   margin-top: 48px;
   padding-top: 36px;
 }
@@ -1052,17 +1068,20 @@ const submitComment = async () => {
 }
 
 .section-kicker {
-  color: #46e0af;
-  font-size: 0.75rem;
+  color: var(--accent-primary);
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .comments-heading {
-  color: #f1f4ff;
+  font-family: var(--font-headline);
+  color: var(--text-primary);
   font-size: 1.5rem;
   font-weight: 800;
+  letter-spacing: -0.02em;
   margin: 6px 0 0;
 }
 
@@ -1074,10 +1093,11 @@ const submitComment = async () => {
 }
 
 .editorial-comment-card {
-  background: #0f1a30;
-  border: 1px solid #1e2c4d;
-  border-radius: 8px;
+  background: var(--bg-surface-low);
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-md);
   padding: 18px 20px;
+  box-shadow: var(--shadow-card);
 }
 
 .comment-user-row {
@@ -1088,8 +1108,9 @@ const submitComment = async () => {
 }
 
 .comment-user-avatar {
-  background: #46e0af;
-  color: #071126;
+  background: var(--accent-primary);
+  color: var(--accent-on-primary);
+  font-family: var(--font-headline);
   font-size: 0.8rem;
   font-weight: 800;
 }
@@ -1099,19 +1120,22 @@ const submitComment = async () => {
   flex-direction: column;
 
   strong {
-    color: #f1f4ff;
+    font-family: var(--font-headline);
+    color: var(--text-primary);
     font-size: 0.88rem;
     font-weight: 700;
   }
 }
 
 .comment-date {
-  color: #6d85a3;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
   font-size: 0.72rem;
 }
 
 .comment-text-content {
-  color: #b9cce0;
+  font-family: var(--font-body);
+  color: var(--text-secondary);
   font-size: 0.92rem;
   line-height: 1.6;
   margin: 0;
@@ -1119,10 +1143,10 @@ const submitComment = async () => {
 
 .empty-comments-state {
   align-items: center;
-  background: #0e172a;
-  border: 1px dashed #233556;
-  border-radius: 8px;
-  color: #7d96b3;
+  background: var(--bg-surface-low);
+  border: 1px dashed var(--border-subtle);
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -1132,14 +1156,16 @@ const submitComment = async () => {
 }
 
 .comment-composer-card {
-  background: #0f1a30;
-  border: 1px solid #1e2c4d;
-  border-radius: 8px;
+  background: var(--bg-surface-low);
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-lg);
   padding: 24px;
+  box-shadow: var(--shadow-card);
 }
 
 .composer-title {
-  color: #f1f4ff;
+  font-family: var(--font-headline);
+  color: var(--text-primary);
   font-size: 1.15rem;
   font-weight: 800;
   margin: 0 0 18px;
@@ -1147,10 +1173,10 @@ const submitComment = async () => {
 
 .composer-alert-success {
   align-items: center;
-  background: rgba(70, 224, 175, 0.12);
-  border: 1px solid #46e0af;
-  border-radius: 4px;
-  color: #46e0af;
+  background: var(--accent-primary-container);
+  border: 1px solid var(--accent-primary);
+  border-radius: var(--radius-sm);
+  color: var(--accent-primary);
   display: flex;
   font-size: 0.85rem;
   font-weight: 600;
@@ -1177,7 +1203,8 @@ const submitComment = async () => {
   gap: 6px;
 
   label {
-    color: #9db3cc;
+    font-family: var(--font-headline);
+    color: var(--text-secondary);
     font-size: 0.78rem;
     font-weight: 700;
   }
@@ -1185,39 +1212,41 @@ const submitComment = async () => {
 
 .composer-input,
 .composer-textarea {
-  background: #081126;
-  border: 1px solid #233556;
-  border-radius: 4px;
-  color: #f1f4ff;
+  background: var(--bg-surface-high);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
   font-family: inherit;
   font-size: 0.88rem;
   padding: 10px 14px;
   transition: border-color 0.2s ease;
 
   &:focus {
-    border-color: #46e0af;
+    border-color: var(--accent-primary);
     outline: none;
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.15);
   }
 }
 
 .composer-submit-btn {
+  font-family: var(--font-headline);
   align-items: center;
   align-self: flex-start;
-  background: #46e0af;
+  background: var(--accent-primary);
   border: none;
-  border-radius: 4px;
-  color: #071126;
+  border-radius: var(--radius-sm);
+  color: var(--accent-on-primary);
   cursor: pointer;
   display: inline-flex;
-  font-family: inherit;
-  font-size: 0.82rem;
+  font-size: 0.84rem;
   font-weight: 800;
   gap: 8px;
   padding: 10px 22px;
   transition: all 0.2s ease;
 
   &:hover:not(:disabled) {
-    box-shadow: 0 4px 16px rgba(70, 224, 175, 0.35);
+    background: var(--accent-primary-hover);
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.35);
     transform: translateY(-2px);
   }
 
@@ -1241,16 +1270,17 @@ const submitComment = async () => {
 }
 
 .sidebar-card {
-  background: #0f1a30;
-  border: 1px solid #1e2c4d;
-  border-radius: 8px;
+  background: var(--bg-surface-low);
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-md);
   padding: 20px;
+  box-shadow: var(--shadow-card);
 }
 
 // Widget 1: TOC
 .toc-header {
   align-items: center;
-  border-bottom: 1px solid #1e2c4d;
+  border-bottom: 1px solid var(--border-hairline);
   display: flex;
   justify-content: space-between;
   margin-bottom: 14px;
@@ -1258,15 +1288,17 @@ const submitComment = async () => {
 }
 
 .toc-title {
-  color: #f1f4ff;
-  font-size: 0.78rem;
+  font-family: var(--font-mono);
+  color: var(--text-primary);
+  font-size: 0.76rem;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .toc-count {
-  color: #6d85a3;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
   font-size: 0.72rem;
   font-weight: 600;
 }
@@ -1279,7 +1311,7 @@ const submitComment = async () => {
 
 .toc-item {
   align-items: center;
-  color: #8da1b9;
+  color: var(--text-secondary);
   display: flex;
   font-size: 0.8rem;
   font-weight: 600;
@@ -1289,17 +1321,17 @@ const submitComment = async () => {
   transition: all 0.2s ease;
 
   &:hover {
-    color: #46e0af;
+    color: var(--accent-primary);
     transform: translateX(3px);
   }
 
   &.is-active {
-    color: #46e0af;
+    color: var(--accent-primary);
     font-weight: 700;
 
     .toc-dot {
-      background: #46e0af;
-      box-shadow: 0 0 6px #46e0af;
+      background: var(--accent-primary);
+      box-shadow: 0 0 6px var(--accent-primary);
     }
   }
 
@@ -1309,7 +1341,7 @@ const submitComment = async () => {
 }
 
 .toc-dot {
-  background: #3b5072;
+  background: var(--text-muted);
   border-radius: 50%;
   flex-shrink: 0;
   height: 6px;
@@ -1326,8 +1358,8 @@ const submitComment = async () => {
 }
 
 .dossier-avatar {
-  background: #15223e;
-  border: 1px solid #283e66;
+  background: var(--bg-surface-high);
+  border: 1px solid var(--border-subtle);
 }
 
 .dossier-author-info {
@@ -1335,18 +1367,21 @@ const submitComment = async () => {
   flex-direction: column;
 
   strong {
-    color: #f1f4ff;
+    font-family: var(--font-headline);
+    color: var(--text-primary);
     font-size: 0.92rem;
   }
 
   span {
-    color: #7d96b3;
+    font-family: var(--font-body);
+    color: var(--text-secondary);
     font-size: 0.75rem;
   }
 }
 
 .dossier-bio {
-  color: #9db3cc;
+  font-family: var(--font-body);
+  color: var(--text-secondary);
   font-size: 0.82rem;
   line-height: 1.55;
   margin: 0 0 16px;
@@ -1354,21 +1389,23 @@ const submitComment = async () => {
 
 .dossier-footer {
   align-items: center;
-  border-top: 1px solid #1e2c4d;
+  border-top: 1px solid var(--border-hairline);
   display: flex;
   justify-content: space-between;
   padding-top: 12px;
 }
 
 .dossier-subscribers {
-  color: #6d85a3;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
   font-size: 0.72rem;
   font-weight: 600;
 }
 
 .dossier-action-link {
+  font-family: var(--font-headline);
   align-items: center;
-  color: #46e0af;
+  color: var(--accent-primary);
   display: inline-flex;
   font-size: 0.75rem;
   font-weight: 700;
@@ -1383,8 +1420,9 @@ const submitComment = async () => {
 // Widget 3: Newsletter
 .newsletter-kicker {
   align-items: center;
-  color: #46e0af;
+  color: var(--accent-primary);
   display: flex;
+  font-family: var(--font-mono);
   font-size: 0.72rem;
   font-weight: 800;
   gap: 6px;
@@ -1394,7 +1432,8 @@ const submitComment = async () => {
 }
 
 .newsletter-heading {
-  color: #f1f4ff;
+  font-family: var(--font-headline);
+  color: var(--text-primary);
   font-size: 0.95rem;
   font-weight: 800;
   line-height: 1.35;
@@ -1402,7 +1441,8 @@ const submitComment = async () => {
 }
 
 .newsletter-description {
-  color: #8da1b9;
+  font-family: var(--font-body);
+  color: var(--text-secondary);
   font-size: 0.78rem;
   line-height: 1.5;
   margin: 0 0 14px;
@@ -1415,40 +1455,41 @@ const submitComment = async () => {
 }
 
 .newsletter-input {
-  background: #081126;
-  border: 1px solid #233556;
-  border-radius: 4px;
-  color: #f1f4ff;
+  background: var(--bg-surface-high);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
   font-family: inherit;
   font-size: 0.8rem;
   padding: 8px 12px;
 
   &:focus {
-    border-color: #46e0af;
+    border-color: var(--accent-primary);
     outline: none;
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.15);
   }
 }
 
 .newsletter-submit-btn {
-  background: #46e0af;
+  font-family: var(--font-headline);
+  background: var(--accent-primary);
   border: none;
-  border-radius: 4px;
-  color: #071126;
+  border-radius: var(--radius-sm);
+  color: var(--accent-on-primary);
   cursor: pointer;
-  font-family: inherit;
   font-size: 0.78rem;
   font-weight: 800;
   padding: 9px;
   transition: all 0.2s ease;
 
   &:hover {
-    box-shadow: 0 4px 14px rgba(70, 224, 175, 0.35);
+    background: var(--accent-primary-hover);
   }
 }
 
 .newsletter-success-toast {
   align-items: center;
-  color: #46e0af;
+  color: var(--accent-primary);
   display: flex;
   font-size: 0.75rem;
   font-weight: 700;
@@ -1458,13 +1499,14 @@ const submitComment = async () => {
 
 // Widget 4: Trending
 .trending-header {
-  border-bottom: 1px solid #1e2c4d;
+  border-bottom: 1px solid var(--border-hairline);
   margin-bottom: 12px;
   padding-bottom: 8px;
 }
 
 .trending-kicker {
-  color: #f1f4ff;
+  font-family: var(--font-mono);
+  color: var(--text-primary);
   font-size: 0.76rem;
   font-weight: 800;
   letter-spacing: 0.06em;
@@ -1484,19 +1526,21 @@ const submitComment = async () => {
   text-decoration: none;
 
   &:hover .trending-title {
-    color: #46e0af;
+    color: var(--accent-primary);
   }
 }
 
 .trending-meta {
-  color: #46e0af;
+  font-family: var(--font-mono);
+  color: var(--accent-primary);
   font-size: 0.68rem;
   font-weight: 800;
   letter-spacing: 0.05em;
 }
 
 .trending-title {
-  color: #dce8fa;
+  font-family: var(--font-headline);
+  color: var(--text-primary);
   font-size: 0.85rem;
   font-weight: 700;
   line-height: 1.35;
@@ -1505,14 +1549,15 @@ const submitComment = async () => {
 }
 
 .trending-date {
-  color: #6d85a3;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
   font-size: 0.72rem;
 }
 
 // Loading & Share Toast
 .editorial-load-state {
   align-items: center;
-  color: #8da1b9;
+  color: var(--text-secondary);
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -1523,9 +1568,10 @@ const submitComment = async () => {
 }
 
 .return-home-btn {
-  background: #46e0af;
-  border-radius: 4px;
-  color: #071126;
+  font-family: var(--font-headline);
+  background: var(--accent-primary);
+  border-radius: var(--radius-sm);
+  color: var(--accent-on-primary);
   font-size: 0.8rem;
   font-weight: 800;
   padding: 8px 18px;
@@ -1534,10 +1580,10 @@ const submitComment = async () => {
 
 .share-toast-banner {
   align-items: center;
-  background: #0f1a30;
-  border: 1px solid #46e0af;
-  border-radius: 8px;
-  color: #f1f4ff;
+  background: var(--bg-surface-high);
+  border: 1px solid var(--accent-primary);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
   display: flex;
   font-size: 0.85rem;
   font-weight: 700;
@@ -1607,204 +1653,6 @@ const submitComment = async () => {
 
   .editorial-comment-card {
     padding: 14px 12px;
-  }
-}
-</style>
-
-<style lang="scss">
-// Global Light Mode Override for Editorial Post Detail
-body.portfolio-light {
-  .post-page-container {
-    background: #ffffff !important;
-  }
-
-  .editorial-nav-bar {
-    .bc-link {
-      color: #0f9f74 !important;
-    }
-    .bc-separator {
-      color: #cbd5e1 !important;
-    }
-    .bc-category {
-      color: #475569 !important;
-    }
-  }
-
-  .editorial-header {
-    border-color: #eaedf3 !important;
-  }
-
-  .category-pill {
-    background: rgba(15, 159, 116, 0.1) !important;
-    border-color: rgba(15, 159, 116, 0.3) !important;
-    color: #0f9f74 !important;
-  }
-
-  .read-time,
-  .publish-date,
-  .views-metric {
-    color: #64748b !important;
-  }
-
-  .editorial-title {
-    color: #000000 !important;
-  }
-
-  .editorial-lead {
-    color: #334155 !important;
-  }
-
-  .name-row strong {
-    color: #000000 !important;
-  }
-
-  .verified-icon {
-    color: #0f9f74 !important;
-  }
-
-  .author-title {
-    color: #64748b !important;
-  }
-
-  .follow-btn {
-    background: rgba(15, 159, 116, 0.1) !important;
-    border-color: rgba(15, 159, 116, 0.35) !important;
-    color: #0f9f74 !important;
-
-    &:hover,
-    &.is-following {
-      background: #0f9f74 !important;
-      color: #ffffff !important;
-    }
-  }
-
-  .rail-btn {
-    background: #ffffff !important;
-    border-color: #e2e8f0 !important;
-    color: #475569 !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-
-    &:hover,
-    &.is-active {
-      background: #f0fdf4 !important;
-      border-color: #0f9f74 !important;
-      color: #0f9f74 !important;
-    }
-  }
-
-  .media-caption {
-    color: #64748b !important;
-  }
-
-  .prose-content {
-    .drop-cap-p::first-letter {
-      color: #0f9f74 !important;
-    }
-    .article-p {
-      color: #1e293b !important;
-    }
-    .article-h2 {
-      color: #000000 !important;
-    }
-    .article-h3 {
-      color: #0f172a !important;
-    }
-    .article-blockquote {
-      background: #f8fafc !important;
-      border-color: #0f9f74 !important;
-      color: #1e293b !important;
-    }
-  }
-
-  .tags-section {
-    border-color: #eaedf3 !important;
-  }
-
-  .editorial-tag-pill {
-    background: #f1f5f9 !important;
-    border-color: #e2e8f0 !important;
-    color: #0f9f74 !important;
-  }
-
-  .editorial-comments-section {
-    border-color: #eaedf3 !important;
-  }
-
-  .comments-heading {
-    color: #000000 !important;
-  }
-
-  .editorial-comment-card,
-  .comment-composer-card {
-    background: #ffffff !important;
-    border-color: #eaedf3 !important;
-    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04) !important;
-  }
-
-  .comment-user-meta strong,
-  .composer-title {
-    color: #000000 !important;
-  }
-
-  .comment-text-content {
-    color: #334155 !important;
-  }
-
-  .composer-input,
-  .composer-textarea {
-    background: #f8fafc !important;
-    border-color: #cbd5e1 !important;
-    color: #000000 !important;
-
-    &:focus {
-      background: #ffffff !important;
-      border-color: #0f9f74 !important;
-    }
-  }
-
-  .sidebar-card {
-    background: #ffffff !important;
-    border-color: #eaedf3 !important;
-    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04) !important;
-  }
-
-  .toc-header,
-  .dossier-footer,
-  .trending-header {
-    border-color: #eaedf3 !important;
-  }
-
-  .toc-title,
-  .dossier-author-info strong,
-  .newsletter-heading,
-  .trending-kicker {
-    color: #000000 !important;
-  }
-
-  .toc-item {
-    color: #475569 !important;
-
-    &:hover,
-    &.is-active {
-      color: #0f9f74 !important;
-    }
-  }
-
-  .trending-title {
-    color: #0f172a !important;
-    &:hover {
-      color: #0f9f74 !important;
-    }
-  }
-
-  .newsletter-input {
-    background: #f8fafc !important;
-    border-color: #cbd5e1 !important;
-    color: #000000 !important;
-
-    &:focus {
-      border-color: #0f9f74 !important;
-    }
   }
 }
 </style>

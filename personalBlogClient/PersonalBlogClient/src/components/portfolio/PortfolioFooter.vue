@@ -1,5 +1,18 @@
 <template>
-  <footer id="contact" class="footer"><p>{{ text.getInTouch }}</p><strong>{{ text.collaborate }}</strong><a :href="email ? `mailto:${email}` : '#'">{{ text.sayHello }} <q-icon name="arrow_forward" /></a><small>PDQ Portfolio</small></footer>
+  <footer id="contact" class="footer">
+    <p class="footer-cta-title">{{ text.getInTouch }}</p>
+    <strong class="footer-cta-desc">{{ text.collaborate }}</strong>
+
+    <a :href="email ? `mailto:${email}` : '#'" class="footer-cta-btn">
+      <span>{{ text.sayHello }}</span>
+      <q-icon name="arrow_forward" size="15px" class="btn-arrow" />
+    </a>
+
+    <div class="footer-bottom-bar">
+      <span class="footer-brand">PDQ Portfolio</span>
+      <span class="footer-tagline">Modern Editorial Minimalist</span>
+    </div>
+  </footer>
 </template>
 
 <script setup lang="ts">
@@ -11,54 +24,84 @@ const { text } = usePortfolioLocale();
 <style scoped lang="scss">
 .footer {
   align-items: center;
-  border-top: 1px solid #202b4a;
-  color: #f1f4ff;
+  border-top: 1px solid var(--border-hairline);
+  color: var(--text-primary);
   display: flex;
   flex-direction: column;
   margin-top: 64px;
-  padding: 80px 24px 30px;
+  padding: 80px 24px 32px;
   text-align: center;
 }
-.footer p {
-  font-size: clamp(1.8rem, 5vw, 3.2rem);
+
+.footer-cta-title {
+  font-family: var(--font-headline);
+  font-size: clamp(2rem, 5vw, 3.4rem);
   font-weight: 900;
-  letter-spacing: -.05em;
+  letter-spacing: -0.04em;
   margin: 0 0 14px;
+  color: var(--text-primary);
 }
-.footer strong {
-  color: #b3c8da;
-  font-size: .88rem;
+
+.footer-cta-desc {
+  font-family: var(--font-body);
+  color: var(--text-secondary);
+  font-size: 0.95rem;
   font-weight: 400;
-  max-width: 500px;
+  max-width: 520px;
+  line-height: 1.6;
 }
-.footer a {
-  background: #46e0af;
-  color: #071126;
-  font-size: .82rem;
-  font-weight: 800;
-  margin-top: 24px;
-  padding: 12px 26px;
+
+.footer-cta-btn {
+  font-family: var(--font-headline);
+  background: var(--accent-primary);
+  color: var(--accent-on-primary);
+  font-size: 0.88rem;
+  font-weight: 700;
+  margin-top: 28px;
+  padding: 12px 28px;
   text-decoration: none;
-  border-radius: 6px;
+  border-radius: var(--radius-md);
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  transition: all 0.2s ease;
+  gap: 8px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+
+  .btn-arrow {
+    transition: transform 0.2s ease;
+  }
 
   &:hover {
-    box-shadow: 0 6px 20px rgba(70, 224, 175, 0.3);
+    background: var(--accent-primary-hover);
+    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
     transform: translateY(-2px);
+
+    .btn-arrow {
+      transform: translateX(4px);
+    }
   }
 }
-.footer small {
+
+.footer-bottom-bar {
   align-self: stretch;
-  border-top: 1px solid #202b4a;
-  color: #8da1b9;
-  font-size: .74rem;
-  font-weight: 700;
+  border-top: 1px solid var(--border-hairline);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin-top: 72px;
-  padding-top: 20px;
-  text-align: left;
+  padding-top: 24px;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  color: var(--text-muted);
+}
+
+.footer-brand {
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.footer-tagline {
+  font-weight: 500;
+  letter-spacing: 0.04em;
 }
 
 @media (max-width: 600px) {
@@ -66,29 +109,14 @@ const { text } = usePortfolioLocale();
     margin-top: 40px;
     padding: 56px 16px 24px;
   }
-  .footer p {
-    font-size: 1.85rem;
+  .footer-cta-title {
+    font-size: 1.95rem;
   }
-  .footer small {
+  .footer-bottom-bar {
     margin-top: 48px;
+    flex-direction: column;
+    gap: 8px;
     text-align: center;
-  }
-}
-
-:global(body.portfolio-light) .footer {
-  background: #ffffff !important;
-  border-top: 1px solid #eaedf3 !important;
-  color: #0a1733 !important;
-
-  p {
-    color: #0a1733 !important;
-  }
-  strong {
-    color: #4a5e7b !important;
-  }
-  small {
-    border-top: 1px solid #eaedf3 !important;
-    color: #718096 !important;
   }
 }
 </style>

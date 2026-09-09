@@ -30,6 +30,7 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<IPublicLandingService, PublicLandingService>();
 builder.Services.AddScoped<IPublicAboutService, PublicAboutService>();
 builder.Services.AddScoped<IPublicPostService, PublicPostService>();
+builder.Services.AddScoped<IPublicTopicService, PublicTopicService>();
 
 // ============================================
 // Swagger

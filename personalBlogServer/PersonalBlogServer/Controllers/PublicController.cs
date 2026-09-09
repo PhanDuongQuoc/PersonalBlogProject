@@ -11,15 +11,18 @@ public sealed class PublicController : ControllerBase
     private readonly IPublicLandingService _publicLandingService;
     private readonly IPublicAboutService _publicAboutService;
     private readonly IPublicPostService _publicPostService;
+    private readonly IPublicTopicService _publicTopicService;
 
     public PublicController(
         IPublicLandingService publicLandingService,
         IPublicAboutService publicAboutService,
-        IPublicPostService publicPostService)
+        IPublicPostService publicPostService,
+        IPublicTopicService publicTopicService)
     {
         _publicLandingService = publicLandingService;
         _publicAboutService = publicAboutService;
         _publicPostService = publicPostService;
+        _publicTopicService = publicTopicService;
     }
 
     [HttpGet("landing")]
@@ -65,5 +68,42 @@ public sealed class PublicController : ControllerBase
 
         var comment = await _publicPostService.AddCommentAsync(slug, request, cancellationToken);
         return comment is null ? NotFound() : Ok(comment);
+    }
+
+    [HttpGet("topics")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<IReadOnlyList<PublicTopicSummaryResponse>>> GetTopics(
+        [FromQuery] string? username,
+        [FromQuery] string? search,
+        CancellationToken cancellationToken)
+    {
+        var topics = await _publicTopicService.GetTopicsAsync(username, search, cancellationToken);
+        return Ok(topics);
+    }
+
+    [HttpGet("topics/{slug}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<PublicTopicDetailResponse>> GetTopicBySlug(
+        [FromRoute] string slug,
+        [FromQuery] string? username,
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 6,
+        [FromQuery] string? sortBy = "latest",
+        [FromQuery] string? search = null,
+        [FromQuery] string? tag = null,
+        CancellationToken cancellationToken = default)
+    {
+        var topicDetail = await _publicTopicService.GetTopicBySlugAsync(
+            slug,
+            username,
+            page,
+            pageSize,
+            sortBy,
+            search,
+            tag,
+            cancellationToken);
+
+        return topicDetail is null ? NotFound() : Ok(topicDetail);
     }
 }

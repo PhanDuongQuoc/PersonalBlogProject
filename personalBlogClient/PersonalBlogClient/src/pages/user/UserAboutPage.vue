@@ -25,7 +25,7 @@
 
           <div class="header-quick-card">
             <div v-if="aboutData.profile.location" class="quick-meta-item">
-              <q-icon name="place" size="20px" class="meta-icon" />
+              <q-icon name="place" size="18px" class="meta-icon" />
               <div class="meta-content">
                 <small>{{ text.locationLabel }}</small>
                 <strong>{{ aboutData.profile.location }}</strong>
@@ -33,7 +33,7 @@
             </div>
 
             <div class="quick-meta-item">
-              <q-icon name="email" size="20px" class="meta-icon" />
+              <q-icon name="email" size="18px" class="meta-icon" />
               <div class="meta-content">
                 <small>{{ text.email }}</small>
                 <a :href="`mailto:${aboutData.profile.email}`">{{ aboutData.profile.email }}</a>
@@ -41,7 +41,7 @@
             </div>
 
             <div v-if="aboutData.profile.phone" class="quick-meta-item">
-              <q-icon name="phone" size="20px" class="meta-icon" />
+              <q-icon name="phone" size="18px" class="meta-icon" />
               <div class="meta-content">
                 <small>{{ text.phoneLabel }}</small>
                 <span>{{ aboutData.profile.phone }}</span>
@@ -55,7 +55,7 @@
               rel="noopener noreferrer"
               class="quick-cv-btn"
             >
-              <q-icon name="description" size="16px" />
+              <q-icon name="description" size="15px" />
               <span>{{ text.downloadCv }}</span>
             </a>
           </div>
@@ -137,13 +137,14 @@ onMounted(async () => {
 }
 
 .portfolio-content {
-  background: #081126;
   margin: 0 auto;
-  max-width: 1060px;
+  max-width: 1140px;
+  padding: 0 32px;
 }
 
 .about-page-header {
-  padding: 50px 78px 40px;
+  padding: 40px 0;
+  border-bottom: 1px solid var(--border-hairline);
 }
 
 .about-breadcrumb {
@@ -151,29 +152,30 @@ onMounted(async () => {
   display: flex;
   gap: 10px;
   margin-bottom: 28px;
+  font-family: var(--font-body);
 }
 
 .bc-link {
   align-items: center;
-  color: #46e0af;
+  color: var(--accent-primary);
   display: inline-flex;
   font-size: 0.82rem;
   font-weight: 700;
   gap: 6px;
   text-decoration: none;
   transition: transform 0.2s ease;
-}
 
-.bc-link:hover {
-  transform: translateX(-3px);
+  &:hover {
+    transform: translateX(-3px);
+  }
 }
 
 .bc-separator {
-  color: #384f6e;
+  color: var(--text-muted);
 }
 
 .bc-current {
-  color: #93a9c2;
+  color: var(--text-secondary);
   font-size: 0.82rem;
   font-weight: 600;
 }
@@ -181,66 +183,72 @@ onMounted(async () => {
 .header-main-grid {
   display: grid;
   gap: 36px;
-  grid-template-columns: 1.4fr 1fr;
+  grid-template-columns: 1.35fr 1fr;
   align-items: center;
 }
 
 .eyebrow-tag {
   align-items: center;
-  background: rgba(70, 224, 175, 0.08);
-  border: 1px solid rgba(70, 224, 175, 0.25);
-  border-radius: 20px;
-  color: #46e0af;
+  background: var(--accent-primary-container);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  border-radius: var(--radius-pill);
+  color: var(--accent-primary);
   display: inline-flex;
-  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
   font-weight: 700;
   gap: 8px;
   letter-spacing: 0.08em;
-  padding: 6px 14px;
+  padding: 5px 14px;
   text-transform: uppercase;
 }
 
 .pulse-dot {
-  background: #46e0af;
+  background: var(--accent-primary);
   border-radius: 50%;
-  box-shadow: 0 0 8px #46e0af;
+  box-shadow: 0 0 8px var(--accent-primary);
   display: inline-block;
-  height: 7px;
-  width: 7px;
+  height: 6px;
+  width: 6px;
+  animation: pulse-glow 2s infinite;
 }
 
 .page-title {
-  color: #f1f4ff;
+  font-family: var(--font-headline);
+  color: var(--text-primary);
   font-size: clamp(2.4rem, 4vw, 3.5rem);
-  font-weight: 900;
-  letter-spacing: -0.05em;
+  font-weight: 800;
+  letter-spacing: -0.035em;
   line-height: 1.1;
   margin: 16px 0 8px;
 }
 
 .page-subtitle {
-  color: #46e0af;
+  font-family: var(--font-headline);
+  color: var(--accent-primary);
   font-size: 1.25rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
+  font-weight: 700;
+  letter-spacing: -0.015em;
   margin: 0 0 16px;
 }
 
 .page-lead {
-  color: #b9cce0;
+  font-family: var(--font-body);
+  color: var(--text-secondary);
   font-size: 0.98rem;
   line-height: 1.7;
   margin: 0;
 }
 
 .header-quick-card {
-  background: #111b33;
-  border: 1px solid #233556;
-  border-radius: 6px;
+  background: var(--bg-surface-low);
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-lg);
   display: flex;
   flex-direction: column;
   gap: 16px;
   padding: 24px 26px;
+  box-shadow: var(--shadow-card);
 }
 
 .quick-meta-item {
@@ -250,7 +258,7 @@ onMounted(async () => {
 }
 
 .meta-icon {
-  color: #35d6ff;
+  color: var(--accent-primary);
   flex-shrink: 0;
 }
 
@@ -260,8 +268,9 @@ onMounted(async () => {
 }
 
 .meta-content small {
-  color: #7d96b0;
-  font-size: 0.7rem;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -270,41 +279,43 @@ onMounted(async () => {
 .meta-content strong,
 .meta-content span,
 .meta-content a {
-  color: #e4eefa;
+  font-family: var(--font-body);
+  color: var(--text-primary);
   font-size: 0.88rem;
   font-weight: 600;
   text-decoration: none;
 }
 
 .meta-content a:hover {
-  color: #46e0af;
+  color: var(--accent-primary);
 }
 
 .quick-cv-btn {
+  font-family: var(--font-headline);
   align-items: center;
-  background: #46e0af;
-  border-radius: 4px;
-  color: #071126;
+  background: var(--accent-primary);
+  border-radius: var(--radius-md);
+  color: var(--accent-on-primary);
   display: inline-flex;
-  font-size: 0.78rem;
-  font-weight: 800;
+  font-size: 0.82rem;
+  font-weight: 700;
   gap: 8px;
   justify-content: center;
   margin-top: 6px;
   padding: 10px 16px;
   text-decoration: none;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
 
-.quick-cv-btn:hover {
-  box-shadow: 0 6px 18px rgba(70, 224, 175, 0.35);
-  transform: translateY(-2px);
+  &:hover {
+    background: var(--accent-primary-hover);
+    box-shadow: 0 6px 18px rgba(16, 185, 129, 0.3);
+    transform: translateY(-2px);
+  }
 }
 
 .load-state {
   align-items: center;
-  background: #081126;
-  color: #b9cce0;
+  color: var(--text-secondary);
   display: flex;
   gap: 14px;
   justify-content: center;
@@ -314,9 +325,9 @@ onMounted(async () => {
   padding: 24px;
 }
 
-@media (max-width: 760px) {
-  .about-page-header {
-    padding: 40px 24px 30px;
+@media (max-width: 860px) {
+  .portfolio-content {
+    padding: 0 20px;
   }
 
   .header-main-grid {
@@ -325,8 +336,8 @@ onMounted(async () => {
 }
 
 @media (max-width: 500px) {
-  .about-page-header {
-    padding: 28px 16px 20px;
+  .portfolio-content {
+    padding: 0 16px;
   }
   .page-title {
     font-size: 2.2rem;
@@ -334,67 +345,6 @@ onMounted(async () => {
   .header-quick-card {
     padding: 18px 16px;
     gap: 12px;
-  }
-}
-
-:global(body.portfolio-light) .portfolio-content {
-  .about-breadcrumb {
-    .bc-link {
-      color: #0f9f74;
-    }
-    .bc-separator {
-      color: #8da1b9;
-    }
-    .bc-current {
-      color: #4a5e7b;
-    }
-  }
-
-  .eyebrow-tag {
-    background: rgba(15, 159, 116, 0.1);
-    border-color: rgba(15, 159, 116, 0.35);
-    color: #0f9f74;
-
-    .pulse-dot {
-      background: #0f9f74;
-      box-shadow: 0 0 8px rgba(15, 159, 116, 0.6);
-    }
-  }
-
-  .page-title {
-    color: #0a1733;
-  }
-
-  .page-subtitle {
-    color: #0f9f74;
-  }
-
-  .page-lead {
-    color: #354764;
-  }
-
-  .header-quick-card {
-    background: #ffffff;
-    border-color: #ccd7e6;
-    box-shadow: 0 10px 30px rgba(21, 33, 60, 0.08);
-
-    .meta-icon {
-      color: #0b8062;
-    }
-
-    .meta-content small {
-      color: #627794;
-    }
-
-    .meta-content strong,
-    .meta-content span,
-    .meta-content a {
-      color: #0c1833;
-    }
-
-    .meta-content a:hover {
-      color: #0f9f74;
-    }
   }
 }
 </style>

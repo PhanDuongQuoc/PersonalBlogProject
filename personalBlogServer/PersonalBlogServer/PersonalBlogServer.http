@@ -1,6 +1,26 @@
-@PersonalBlogServer_HostAddress = http://localhost:5183
+@PersonalBlogServer_HostAddress = http://localhost:5148
 
-GET {{PersonalBlogServer_HostAddress}}/weatherforecast/
+### 1. Test Landing Page
+GET {{PersonalBlogServer_HostAddress}}/api/public/landing
 Accept: application/json
 
-###
+### 2. Test About Page
+GET {{PersonalBlogServer_HostAddress}}/api/public/about
+Accept: application/json
+
+### 3. Test All Topics (Danh sách chủ đề)
+GET {{PersonalBlogServer_HostAddress}}/api/public/topics
+Accept: application/json
+
+### 4. Test All Topics with Search
+GET {{PersonalBlogServer_HostAddress}}/api/public/topics?search=vue
+Accept: application/json
+
+### 5. Test Topic Detail (Chi tiết 1 chủ đề)
+# Thay 'vue-js' bằng slug thực tế có trong database của bạn
+GET {{PersonalBlogServer_HostAddress}}/api/public/topics/vue-js?page=1&pageSize=6&sortBy=latest
+Accept: application/json
+
+### 6. Test Topic Detail with Search / Tag
+GET {{PersonalBlogServer_HostAddress}}/api/public/topics/vue-js?page=1&pageSize=6&sortBy=popular&search=router
+Accept: application/json
