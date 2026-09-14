@@ -136,7 +136,7 @@ const navigation = computed<NavItem[]>(() => [
   { key: 'home', label: text.value.home, target: '/home', icon: 'home', route: '/home' },
   { key: 'about', label: text.value.about, target: '/about', icon: 'person_outline', route: '/about' },
   { key: 'topics', label: text.value.topics, target: '/topics', icon: 'folder_open', route: '/topics' },
-  { key: 'contact', label: text.value.contact, target: '#contact', icon: 'mail_outline' }
+  { key: 'contact', label: text.value.contact, target: '/contact', icon: 'mail_outline', route: '/contact' }
 ]);
 
 const brand = 'PDQ';
@@ -152,6 +152,9 @@ const isItemActive = (item: NavItem) => {
   }
   if (item.key === 'topics') {
     return route.path.startsWith('/topics');
+  }
+  if (item.key === 'contact') {
+    return route.path === '/contact';
   }
   return false;
 };
@@ -175,6 +178,14 @@ const handleNavClick = async (item: NavItem) => {
     return;
   }
 
+  if (item.key === 'contact') {
+    if (route.path !== '/contact') {
+      await router.push({ path: '/contact', query: route.query });
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+
   if (item.key === 'home') {
     if (route.path !== '/home') {
       await router.push({ path: '/home', query: route.query });
@@ -183,23 +194,25 @@ const handleNavClick = async (item: NavItem) => {
     return;
   }
 
-  // Anchor targets (#posts, #contact)
-  if (route.path !== '/home') {
-    await router.push({ path: '/home', query: route.query, hash: item.target });
-    setTimeout(() => {
+  // Fallback for anchor links if any
+  if (item.target.startsWith('#')) {
+    if (route.path !== '/home') {
+      await router.push({ path: '/home', query: route.query, hash: item.target });
+      setTimeout(() => {
+        document.querySelector(item.target)?.scrollIntoView({ behavior: 'smooth' });
+      }, 250);
+    } else {
       document.querySelector(item.target)?.scrollIntoView({ behavior: 'smooth' });
-    }, 250);
-  } else {
-    document.querySelector(item.target)?.scrollIntoView({ behavior: 'smooth' });
+    }
   }
 };
 
-const scrollToContact = () => {
+const scrollToContact = async () => {
   mobileMenuOpen.value = false;
-  const contactEl = document.querySelector('#contact');
-  if (contactEl) {
-    contactEl.scrollIntoView({ behavior: 'smooth' });
+  if (route.path !== '/contact') {
+    await router.push({ path: '/contact', query: route.query });
   }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
 const applyTheme = () => {
@@ -358,7 +371,7 @@ onBeforeUnmount(() => {
   &:hover {
     background: var(--accent-primary-hover);
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+    box-shadow: 0 6px 20px rgba(223, 38, 106, 0.3);
   }
 }
 

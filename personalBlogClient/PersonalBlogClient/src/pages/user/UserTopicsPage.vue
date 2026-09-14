@@ -131,7 +131,7 @@
 
       <!-- 3. Loading State -->
       <div v-if="loading" class="load-state">
-        <q-spinner color="teal-4" size="44px" />
+        <q-spinner color="primary" size="44px" />
         <p>{{ text.loading }}</p>
       </div>
 
@@ -153,10 +153,22 @@
           :key="topic.id"
           class="exact-topic-card"
         >
-          <!-- Top Row: Icon, Title & Slug -->
+          <!-- Optional Topic Banner Image (if available) -->
+          <div v-if="getThumbnailUrl(topic.thumbnailUrl)" class="topic-card-banner">
+            <img :src="getThumbnailUrl(topic.thumbnailUrl)!" :alt="topic.name" class="topic-banner-img" />
+            <div class="topic-banner-gradient"></div>
+          </div>
+
+          <!-- Top Row: Icon/Thumb, Title & Slug -->
           <div class="card-head-row">
-            <div class="card-icon-square">
-              <q-icon :name="getTopicIcon(topic.slug)" size="20px" />
+            <div class="card-icon-square" :class="{ 'has-thumb': !!getThumbnailUrl(topic.thumbnailUrl) }">
+              <img
+                v-if="getThumbnailUrl(topic.thumbnailUrl)"
+                :src="getThumbnailUrl(topic.thumbnailUrl)!"
+                :alt="topic.name"
+                class="topic-thumb-avatar"
+              />
+              <q-icon v-else :name="getTopicIcon(topic.slug)" size="20px" />
             </div>
             <div class="card-head-title-block">
               <h3 class="topic-item-title">
@@ -425,6 +437,22 @@ const handleSubscribe = () => {
   }, 600);
 };
 
+const getThumbnailUrl = (thumbnail: string | null | undefined): string | null => {
+  if (!thumbnail) return null;
+
+  if (thumbnail.startsWith('http://') || thumbnail.startsWith('https://')) {
+    return thumbnail;
+  }
+
+  const fileName = thumbnail.replace(/^.*[\\/]/, '');
+  try {
+    return new URL(`../../assets/images/image_post/${fileName}`, import.meta.url).href;
+  } catch (error) {
+    console.error('Không tìm thấy ảnh:', error);
+    return null;
+  }
+};
+
 onMounted(() => {
   window.scrollTo({ top: 0, behavior: 'instant' });
   fetchTopics();
@@ -457,7 +485,7 @@ onMounted(() => {
     gap: 8px;
     padding: 5px 14px;
     background: var(--accent-primary-container);
-    border: 1px solid rgba(16, 185, 129, 0.25);
+    border: 1px solid rgba(223, 38, 106, 0.25);
     border-radius: var(--radius-pill);
     color: var(--accent-primary);
     font-family: var(--font-mono);
@@ -516,7 +544,7 @@ onMounted(() => {
   transition: all 0.2s ease;
 
   &:hover {
-    border-color: rgba(16, 185, 129, 0.3);
+    border-color: rgba(223, 38, 106, 0.3);
   }
 
   .metric-icon-box {
@@ -598,7 +626,7 @@ onMounted(() => {
 
     &:focus {
       border-color: var(--accent-primary);
-      box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.15);
+      box-shadow: 0 0 0 2px rgba(223, 38, 106, 0.15);
     }
 
     &::placeholder {
@@ -655,7 +683,7 @@ onMounted(() => {
     &.active {
       background: var(--accent-primary-container);
       color: var(--accent-primary);
-      border-color: rgba(16, 185, 129, 0.3);
+      border-color: rgba(223, 38, 106, 0.3);
     }
   }
 }
@@ -751,11 +779,13 @@ onMounted(() => {
   flex-direction: column;
   transition: all 0.25s ease;
   box-shadow: var(--shadow-card);
+  overflow: hidden;
+  position: relative;
 
   &:hover {
     transform: translateY(-3px);
     box-shadow: var(--shadow-card-hover);
-    border-color: rgba(16, 185, 129, 0.35);
+    border-color: rgba(223, 38, 106, 0.35);
     border-top-color: var(--accent-primary);
 
     .topic-item-title a {
@@ -766,6 +796,31 @@ onMounted(() => {
       transform: translateX(4px);
       color: var(--accent-primary);
     }
+
+    .topic-banner-img {
+      transform: scale(1.05);
+    }
+  }
+}
+
+.topic-card-banner {
+  width: calc(100% + 40px);
+  margin: -22px -20px 16px -20px;
+  height: 120px;
+  overflow: hidden;
+  position: relative;
+
+  .topic-banner-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  .topic-banner-gradient {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.15) 0%, rgba(15, 23, 42, 0.75) 100%);
   }
 }
 
@@ -786,7 +841,20 @@ onMounted(() => {
   flex-shrink: 0;
   background: var(--accent-primary-container);
   color: var(--accent-primary);
-  border: 1px solid rgba(16, 185, 129, 0.25);
+  border: 1px solid rgba(223, 38, 106, 0.25);
+
+  &.has-thumb {
+    padding: 0;
+    overflow: hidden;
+    background: var(--bg-surface-high);
+    border-color: var(--border-subtle);
+
+    .topic-thumb-avatar {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
 }
 
 .card-head-title-block {
@@ -974,7 +1042,7 @@ onMounted(() => {
     align-items: center;
     padding: 5px 14px;
     background: var(--accent-primary-container);
-    border: 1px solid rgba(16, 185, 129, 0.25);
+    border: 1px solid rgba(223, 38, 106, 0.25);
     border-radius: var(--radius-pill);
     color: var(--accent-primary);
     font-family: var(--font-mono);
@@ -1025,7 +1093,7 @@ onMounted(() => {
 
     &:focus {
       border-color: var(--accent-primary);
-      box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+      box-shadow: 0 0 0 2px rgba(223, 38, 106, 0.2);
     }
 
     &::placeholder {
@@ -1116,7 +1184,7 @@ onMounted(() => {
   .reset-filters-btn {
     background: var(--accent-primary-container);
     color: var(--accent-primary);
-    border: 1px solid rgba(16, 185, 129, 0.3);
+    border: 1px solid rgba(223, 38, 106, 0.3);
     font-weight: 700;
   }
 }

@@ -17,7 +17,7 @@
 
       <!-- 2. Loading State -->
       <div v-if="loading" class="load-state">
-        <q-spinner color="teal-4" size="44px" />
+        <q-spinner color="primary" size="44px" />
         <p>{{ text.loading }}</p>
       </div>
 
@@ -34,10 +34,21 @@
       <!-- 4. Main Topic Detail Content -->
       <div v-else class="topic-detail-body">
         <!-- Topic Hero Banner -->
-        <header class="topic-hero-banner">
+        <header class="topic-hero-banner" :class="{ 'has-topic-cover': !!getThumbnailUrl(detail.topic.thumbnailUrl) }">
+          <div v-if="getThumbnailUrl(detail.topic.thumbnailUrl)" class="topic-detail-bg-cover">
+            <img :src="getThumbnailUrl(detail.topic.thumbnailUrl)!" :alt="detail.topic.name" class="topic-detail-bg-img" />
+            <div class="topic-detail-bg-overlay"></div>
+          </div>
+
           <div class="banner-top-row">
             <div class="topic-eyebrow">
-              <q-icon :name="getTopicIcon(detail.topic.slug)" size="18px" class="eyebrow-icon" />
+              <img
+                v-if="getThumbnailUrl(detail.topic.thumbnailUrl)"
+                :src="getThumbnailUrl(detail.topic.thumbnailUrl)!"
+                :alt="detail.topic.name"
+                class="eyebrow-thumb-icon"
+              />
+              <q-icon v-else :name="getTopicIcon(detail.topic.slug)" size="18px" class="eyebrow-icon" />
               <span>TOPIC · {{ detail.topic.totalPosts }} {{ text.topicArticlesCount }}</span>
             </div>
             <span class="topic-slug-badge">/topics/{{ detail.topic.slug }}</span>
@@ -132,8 +143,8 @@
               <!-- Thumbnail -->
               <router-link :to="`/posts/${post.slug}`" class="article-thumb-wrapper">
                 <img
-                  v-if="post.thumbnailUrl"
-                  :src="post.thumbnailUrl"
+                  v-if="getThumbnailUrl(post.thumbnailUrl)"
+                  :src="getThumbnailUrl(post.thumbnailUrl)!"
                   :alt="post.title"
                   class="article-thumb-img"
                   loading="lazy"
@@ -201,8 +212,8 @@
               :max-pages="6"
               direction-links
               boundary-links
-              color="teal-4"
-              active-color="teal-4"
+              color="primary"
+              active-color="primary"
               class="custom-pagination"
               @update:model-value="onPageChange"
             />
@@ -396,6 +407,22 @@ watch(
   }
 );
 
+const getThumbnailUrl = (thumbnail: string | null | undefined): string | null => {
+  if (!thumbnail) return null;
+
+  if (thumbnail.startsWith('http://') || thumbnail.startsWith('https://')) {
+    return thumbnail;
+  }
+
+  const fileName = thumbnail.replace(/^.*[\\/]/, '');
+  try {
+    return new URL(`../../assets/images/image_post/${fileName}`, import.meta.url).href;
+  } catch (error) {
+    console.error('Không tìm thấy ảnh:', error);
+    return null;
+  }
+};
+
 onMounted(() => {
   window.scrollTo({ top: 0, behavior: 'instant' });
   fetchTopicDetail();
@@ -460,7 +487,35 @@ onMounted(() => {
   overflow: hidden;
   box-shadow: var(--shadow-card);
 
+  &.has-topic-cover {
+    border-color: rgba(223, 38, 106, 0.3);
+  }
+
+  .topic-detail-bg-cover {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+
+    .topic-detail-bg-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: blur(2px);
+      transform: scale(1.05);
+      opacity: 0.18;
+    }
+
+    .topic-detail-bg-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.4) 0%, var(--bg-surface-low) 95%);
+    }
+  }
+
   .banner-top-row {
+    position: relative;
+    z-index: 1;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -478,12 +533,22 @@ onMounted(() => {
     text-transform: uppercase;
     letter-spacing: 0.08em;
 
+    .eyebrow-thumb-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 4px;
+      object-fit: cover;
+      border: 1px solid rgba(223, 38, 106, 0.4);
+    }
+
     .eyebrow-icon {
       color: var(--accent-primary);
     }
   }
 
   .topic-slug-badge {
+    position: relative;
+    z-index: 1;
     font-family: var(--font-mono);
     font-size: 0.74rem;
     color: var(--text-muted);
@@ -494,6 +559,8 @@ onMounted(() => {
   }
 
   .topic-main-title {
+    position: relative;
+    z-index: 1;
     font-family: var(--font-headline);
     font-size: clamp(2rem, 4vw, 2.75rem);
     font-weight: 800;
@@ -504,6 +571,8 @@ onMounted(() => {
   }
 
   .topic-main-desc {
+    position: relative;
+    z-index: 1;
     font-family: var(--font-body);
     font-size: 1rem;
     line-height: 1.65;
@@ -513,6 +582,8 @@ onMounted(() => {
   }
 
   .topic-stats-row {
+    position: relative;
+    z-index: 1;
     display: flex;
     align-items: center;
     gap: 16px;
@@ -577,7 +648,7 @@ onMounted(() => {
 
     &:focus {
       border-color: var(--accent-primary);
-      box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.15);
+      box-shadow: 0 0 0 2px rgba(223, 38, 106, 0.15);
     }
 
     &::placeholder {
@@ -656,7 +727,7 @@ onMounted(() => {
 
   &:hover {
     color: var(--text-primary);
-    border-color: rgba(16, 185, 129, 0.35);
+    border-color: rgba(223, 38, 106, 0.35);
   }
 
   &.active {
@@ -686,7 +757,7 @@ onMounted(() => {
   transition: all 0.25s ease;
 
   &:hover {
-    border-color: rgba(16, 185, 129, 0.35);
+    border-color: rgba(223, 38, 106, 0.35);
     transform: translateY(-3px);
     box-shadow: var(--shadow-card-hover);
 
@@ -910,7 +981,7 @@ onMounted(() => {
   .reset-filters-btn {
     background: var(--accent-primary-container);
     color: var(--accent-primary);
-    border: 1px solid rgba(16, 185, 129, 0.3);
+    border: 1px solid rgba(223, 38, 106, 0.3);
     font-weight: 700;
   }
 }
@@ -987,7 +1058,7 @@ onMounted(() => {
     height: 36px;
     border-radius: var(--radius-sm);
     background: var(--accent-primary-container);
-    border: 1px solid rgba(16, 185, 129, 0.2);
+    border: 1px solid rgba(223, 38, 106, 0.2);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1025,7 +1096,7 @@ onMounted(() => {
   }
 
   &:hover {
-    border-color: rgba(16, 185, 129, 0.3);
+    border-color: rgba(223, 38, 106, 0.3);
     transform: translateX(3px);
 
     .other-info h4 {
@@ -1059,7 +1130,7 @@ onMounted(() => {
     padding: 10px 20px;
     background: var(--accent-primary-container);
     color: var(--accent-primary);
-    border: 1px solid rgba(16, 185, 129, 0.3);
+    border: 1px solid rgba(223, 38, 106, 0.3);
     border-radius: var(--radius-md);
     font-weight: 700;
     text-decoration: none;

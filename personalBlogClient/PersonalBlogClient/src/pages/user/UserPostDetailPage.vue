@@ -48,14 +48,8 @@
           </div>
 
           <div class="author-right">
-            <q-btn
-              unelevated
-              no-caps
-              dense
-              class="follow-btn"
-              :class="{ 'is-following': isFollowing }"
-              @click="toggleFollow"
-            >
+            <q-btn unelevated no-caps dense class="follow-btn" :class="{ 'is-following': isFollowing }"
+              @click="toggleFollow">
               {{ isFollowing ? text.following : text.followBtn }}
             </q-btn>
             <router-link to="/about" class="dossier-link">
@@ -71,57 +65,32 @@
         <aside class="action-rail">
           <div class="action-rail-sticky">
             <!-- Like / Clap Button -->
-            <button
-              type="button"
-              class="rail-btn like-btn"
-              :class="{ 'is-active': isLiked }"
-              :title="isLiked ? 'Liked' : 'Like post'"
-              @click="toggleLike"
-            >
+            <button type="button" class="rail-btn like-btn" :class="{ 'is-active': isLiked }"
+              :title="isLiked ? 'Liked' : 'Like post'" @click="toggleLike">
               <q-icon :name="isLiked ? 'favorite' : 'favorite_border'" size="20px" />
               <span class="btn-count">{{ currentLikeCount }}</span>
             </button>
 
             <!-- Comment Button -->
-            <button
-              type="button"
-              class="rail-btn comment-btn"
-              title="Jump to discussion"
-              @click="scrollToComments"
-            >
+            <button type="button" class="rail-btn comment-btn" title="Jump to discussion" @click="scrollToComments">
               <q-icon name="chat_bubble_outline" size="20px" />
               <span class="btn-count">{{ post.comments.length }}</span>
             </button>
 
             <!-- Bookmark Button -->
-            <button
-              type="button"
-              class="rail-btn bookmark-btn"
-              :class="{ 'is-active': isBookmarked }"
-              :title="isBookmarked ? 'Bookmarked' : 'Save story'"
-              @click="toggleBookmark"
-            >
+            <button type="button" class="rail-btn bookmark-btn" :class="{ 'is-active': isBookmarked }"
+              :title="isBookmarked ? 'Bookmarked' : 'Save story'" @click="toggleBookmark">
               <q-icon :name="isBookmarked ? 'bookmark' : 'bookmark_border'" size="20px" />
             </button>
 
             <!-- Text Size Toggle Button -->
-            <button
-              type="button"
-              class="rail-btn font-size-btn"
-              :class="{ 'is-active': isLargeText }"
-              title="Adjust reading text size"
-              @click="toggleTextSize"
-            >
+            <button type="button" class="rail-btn font-size-btn" :class="{ 'is-active': isLargeText }"
+              title="Adjust reading text size" @click="toggleTextSize">
               <span class="font-icon">Aa</span>
             </button>
 
             <!-- Share Button -->
-            <button
-              type="button"
-              class="rail-btn share-btn"
-              title="Share / Copy Link"
-              @click="copyShareLink"
-            >
+            <button type="button" class="rail-btn share-btn" title="Share / Copy Link" @click="copyShareLink">
               <q-icon name="share" size="18px" />
             </button>
           </div>
@@ -132,20 +101,18 @@
           <!-- Featured Image Showcase -->
           <div class="featured-media-block">
             <div class="media-frame">
-              <img
-                v-if="post.thumbnailUrl"
-                :src="post.thumbnailUrl"
-                :alt="post.title"
-                class="featured-image"
-              />
+              <img v-if="getThumbnailUrl(post.thumbnailUrl)" :src="getThumbnailUrl(post.thumbnailUrl)!"
+                :alt="post.title" class="featured-image" />
               <div v-else class="media-placeholder-gradient">
                 <q-icon name="image" size="64px" class="ph-icon" />
               </div>
             </div>
             <p class="media-caption">
-              Fig. 1.0 — Architecture & technical breakdown for {{ post.title }}. System diagram and implementation archive.
+              Fig. 1.0 — Architecture & technical breakdown for {{ post.title }}. System diagram and implementation
+              archive.
             </p>
           </div>
+
 
           <!-- Main Article Content Body -->
           <article class="article-content-body" :class="{ 'large-reading-text': isLargeText }">
@@ -208,41 +175,24 @@
                 <div class="composer-row">
                   <div class="field-group">
                     <label>{{ text.nameField }}</label>
-                    <input
-                      v-model="commentForm.name"
-                      type="text"
-                      required
-                      :placeholder="text.namePlaceholder"
-                      class="composer-input"
-                    />
+                    <input v-model="commentForm.name" type="text" required :placeholder="text.namePlaceholder"
+                      class="composer-input" />
                   </div>
                   <div class="field-group">
                     <label>{{ text.emailField }}</label>
-                    <input
-                      v-model="commentForm.email"
-                      type="email"
-                      :placeholder="text.emailPlaceholder"
-                      class="composer-input"
-                    />
+                    <input v-model="commentForm.email" type="email" :placeholder="text.emailPlaceholder"
+                      class="composer-input" />
                   </div>
                 </div>
 
                 <div class="field-group">
                   <label>{{ text.commentField }}</label>
-                  <textarea
-                    v-model="commentForm.content"
-                    required
-                    rows="4"
-                    :placeholder="text.commentPlaceholder"
-                    class="composer-textarea"
-                  ></textarea>
+                  <textarea v-model="commentForm.content" required rows="4" :placeholder="text.commentPlaceholder"
+                    class="composer-textarea"></textarea>
                 </div>
 
-                <button
-                  type="submit"
-                  :disabled="isSubmittingComment || !commentForm.content.trim()"
-                  class="composer-submit-btn"
-                >
+                <button type="submit" :disabled="isSubmittingComment || !commentForm.content.trim()"
+                  class="composer-submit-btn">
                   <q-spinner v-if="isSubmittingComment" size="16px" color="dark" />
                   <q-icon v-else name="send" size="16px" />
                   <span>{{ isSubmittingComment ? text.postingComment : text.postCommentBtn }}</span>
@@ -262,14 +212,9 @@
                 <span class="toc-count">{{ tocHeadings.length }} {{ text.sections }}</span>
               </div>
               <nav class="toc-nav">
-                <a
-                  v-for="heading in tocHeadings"
-                  :key="heading.id"
-                  :href="`#${heading.id}`"
-                  class="toc-item"
+                <a v-for="heading in tocHeadings" :key="heading.id" :href="`#${heading.id}`" class="toc-item"
                   :class="{ 'is-active': activeHeadingId === heading.id, 'toc-level-3': heading.level === 3 }"
-                  @click.prevent="scrollToHeading(heading.id)"
-                >
+                  @click.prevent="scrollToHeading(heading.id)">
                   <span class="toc-dot"></span>
                   <span class="toc-text">{{ heading.text }}</span>
                 </a>
@@ -289,7 +234,8 @@
                 </div>
               </div>
               <p class="dossier-bio">
-                {{ post.author.bio || 'Investigating robust computational architectures, modern web frameworks and reliable backend systems.' }}
+                {{
+                  post.author.bio }}
               </p>
               <div class="dossier-footer">
                 <span class="dossier-subscribers">{{ post.viewCount * 12 + 150 }} {{ text.readersCount }}</span>
@@ -311,13 +257,8 @@
                 {{ text.newsletterDesc }}
               </p>
               <form @submit.prevent="handleNewsletterSubscribe" class="newsletter-form">
-                <input
-                  v-model="newsletterEmail"
-                  type="email"
-                  required
-                  :placeholder="text.newsletterEmailPlaceholder"
-                  class="newsletter-input"
-                />
+                <input v-model="newsletterEmail" type="email" required :placeholder="text.newsletterEmailPlaceholder"
+                  class="newsletter-input" />
                 <button type="submit" class="newsletter-submit-btn">
                   {{ text.subscribeBtn }}
                 </button>
@@ -331,15 +272,12 @@
             <!-- Widget 4: Trending in Category / Related Posts -->
             <div v-if="post.relatedPosts && post.relatedPosts.length" class="sidebar-card trending-card">
               <div class="trending-header">
-                <span class="trending-kicker">{{ text.trendingInCategory.replace('{category}', post.category.name) }}</span>
+                <span class="trending-kicker">{{ text.trendingInCategory.replace('{category}', post.category.name)
+                  }}</span>
               </div>
               <div class="trending-list">
-                <router-link
-                  v-for="rel in post.relatedPosts"
-                  :key="rel.id"
-                  :to="`/posts/${rel.slug}`"
-                  class="trending-item"
-                >
+                <router-link v-for="rel in post.relatedPosts" :key="rel.id" :to="`/posts/${rel.slug}`"
+                  class="trending-item">
                   <span class="trending-meta">ESSAY · 5 MIN</span>
                   <h5 class="trending-title">{{ rel.title }}</h5>
                   <div class="trending-author-row">
@@ -361,14 +299,14 @@
     </div>
 
     <div v-else class="editorial-load-state">
-      <q-spinner color="teal-4" size="44px" />
+      <q-spinner color="primary" size="44px" />
       <p>{{ text.loading }}</p>
     </div>
 
     <!-- Toast Notification for Share Link -->
     <q-dialog v-model="showShareToast" position="top">
       <div class="share-toast-banner">
-        <q-icon name="check_circle" size="18px" color="teal-3" />
+        <q-icon name="check_circle" size="18px" color="primary" />
         <span>{{ text.copiedLink }}</span>
       </div>
     </q-dialog>
@@ -610,6 +548,21 @@ const formattedContent = computed(() => {
     })
     .join('');
 });
+const getThumbnailUrl = (thumbnail: string | null | undefined): string | null => {
+  if (!thumbnail) return null;
+
+  if (thumbnail.startsWith('http://') || thumbnail.startsWith('https://')) {
+    return thumbnail;
+  }
+
+  const fileName = thumbnail.replace(/^.*[\\/]/, '');
+  try {
+    return new URL(`../../assets/images/image_post/${fileName}`, import.meta.url).href;
+  } catch (error) {
+    console.error('Không tìm thấy ảnh:', error);
+    return null;
+  }
+};
 
 const submitComment = async () => {
   if (!post.value || !commentForm.value.content.trim()) return;
@@ -704,7 +657,7 @@ const submitComment = async () => {
 
 .category-pill {
   background: var(--accent-primary-container);
-  border: 1px solid rgba(16, 185, 129, 0.25);
+  border: 1px solid rgba(223, 38, 106, 0.25);
   border-radius: var(--radius-sm);
   color: var(--accent-primary);
   font-size: 0.72rem;
@@ -810,7 +763,7 @@ const submitComment = async () => {
 .follow-btn {
   font-family: var(--font-headline);
   background: var(--accent-primary-container);
-  border: 1px solid rgba(16, 185, 129, 0.35);
+  border: 1px solid rgba(223, 38, 106, 0.35);
   border-radius: var(--radius-sm);
   color: var(--accent-primary);
   font-size: 0.76rem;
@@ -1224,7 +1177,7 @@ const submitComment = async () => {
   &:focus {
     border-color: var(--accent-primary);
     outline: none;
-    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.15);
+    box-shadow: 0 0 0 2px rgba(223, 38, 106, 0.15);
   }
 }
 
@@ -1246,7 +1199,7 @@ const submitComment = async () => {
 
   &:hover:not(:disabled) {
     background: var(--accent-primary-hover);
-    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.35);
+    box-shadow: 0 4px 16px rgba(223, 38, 106, 0.35);
     transform: translateY(-2px);
   }
 
@@ -1466,7 +1419,7 @@ const submitComment = async () => {
   &:focus {
     border-color: var(--accent-primary);
     outline: none;
-    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.15);
+    box-shadow: 0 0 0 2px rgba(223, 38, 106, 0.15);
   }
 }
 

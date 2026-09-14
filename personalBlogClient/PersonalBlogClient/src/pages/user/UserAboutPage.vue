@@ -90,8 +90,8 @@
     </div>
 
     <div v-else class="load-state">
-      <q-spinner color="teal-4" size="36px" />
-      <span>{{ text.loading }}</span>
+      <q-spinner color="primary" size="36px" />
+      <p>{{ text.loading }}</p>
     </div>
 
     <portfolio-footer :email="aboutData?.profile.email ?? null" />
@@ -190,7 +190,7 @@ onMounted(async () => {
 .eyebrow-tag {
   align-items: center;
   background: var(--accent-primary-container);
-  border: 1px solid rgba(16, 185, 129, 0.25);
+  border: 1px solid rgba(223, 38, 106, 0.25);
   border-radius: var(--radius-pill);
   color: var(--accent-primary);
   display: inline-flex;
@@ -308,7 +308,7 @@ onMounted(async () => {
 
   &:hover {
     background: var(--accent-primary-hover);
-    box-shadow: 0 6px 18px rgba(16, 185, 129, 0.3);
+    box-shadow: 0 6px 18px rgba(223, 38, 106, 0.3);
     transform: translateY(-2px);
   }
 }

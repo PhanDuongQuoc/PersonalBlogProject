@@ -51,6 +51,13 @@ const routes: RouteRecordRaw[] = [
     ]
   },
   {
+    path: "/contact",
+    component: () => import("@/layouts/UserLayout.vue"),
+    children: [
+      { path: "", component: () => import("@/pages/user/UserContactPage.vue") }
+    ]
+  },
+  {
     path: "/user",
     redirect: "/home"
   },

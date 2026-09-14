@@ -39,7 +39,8 @@ public sealed class PublicTopicService : IPublicTopicService
                 c.Id,
                 c.Name,
                 c.Slug,
-                c.Description
+                c.Description,
+                c.ThumbnailUrl
             })
             .ToListAsync(cancellationToken);
 
@@ -107,7 +108,8 @@ public sealed class PublicTopicService : IPublicTopicService
                     postCount,
                     totalViews,
                     latestPublishedAt,
-                    recentPosts
+                    recentPosts,
+                    c.ThumbnailUrl
                 );
             })
             .OrderByDescending(t => t.PostCount)
@@ -243,7 +245,8 @@ public sealed class PublicTopicService : IPublicTopicService
             category.Slug,
             category.Description,
             totalTopicPosts,
-            totalTopicViews
+            totalTopicViews,
+            category.ThumbnailUrl
         );
 
         var pagedResult = new PublicTopicPostsPagedDto(

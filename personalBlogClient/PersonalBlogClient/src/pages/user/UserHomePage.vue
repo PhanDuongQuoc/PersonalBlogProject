@@ -23,6 +23,16 @@
         />
         <portfolio-articles :posts="landing.featuredPosts" />
       </section>
+
+      <!-- 4. Geographic Location & Google Maps Frame -->
+      <section class="content-section map-section">
+        <portfolio-section-title
+          :eyebrow="text.mapSectionEyebrow"
+          :title="text.mapSectionTitle"
+          :description="text.mapSectionDesc"
+        />
+        <portfolio-location-map :location-name="landing.profile.location" />
+      </section>
     </main>
 
     <!-- Loading / Error States -->
@@ -32,11 +42,11 @@
     </div>
     
     <div v-else class="load-state">
-      <q-spinner color="teal-4" size="36px" />
+      <q-spinner color="primary" size="36px" />
       <p>{{ text.loading }}</p>
     </div>
 
-    <!-- 4. Footer -->
+    <!-- 5. Footer -->
     <portfolio-footer :email="landing?.profile.email ?? null" />
   </q-page>
 </template>
@@ -49,6 +59,7 @@ import PortfolioArticles from '@/components/portfolio/PortfolioArticles.vue';
 import PortfolioCategories from '@/components/portfolio/PortfolioCategories.vue';
 import PortfolioFooter from '@/components/portfolio/PortfolioFooter.vue';
 import PortfolioHero from '@/components/portfolio/PortfolioHero.vue';
+import PortfolioLocationMap from '@/components/portfolio/PortfolioLocationMap.vue';
 import PortfolioSectionTitle from '@/components/portfolio/PortfolioSectionTitle.vue';
 import { usePortfolioLocale } from '@/composables/usePortfolioLocale';
 import type { PublicLandingResponse } from '@/types/public-landing';

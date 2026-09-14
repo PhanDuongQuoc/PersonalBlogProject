@@ -3,10 +3,10 @@
     <p class="footer-cta-title">{{ text.getInTouch }}</p>
     <strong class="footer-cta-desc">{{ text.collaborate }}</strong>
 
-    <a :href="email ? `mailto:${email}` : '#'" class="footer-cta-btn">
+    <router-link to="/contact" class="footer-cta-btn">
       <span>{{ text.sayHello }}</span>
       <q-icon name="arrow_forward" size="15px" class="btn-arrow" />
-    </a>
+    </router-link>
 
     <div class="footer-bottom-bar">
       <span class="footer-brand">PDQ Portfolio</span>
@@ -72,7 +72,7 @@ const { text } = usePortfolioLocale();
 
   &:hover {
     background: var(--accent-primary-hover);
-    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
+    box-shadow: 0 8px 24px rgba(223, 38, 106, 0.3);
     transform: translateY(-2px);
 
     .btn-arrow {
