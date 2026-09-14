@@ -175,7 +175,7 @@ const splitTechs = (techString: string): string[] => {
 
 .bullet-active {
   background: var(--accent-primary);
-  box-shadow: 0 0 10px rgba(16, 185, 129, 0.7);
+  box-shadow: 0 0 10px rgba(223, 38, 106, 0.7);
 }
 
 .bullet-edu {
@@ -191,7 +191,7 @@ const splitTechs = (techString: string): string[] => {
   transition: transform 0.2s ease, border-color 0.2s ease;
 
   &:hover {
-    border-color: rgba(16, 185, 129, 0.35);
+    border-color: rgba(223, 38, 106, 0.35);
     transform: translateY(-2px);
   }
 }
@@ -246,7 +246,7 @@ const splitTechs = (techString: string): string[] => {
 
 .time-current {
   background: var(--accent-primary-container);
-  border-color: rgba(16, 185, 129, 0.35);
+  border-color: rgba(223, 38, 106, 0.35);
   color: var(--accent-primary);
 }
 

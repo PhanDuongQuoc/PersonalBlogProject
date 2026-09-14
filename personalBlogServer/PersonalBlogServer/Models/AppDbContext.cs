@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,6 +21,8 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<Post> Posts { get; set; }
 
+    public virtual DbSet<PostImage> PostImages { get; set; }
+
     public virtual DbSet<Tag> Tags { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
@@ -32,12 +34,8 @@ public partial class AppDbContext : DbContext
     public virtual DbSet<UserSkill> UserSkills { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        if (!optionsBuilder.IsConfigured)
-        {
-            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=PersonalBlogDB;Username=postgres;Password=Quoc@123");
-        }
-    }
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=PersonalBlogDB;Username=postgres;Password=Quoc@123");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -65,6 +63,7 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.Slug)
                 .HasMaxLength(120)
                 .HasColumnName("slug");
+            entity.Property(e => e.ThumbnailUrl).HasColumnName("thumbnail_url");
         });
 
         modelBuilder.Entity<Comment>(entity =>
@@ -182,6 +181,36 @@ public partial class AppDbContext : DbContext
                         j.IndexerProperty<int>("PostId").HasColumnName("post_id");
                         j.IndexerProperty<int>("TagId").HasColumnName("tag_id");
                     });
+        });
+
+        modelBuilder.Entity<PostImage>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("post_images_pkey");
+
+            entity.ToTable("post_images");
+
+            entity.HasIndex(e => e.PostId, "idx_post_images_post_id");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.AltText)
+                .HasMaxLength(255)
+                .HasColumnName("alt_text");
+            entity.Property(e => e.Caption)
+                .HasMaxLength(255)
+                .HasColumnName("caption");
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("created_at");
+            entity.Property(e => e.DisplayOrder)
+                .HasDefaultValue(0)
+                .HasColumnName("display_order");
+            entity.Property(e => e.ImageUrl).HasColumnName("image_url");
+            entity.Property(e => e.PostId).HasColumnName("post_id");
+
+            entity.HasOne(d => d.Post).WithMany(p => p.PostImages)
+                .HasForeignKey(d => d.PostId)
+                .HasConstraintName("fk_post_images_post");
         });
 
         modelBuilder.Entity<Tag>(entity =>

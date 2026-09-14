@@ -36,6 +36,7 @@ export interface PublicLandingResponse {
     name: string;
     slug: string;
     postCount: number;
+    thumbnailUrl?: string | null;
   }[];
   stats: {
     publishedPostCount: number;

@@ -140,7 +140,7 @@ const defaultStory = computed(() => locale.value === 'vi'
   transition: transform 0.2s ease, border-color 0.2s ease;
 
   &:hover {
-    border-color: rgba(16, 185, 129, 0.35);
+    border-color: rgba(223, 38, 106, 0.35);
     transform: translateY(-2px);
   }
 }

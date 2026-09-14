@@ -4,15 +4,12 @@
     <article v-if="posts[0]" class="lead-feature-card">
       <router-link :to="`/posts/${posts[0].slug}`" class="lead-media-column">
         <div class="lead-visual-frame">
-          <img
-            v-if="posts[0].thumbnailUrl"
-            :src="posts[0].thumbnailUrl"
-            :alt="posts[0].title"
-            class="lead-thumbnail"
-          />
+          <img v-if="getThumbnailUrl(posts[0].thumbnailUrl)" :src="getThumbnailUrl(posts[0].thumbnailUrl)!"
+            :alt="posts[0].title" class="lead-thumbnail" />
           <div v-else class="lead-fallback-graphic">
             <q-icon name="terminal" size="48px" class="graphic-icon" />
           </div>
+
           <span class="lead-category-badge">{{ posts[0].category }}</span>
         </div>
       </router-link>
@@ -45,11 +42,7 @@
 
     <!-- 2. Secondary Editorial Notes Grid -->
     <div v-if="posts.length > 1" class="secondary-articles-grid">
-      <article
-        v-for="post in posts.slice(1)"
-        :key="post.id"
-        class="secondary-article-card"
-      >
+      <article v-for="post in posts.slice(1)" :key="post.id" class="secondary-article-card">
         <div class="secondary-card-meta">
           <span class="secondary-category">{{ post.category }}</span>
           <span class="meta-dot">/</span>
@@ -92,11 +85,28 @@ const { locale, text } = usePortfolioLocale();
 const formatDate = (date: string | null) =>
   date
     ? new Intl.DateTimeFormat(locale.value === 'vi' ? 'vi-VN' : 'en', {
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric'
-      }).format(new Date(date))
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    }).format(new Date(date))
     : text.value.recent;
+
+const getThumbnailUrl = (thumbnail: string | null | undefined): string | null => {
+  if (!thumbnail) return null;
+
+  if (thumbnail.startsWith('http://') || thumbnail.startsWith('https://')) {
+    return thumbnail;
+  }
+
+  const fileName = thumbnail.replace(/^.*[\\/]/, '');
+  try {
+    return new URL(`../../assets/images/image_post/${fileName}`, import.meta.url).href;
+  } catch (error) {
+    console.error('Không tìm thấy ảnh:', error);
+    return null;
+  }
+};
+
 </script>
 
 <style scoped lang="scss">
@@ -121,7 +131,7 @@ const formatDate = (date: string | null) =>
   transition: all 0.3s ease;
 
   &:hover {
-    border-color: rgba(16, 185, 129, 0.35);
+    border-color: rgba(223, 38, 106, 0.35);
     box-shadow: var(--shadow-card-hover);
   }
 }
@@ -169,7 +179,7 @@ const formatDate = (date: string | null) =>
   background: rgba(11, 19, 38, 0.85);
   backdrop-filter: blur(8px);
   color: var(--accent-primary);
-  border: 1px solid rgba(16, 185, 129, 0.3);
+  border: 1px solid rgba(223, 38, 106, 0.3);
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.06em;
@@ -284,7 +294,7 @@ const formatDate = (date: string | null) =>
   transition: all 0.25s ease;
 
   &:hover {
-    border-color: rgba(16, 185, 129, 0.3);
+    border-color: rgba(223, 38, 106, 0.3);
     transform: translateY(-2px);
     box-shadow: var(--shadow-card-hover);
   }
@@ -389,6 +399,7 @@ const formatDate = (date: string | null) =>
     gap: 20px;
     padding: 18px;
   }
+
   .lead-visual-frame {
     height: clamp(180px, 45vw, 220px);
   }

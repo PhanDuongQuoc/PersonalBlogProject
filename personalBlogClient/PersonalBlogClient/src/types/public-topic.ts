@@ -9,6 +9,7 @@ export interface PublicTopicSummaryResponse {
   totalViews: number;
   latestPublishedAt: string | null;
   recentPosts: PublicPostSummary[];
+  thumbnailUrl?: string | null;
 }
 
 export interface PublicTopicInfoDto {
@@ -18,6 +19,7 @@ export interface PublicTopicInfoDto {
   description: string | null;
   totalPosts: number;
   totalViews: number;
+  thumbnailUrl?: string | null;
 }
 
 export interface PublicTopicPostItemDto {

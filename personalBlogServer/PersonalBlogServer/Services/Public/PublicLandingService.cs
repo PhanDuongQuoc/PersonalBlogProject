@@ -52,9 +52,9 @@ public sealed class PublicLandingService : IPublicLandingService
         var categories = await _context.Posts
             .AsNoTracking()
             .Where(post => post.AuthorId == owner.Id && post.Status == "Published")
-            .GroupBy(post => new { post.Category.Name, post.Category.Slug })
+            .GroupBy(post => new { post.Category.Name, post.Category.Slug, post.Category.ThumbnailUrl })
             .OrderByDescending(group => group.Count())
-            .Select(group => new PublicCategoryResponse(group.Key.Name, group.Key.Slug, group.Count()))
+            .Select(group => new PublicCategoryResponse(group.Key.Name, group.Key.Slug, group.Count(), group.Key.ThumbnailUrl))
             .ToListAsync(cancellationToken);
 
         var publishedPostCount = await _context.Posts

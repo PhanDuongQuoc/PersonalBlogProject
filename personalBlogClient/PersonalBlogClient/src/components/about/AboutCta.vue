@@ -6,14 +6,14 @@
       <p class="cta-desc">{{ text.connectPrompt }}</p>
 
       <div class="cta-buttons">
-        <a
-          :href="email ? `mailto:${email}` : '#'"
+        <router-link
+          to="/contact"
           class="cta-primary-btn"
         >
           <q-icon name="mail" size="18px" />
           <span>{{ text.sayHello }}</span>
           <q-icon name="arrow_forward" size="16px" class="btn-arrow" />
-        </a>
+        </router-link>
 
         <a
           v-if="cvUrl"
@@ -113,7 +113,7 @@ const { text } = usePortfolioLocale();
 
   &:hover {
     background: var(--accent-primary-hover);
-    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+    box-shadow: 0 6px 20px rgba(223, 38, 106, 0.3);
     transform: translateY(-2px);
 
     .btn-arrow {

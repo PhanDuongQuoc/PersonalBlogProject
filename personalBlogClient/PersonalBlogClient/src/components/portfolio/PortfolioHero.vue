@@ -209,7 +209,7 @@ watch(() => heroText.value.role, playTypewriter);
   text-transform: uppercase;
   color: var(--accent-primary);
   background: var(--accent-primary-container);
-  border: 1px solid rgba(16, 185, 129, 0.25);
+  border: 1px solid rgba(223, 38, 106, 0.25);
   border-radius: var(--radius-pill);
   padding: 5px 14px;
   width: fit-content;
@@ -348,7 +348,7 @@ watch(() => heroText.value.role, playTypewriter);
   &:hover {
     background: var(--accent-primary-hover);
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
+    box-shadow: 0 8px 24px rgba(223, 38, 106, 0.3);
   }
 }
 
@@ -434,7 +434,7 @@ watch(() => heroText.value.role, playTypewriter);
 .portrait-shape {
   background: var(--accent-primary);
   border-radius: 62% 0 58% 0 / 42% 0 48% 0;
-  box-shadow: 14px 18px 30px rgba(16, 185, 129, 0.2);
+  box-shadow: 14px 18px 30px rgba(223, 38, 106, 0.2);
   height: 100%;
   overflow: hidden;
   position: relative;
@@ -473,7 +473,7 @@ watch(() => heroText.value.role, playTypewriter);
   transition: all 0.3s ease;
 
   &:hover {
-    border-color: rgba(16, 185, 129, 0.4);
+    border-color: rgba(223, 38, 106, 0.4);
     box-shadow: var(--shadow-card-hover);
   }
 }

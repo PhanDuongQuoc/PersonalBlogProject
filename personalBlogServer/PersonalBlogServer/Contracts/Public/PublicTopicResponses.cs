@@ -14,7 +14,8 @@ public sealed record PublicTopicSummaryResponse(
     int PostCount,
     int TotalViews,
     DateTime? LatestPublishedAt,
-    IReadOnlyList<PublicPostSummaryDto> RecentPosts);
+    IReadOnlyList<PublicPostSummaryDto> RecentPosts,
+    string? ThumbnailUrl = null);
 
 /// <summary>
 /// DTO đại diện cho dữ liệu toàn trang chi tiết chủ đề (/topics/{slug})
@@ -34,7 +35,8 @@ public sealed record PublicTopicInfoDto(
     string Slug,
     string? Description,
     int TotalPosts,
-    int TotalViews);
+    int TotalViews,
+    string? ThumbnailUrl = null);
 
 /// <summary>
 /// Từng bài viết thuộc chủ đề kèm danh sách tags

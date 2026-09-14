@@ -35,7 +35,7 @@ public sealed record PublicPostResponse(
     DateTime? PublishedAt,
     int ViewCount);
 
-public sealed record PublicCategoryResponse(string Name, string Slug, int PostCount);
+public sealed record PublicCategoryResponse(string Name, string Slug, int PostCount, string? ThumbnailUrl = null);
 
 public sealed record PublicLandingStatsResponse(
     int PublishedPostCount,

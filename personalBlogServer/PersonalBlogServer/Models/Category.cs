@@ -15,5 +15,7 @@ public partial class Category
 
     public DateTime CreatedAt { get; set; }
 
+    public string? ThumbnailUrl { get; set; }
+
     public virtual ICollection<Post> Posts { get; set; } = new List<Post>();
 }
