@@ -34,5 +34,30 @@ export default defineRouter((/* { store, ssrContext } */) => {
     history: createHistory(import.meta.env.QUASAR_VUE_ROUTER_BASE)
   });
 
+  // Navigation Guard: Protect admin routes and handle guest-only routes
+  Router.beforeEach((to, _from, next) => {
+    const token = localStorage.getItem("pdq_auth_token");
+    const requiresAuth = to.matched.some((record) => record.meta?.requiresAuth);
+    const isGuestOnly = to.matched.some((record) => record.meta?.guestOnly);
+
+    // Update document title if present
+    if (typeof to.meta?.title === "string") {
+      document.title = `${to.meta.title} - PDQ Portfolio`;
+    }
+
+    if (requiresAuth && !token) {
+      // User is not authenticated -> redirect to /login with return url
+      next({
+        path: "/login",
+        query: { redirect: to.fullPath }
+      });
+    } else if (isGuestOnly && token) {
+      // User is already logged in -> redirect to /admin
+      next({ path: "/admin" });
+    } else {
+      next();
+    }
+  });
+
   return Router;
 });

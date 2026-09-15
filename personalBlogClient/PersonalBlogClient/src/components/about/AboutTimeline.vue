@@ -19,14 +19,14 @@
               <div>
                 <h3 class="item-role">{{ exp.role }}</h3>
                 <p class="item-company">
-                  <q-icon name="business" size="16px" />
+                  <q-icon name="fa-solid fa-building" size="14px" />
                   <strong>{{ exp.company }}</strong>
                   <span v-if="exp.location">· {{ exp.location }}</span>
                 </p>
               </div>
 
               <div class="time-badge" :class="{ 'time-current': exp.isCurrent }">
-                <q-icon name="calendar_today" size="13px" />
+                <q-icon name="fa-solid fa-calendar-day" size="12px" />
                 <span>{{ exp.startDate }} - {{ exp.isCurrent ? text.present : (exp.endDate || text.present) }}</span>
               </div>
             </div>
@@ -73,13 +73,13 @@
               <div>
                 <h3 class="item-role">{{ edu.degree }}</h3>
                 <p class="item-company">
-                  <q-icon name="school" size="16px" />
+                  <q-icon name="fa-solid fa-graduation-cap" size="14px" />
                   <strong>{{ edu.institution }}</strong>
                 </p>
               </div>
 
               <div v-if="edu.startYear || edu.endYear" class="time-badge">
-                <q-icon name="date_range" size="13px" />
+                <q-icon name="fa-solid fa-calendar-days" size="12px" />
                 <span>{{ edu.startYear || '' }} - {{ edu.endYear || text.present }}</span>
               </div>
             </div>

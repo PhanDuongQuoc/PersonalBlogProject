@@ -5,7 +5,7 @@
       <header class="about-page-header">
         <nav class="about-breadcrumb">
           <router-link to="/home" class="bc-link">
-            <q-icon name="arrow_back" size="16px" />
+            <q-icon name="fa-solid fa-arrow-left" size="13px" />
             <span>{{ text.home }}</span>
           </router-link>
           <span class="bc-separator">/</span>
@@ -25,7 +25,7 @@
 
           <div class="header-quick-card">
             <div v-if="aboutData.profile.location" class="quick-meta-item">
-              <q-icon name="place" size="18px" class="meta-icon" />
+              <q-icon name="fa-solid fa-location-dot" size="16px" class="meta-icon" />
               <div class="meta-content">
                 <small>{{ text.locationLabel }}</small>
                 <strong>{{ aboutData.profile.location }}</strong>
@@ -33,7 +33,7 @@
             </div>
 
             <div class="quick-meta-item">
-              <q-icon name="email" size="18px" class="meta-icon" />
+              <q-icon name="fa-solid fa-envelope" size="16px" class="meta-icon" />
               <div class="meta-content">
                 <small>{{ text.email }}</small>
                 <a :href="`mailto:${aboutData.profile.email}`">{{ aboutData.profile.email }}</a>
@@ -41,7 +41,7 @@
             </div>
 
             <div v-if="aboutData.profile.phone" class="quick-meta-item">
-              <q-icon name="phone" size="18px" class="meta-icon" />
+              <q-icon name="fa-solid fa-phone" size="16px" class="meta-icon" />
               <div class="meta-content">
                 <small>{{ text.phoneLabel }}</small>
                 <span>{{ aboutData.profile.phone }}</span>
@@ -55,7 +55,7 @@
               rel="noopener noreferrer"
               class="quick-cv-btn"
             >
-              <q-icon name="description" size="15px" />
+              <q-icon name="fa-solid fa-file-arrow-down" size="14px" />
               <span>{{ text.downloadCv }}</span>
             </a>
           </div>
@@ -85,7 +85,7 @@
     </main>
 
     <div v-else-if="errorMessage" class="load-state">
-      <q-icon name="error_outline" size="32px" color="negative" />
+      <q-icon name="fa-solid fa-circle-exclamation" size="28px" color="negative" />
       <span>{{ errorMessage }}</span>
     </div>
 

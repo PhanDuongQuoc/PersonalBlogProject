@@ -1,6 +1,10 @@
-using Microsoft.EntityFrameworkCore;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using PersonalBlogServer.Models;
+using PersonalBlogServer.Services.Auth;
 using PersonalBlogServer.Services.Public;
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
@@ -22,11 +26,44 @@ Console.WriteLine("====================================");
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString)
 );
+
 // ============================================
-// Controllers
+// Authentication & JWT
+// ============================================
+var jwtSettings = builder.Configuration.GetSection("Jwt");
+var secretKey = jwtSettings["Key"] ?? "DefaultSuperSecretKeyForPersonalBlogProject2026";
+var issuer = jwtSettings["Issuer"] ?? "MyAuthServer";
+var audience = jwtSettings["Audience"] ?? "PersonalBlogApp";
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.RequireHttpsMetadata = false;
+    options.SaveToken = true;
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)),
+        ValidateIssuer = true,
+        ValidIssuer = issuer,
+        ValidateAudience = true,
+        ValidAudience = audience,
+        ValidateLifetime = true,
+        ClockSkew = TimeSpan.Zero
+    };
+});
+
+// ============================================
+// Services & Controllers
 // ============================================
 
 builder.Services.AddControllers();
+builder.Services.AddScoped<IJwtService, JwtService>();
+builder.Services.AddSingleton<IOtpService, OtpService>();
 builder.Services.AddScoped<IPublicLandingService, PublicLandingService>();
 builder.Services.AddScoped<IPublicAboutService, PublicAboutService>();
 builder.Services.AddScoped<IPublicPostService, PublicPostService>();
@@ -109,6 +146,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors("AllowFrontend");
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapGet("/", () => Results.Redirect("/swagger"));

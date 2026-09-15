@@ -4,7 +4,7 @@
       <!-- Minimal Header Bar -->
       <div class="map-top-bar">
         <div class="location-badge">
-          <q-icon name="place" size="20px" class="loc-icon" />
+          <q-icon name="fa-solid fa-location-dot" size="16px" class="loc-icon" />
           <span class="location-text">{{ locationName || 'Thành phố Hồ Chí Minh, Việt Nam' }}</span>
         </div>
 
@@ -15,7 +15,7 @@
           class="open-maps-link"
         >
           <span>{{ text.openInGoogleMaps || 'Mở Google Maps' }}</span>
-          <q-icon name="open_in_new" size="14px" />
+          <q-icon name="fa-solid fa-arrow-up-right-from-square" size="12px" />
         </a>
       </div>
 

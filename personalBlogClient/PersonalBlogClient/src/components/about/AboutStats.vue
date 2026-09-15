@@ -3,7 +3,7 @@
     <div class="stats-grid">
       <div class="stat-card">
         <div class="stat-icon-wrap">
-          <q-icon name="work_history" size="22px" />
+          <q-icon name="fa-solid fa-briefcase" size="18px" />
         </div>
         <div class="stat-info">
           <strong>{{ stats.yearsOfExperience }}+</strong>
@@ -13,7 +13,7 @@
 
       <div class="stat-card">
         <div class="stat-icon-wrap">
-          <q-icon name="article" size="22px" />
+          <q-icon name="fa-solid fa-newspaper" size="18px" />
         </div>
         <div class="stat-info">
           <strong>{{ stats.publishedPostCount }}</strong>
@@ -23,7 +23,7 @@
 
       <div class="stat-card">
         <div class="stat-icon-wrap">
-          <q-icon name="folder_open" size="22px" />
+          <q-icon name="fa-solid fa-folder-open" size="18px" />
         </div>
         <div class="stat-info">
           <strong>{{ stats.categoryCount }}</strong>
@@ -33,7 +33,7 @@
 
       <div class="stat-card">
         <div class="stat-icon-wrap">
-          <q-icon name="visibility" size="22px" />
+          <q-icon name="fa-solid fa-eye" size="18px" />
         </div>
         <div class="stat-info">
           <strong>{{ stats.totalViewCount }}</strong>
