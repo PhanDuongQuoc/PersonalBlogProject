@@ -71,6 +71,7 @@
 import { computed, ref } from 'vue';
 import { usePortfolioLocale } from '@/composables/usePortfolioLocale';
 import type { PublicAboutSkill } from '@/types/public-about';
+import { resolveSkillIcon } from '@/utils/skill-icon';
 
 const props = defineProps<{ skills: PublicAboutSkill[] }>();
 const { text } = usePortfolioLocale();
@@ -93,21 +94,7 @@ const filteredSkills = computed(() => {
 });
 
 const getSkillIcon = (skill: PublicAboutSkill): string => {
-  if (skill.icon && skill.icon.trim()) {
-    if (skill.icon.startsWith('fa-') || skill.icon.includes(' ')) return skill.icon;
-    return `fa-solid fa-${skill.icon}`;
-  }
-  const name = skill.name.toLowerCase();
-  if (name.includes('vue')) return 'fa-brands fa-vuejs';
-  if (name.includes('react')) return 'fa-brands fa-react';
-  if (name.includes('node')) return 'fa-brands fa-node-js';
-  if (name.includes('script') || name.includes('js') || name.includes('ts')) return 'fa-brands fa-js';
-  if (name.includes('net') || name.includes('c#')) return 'fa-solid fa-code';
-  if (name.includes('sql') || name.includes('data') || name.includes('postgres')) return 'fa-solid fa-database';
-  if (name.includes('docker') || name.includes('deploy')) return 'fa-brands fa-docker';
-  if (name.includes('git')) return 'fa-brands fa-git-alt';
-  if (name.includes('html') || name.includes('css')) return 'fa-brands fa-html5';
-  return 'fa-solid fa-cube';
+  return resolveSkillIcon(skill);
 };
 </script>
 
