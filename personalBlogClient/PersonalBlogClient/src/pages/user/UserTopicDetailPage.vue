@@ -4,7 +4,7 @@
       <!-- 1. Breadcrumb -->
       <nav class="topic-detail-breadcrumb">
         <router-link to="/home" class="bc-link">
-          <q-icon name="arrow_back" size="16px" />
+          <q-icon name="fa-solid fa-arrow-left" size="13px" />
           <span>{{ text.home }}</span>
         </router-link>
         <span class="bc-separator">/</span>
@@ -23,10 +23,10 @@
 
       <!-- 3. Error / 404 State -->
       <div v-else-if="errorMessage || !detail" class="load-state error-state">
-        <q-icon name="error_outline" size="50px" color="negative" />
+        <q-icon name="fa-solid fa-circle-exclamation" size="44px" color="negative" />
         <p>{{ errorMessage || text.loadFailed }}</p>
         <router-link to="/topics" class="back-topics-btn">
-          <q-icon name="arrow_back" size="16px" class="q-mr-xs" />
+          <q-icon name="fa-solid fa-arrow-left" size="13px" class="q-mr-xs" />
           {{ text.viewAllTopics }}
         </router-link>
       </div>
@@ -48,7 +48,7 @@
                 :alt="detail.topic.name"
                 class="eyebrow-thumb-icon"
               />
-              <q-icon v-else :name="getTopicIcon(detail.topic.slug)" size="18px" class="eyebrow-icon" />
+              <q-icon v-else :name="getTopicIcon(detail.topic.slug)" size="16px" class="eyebrow-icon" />
               <span>TOPIC · {{ detail.topic.totalPosts }} {{ text.topicArticlesCount }}</span>
             </div>
             <span class="topic-slug-badge">/topics/{{ detail.topic.slug }}</span>
@@ -62,11 +62,11 @@
 
           <div class="topic-stats-row">
             <div class="stat-badge">
-              <q-icon name="article" size="16px" />
+              <q-icon name="fa-solid fa-newspaper" size="14px" />
               <span><strong>{{ detail.topic.totalPosts }}</strong> {{ text.publishedPostsLabel }}</span>
             </div>
             <div class="stat-badge">
-              <q-icon name="visibility" size="16px" />
+              <q-icon name="fa-solid fa-eye" size="14px" />
               <span><strong>{{ detail.topic.totalViews.toLocaleString() }}</strong> {{ text.totalViewsLabel }}</span>
             </div>
           </div>
@@ -75,7 +75,7 @@
         <!-- Search & Filter Controls -->
         <section class="topic-filter-toolbar">
           <div class="toolbar-search-box">
-            <q-icon name="search" size="18px" class="search-ico" />
+            <q-icon name="fa-solid fa-magnifying-glass" size="15px" class="search-ico" />
             <input
               v-model="searchQuery"
               type="text"
@@ -89,7 +89,7 @@
               type="button"
               @click="clearSearch"
             >
-              <q-icon name="close" size="14px" />
+              <q-icon name="fa-solid fa-xmark" size="13px" />
             </button>
           </div>
 
@@ -150,7 +150,7 @@
                   loading="lazy"
                 />
                 <div v-else class="article-thumb-placeholder">
-                  <q-icon :name="getTopicIcon(detail.topic.slug)" size="40px" class="thumb-icon" />
+                  <q-icon :name="getTopicIcon(detail.topic.slug)" size="36px" class="thumb-icon" />
                   <span class="thumb-topic-name">{{ detail.topic.name }}</span>
                 </div>
               </router-link>
@@ -159,12 +159,12 @@
                 <!-- Meta Row -->
                 <div class="article-meta-row">
                   <span v-if="post.publishedAt" class="meta-date">
-                    <q-icon name="event" size="13px" />
+                    <q-icon name="fa-solid fa-calendar-days" size="12px" />
                     {{ formatDate(post.publishedAt) }}
                   </span>
                   <span class="meta-dot">/</span>
                   <span class="meta-views">
-                    <q-icon name="visibility" size="13px" />
+                    <q-icon name="fa-solid fa-eye" size="12px" />
                     {{ post.viewCount }} {{ text.viewsCount }}
                   </span>
                 </div>
@@ -197,7 +197,7 @@
                 <div class="article-card-footer">
                   <router-link :to="`/posts/${post.slug}`" class="read-more-link">
                     <span>{{ text.readArticle }}</span>
-                    <q-icon name="arrow_forward" size="14px" class="read-icon" />
+                    <q-icon name="fa-solid fa-arrow-right" size="13px" class="read-icon" />
                   </router-link>
                 </div>
               </div>
@@ -222,7 +222,7 @@
 
         <!-- Empty Results in Topic -->
         <div v-else class="topic-empty-box">
-          <q-icon name="article" size="48px" class="empty-ico" />
+          <q-icon name="fa-solid fa-newspaper" size="44px" class="empty-ico" />
           <h3>{{ text.noPostsInTopic }}</h3>
           <p>{{ text.clearFilters }}</p>
           <q-btn
@@ -232,7 +232,7 @@
             class="reset-filters-btn"
             @click="resetAllFilters"
           >
-            <q-icon name="restart_alt" size="16px" class="q-mr-xs" />
+            <q-icon name="fa-solid fa-rotate-right" size="14px" class="q-mr-xs" />
             {{ text.clearFilters }}
           </q-btn>
         </div>
@@ -246,7 +246,7 @@
             </div>
             <router-link to="/topics" class="view-all-link">
               <span>{{ text.viewAllTopics }}</span>
-              <q-icon name="arrow_forward" size="16px" class="link-arrow" />
+              <q-icon name="fa-solid fa-arrow-right" size="14px" class="link-arrow" />
             </router-link>
           </div>
 
@@ -258,13 +258,13 @@
               class="other-topic-card"
             >
               <div class="other-icon-wrap">
-                <q-icon :name="getTopicIcon(other.slug)" size="18px" />
+                <q-icon :name="getTopicIcon(other.slug)" size="16px" />
               </div>
               <div class="other-info">
                 <h4>{{ other.name }}</h4>
                 <span>{{ other.postCount }} {{ text.topicArticlesCount }}</span>
               </div>
-              <q-icon name="chevron_right" size="18px" class="other-arrow" />
+              <q-icon name="fa-solid fa-chevron-right" size="14px" class="other-arrow" />
             </router-link>
           </div>
         </section>
@@ -361,27 +361,27 @@ const onPageChange = (newPage: number) => {
 const getTopicIcon = (slug: string): string => {
   const s = (slug || '').toLowerCase();
   if (s.includes('vue') || s.includes('react') || s.includes('angular') || s.includes('frontend') || s.includes('web')) {
-    return 'code';
+    return 'fa-solid fa-code';
   }
   if (s.includes('net') || s.includes('csharp') || s.includes('backend') || s.includes('api') || s.includes('node') || s.includes('java')) {
-    return 'terminal';
+    return 'fa-solid fa-terminal';
   }
   if (s.includes('sql') || s.includes('data') || s.includes('db') || s.includes('postgres') || s.includes('mongo')) {
-    return 'storage';
+    return 'fa-solid fa-database';
   }
   if (s.includes('devops') || s.includes('docker') || s.includes('cloud') || s.includes('k8s') || s.includes('ci')) {
-    return 'cloud';
+    return 'fa-solid fa-cloud';
   }
   if (s.includes('architecture') || s.includes('pattern') || s.includes('system') || s.includes('design')) {
-    return 'hub';
+    return 'fa-solid fa-layer-group';
   }
   if (s.includes('security') || s.includes('auth') || s.includes('jwt')) {
-    return 'security';
+    return 'fa-solid fa-shield-halved';
   }
   if (s.includes('mobile') || s.includes('ios') || s.includes('android')) {
-    return 'smartphone';
+    return 'fa-solid fa-mobile-screen-button';
   }
-  return 'folder_open';
+  return 'fa-solid fa-folder-open';
 };
 
 const formatDate = (dateStr: string | null) => {

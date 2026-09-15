@@ -5,7 +5,7 @@
 
     <router-link to="/contact" class="footer-cta-btn">
       <span>{{ text.sayHello }}</span>
-      <q-icon name="arrow_forward" size="15px" class="btn-arrow" />
+      <q-icon name="fa-solid fa-arrow-right" size="14px" class="btn-arrow" />
     </router-link>
 
     <div class="footer-bottom-bar">

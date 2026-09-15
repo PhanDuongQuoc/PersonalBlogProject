@@ -36,7 +36,7 @@
         round
         dense
         class="theme-button"
-        :icon="isDark ? 'light_mode' : 'dark_mode'"
+        :icon="isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon'"
         :aria-label="isDark ? text.lightMode : text.darkMode"
         @click="toggleTheme"
       />
@@ -48,7 +48,7 @@
         @click.prevent="scrollToContact"
       >
         <span>{{ text.resume }}</span>
-        <q-icon name="arrow_forward" size="14px" />
+        <q-icon name="fa-solid fa-arrow-right" size="13px" />
       </a>
 
       <!-- Mobile Hamburger Button -->
@@ -57,7 +57,7 @@
         round
         dense
         class="mobile-menu-button"
-        icon="menu"
+        icon="fa-solid fa-bars"
         aria-label="Open navigation menu"
         @click="mobileMenuOpen = true"
       />
@@ -70,7 +70,7 @@
           <router-link class="mobile-brand" to="/home" @click="mobileMenuOpen = false">
             {{ brand }}<span>Portfolio</span>
           </router-link>
-          <q-btn flat round dense icon="close" aria-label="Close menu" @click="mobileMenuOpen = false" />
+          <q-btn flat round dense icon="fa-solid fa-xmark" aria-label="Close menu" @click="mobileMenuOpen = false" />
         </div>
 
         <nav class="mobile-navigation">
@@ -81,7 +81,7 @@
             :class="{ active: isItemActive(item) }"
             @click.stop.prevent="handleNavClick(item)"
           >
-            <q-icon :name="item.icon" size="20px" class="nav-ico" />
+            <q-icon :name="item.icon" size="18px" class="nav-ico" />
             <span>{{ item.label }}</span>
           </a>
         </nav>
@@ -102,12 +102,12 @@
 
           <button class="drawer-setting drawer-theme" type="button" @click="toggleTheme">
             <span>{{ isDark ? text.lightMode : text.darkMode }}</span>
-            <q-icon :name="isDark ? 'light_mode' : 'dark_mode'" size="20px" class="theme-ico" />
+            <q-icon :name="isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon'" size="18px" class="theme-ico" />
           </button>
 
           <a class="drawer-resume" href="#contact" @click.stop.prevent="scrollToContact">
             <span>{{ text.resume }}</span>
-            <q-icon name="arrow_forward" size="16px" />
+            <q-icon name="fa-solid fa-arrow-right" size="14px" />
           </a>
         </div>
       </aside>
@@ -133,10 +133,10 @@ interface NavItem {
 }
 
 const navigation = computed<NavItem[]>(() => [
-  { key: 'home', label: text.value.home, target: '/home', icon: 'home', route: '/home' },
-  { key: 'about', label: text.value.about, target: '/about', icon: 'person_outline', route: '/about' },
-  { key: 'topics', label: text.value.topics, target: '/topics', icon: 'folder_open', route: '/topics' },
-  { key: 'contact', label: text.value.contact, target: '/contact', icon: 'mail_outline', route: '/contact' }
+  { key: 'home', label: text.value.home, target: '/home', icon: 'fa-solid fa-house', route: '/home' },
+  { key: 'about', label: text.value.about, target: '/about', icon: 'fa-solid fa-user', route: '/about' },
+  { key: 'topics', label: text.value.topics, target: '/topics', icon: 'fa-solid fa-folder-open', route: '/topics' },
+  { key: 'contact', label: text.value.contact, target: '/contact', icon: 'fa-solid fa-envelope', route: '/contact' }
 ]);
 
 const brand = 'PDQ';

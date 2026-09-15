@@ -109,6 +109,7 @@ const messages = {
     newsletterInputPlaceholder: 'Enter your developer email...',
     subscribeNow: 'Subscribe now',
     newsletterTrust: 'Over 1,200+ developers subscribed. Unsubscribe anytime.',
+    allTab: 'All',
     defaultFeatured: 'Default / Featured',
 
     // Contact page specific
@@ -245,6 +246,7 @@ const messages = {
     newsletterInputPlaceholder: 'Nhập email kỹ sư của bạn...',
     subscribeNow: 'Đăng ký ngay',
     newsletterTrust: 'Hơn 1,200+ developers đã đăng ký. Bạn có thể huỷ bất cứ lúc nào.',
+    allTab: 'Tất cả',
     defaultFeatured: 'Mặc định / Nổi bật',
 
     // Contact page specific

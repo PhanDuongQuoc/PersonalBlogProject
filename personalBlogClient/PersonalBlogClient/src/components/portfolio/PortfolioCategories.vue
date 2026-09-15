@@ -20,14 +20,14 @@
       <!-- Article Count Metric -->
       <div class="index-stat-col">
         <span class="count-pill">
-          <q-icon name="article" size="13px" />
+          <q-icon name="fa-solid fa-newspaper" size="12px" />
           {{ category.postCount }} {{ text.publishedPosts }}
         </span>
       </div>
 
       <!-- Arrow Indicator -->
       <div class="index-arrow-col">
-        <q-icon name="arrow_forward" size="16px" class="row-arrow-icon" />
+        <q-icon name="fa-solid fa-arrow-right" size="14px" class="row-arrow-icon" />
       </div>
     </router-link>
 
@@ -35,7 +35,7 @@
     <div class="topics-more-action">
       <router-link to="/topics" class="view-all-topics-btn">
         <span>{{ text.viewAllTopics }}</span>
-        <q-icon name="arrow_forward" size="16px" class="action-arrow" />
+        <q-icon name="fa-solid fa-arrow-right" size="14px" class="action-arrow" />
       </router-link>
     </div>
   </div>

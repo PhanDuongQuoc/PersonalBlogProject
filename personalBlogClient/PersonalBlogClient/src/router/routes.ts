@@ -5,14 +5,79 @@ const routes: RouteRecordRaw[] = [
     path: "/login",
     component: () => import("@/layouts/AuthLayout.vue"),
     children: [
-      { path: "", component: () => import("@/pages/LoginPage.vue") }
+      {
+        path: "",
+        component: () => import("@/pages/LoginPage.vue"),
+        meta: { guestOnly: true, title: "Đăng nhập Quản trị" }
+      }
+    ]
+  },
+  {
+    path: "/forgot-password",
+    component: () => import("@/layouts/AuthLayout.vue"),
+    children: [
+      {
+        path: "",
+        component: () => import("@/pages/ForgotPasswordPage.vue"),
+        meta: { guestOnly: true, title: "Quên mật khẩu" }
+      }
     ]
   },
   {
     path: "/admin",
     component: () => import("@/layouts/AdminLayout.vue"),
+    meta: { requiresAuth: true },
     children: [
-      { path: "", component: () => import("@/pages/admin/AdminDashboardPage.vue") }
+      {
+        path: "",
+        component: () => import("@/pages/admin/AdminDashboardPage.vue"),
+        meta: { requiresAuth: true, title: "Bảng điều khiển Quản trị" }
+      },
+      {
+        path: "analytics",
+        component: () => import("@/pages/admin/AdminAnalyticsPage.vue"),
+        meta: { requiresAuth: true, title: "Thống kê & Báo cáo" }
+      },
+      {
+        path: "posts",
+        component: () => import("@/pages/admin/AdminPostsPage.vue"),
+        meta: { requiresAuth: true, title: "Quản lý Bài viết" }
+      },
+      {
+        path: "categories",
+        component: () => import("@/pages/admin/AdminCategoriesPage.vue"),
+        meta: { requiresAuth: true, title: "Chủ đề & Danh mục" }
+      },
+      {
+        path: "tags",
+        component: () => import("@/pages/admin/AdminTagsPage.vue"),
+        meta: { requiresAuth: true, title: "Quản lý Thẻ" }
+      },
+      {
+        path: "comments",
+        component: () => import("@/pages/admin/AdminCommentsPage.vue"),
+        meta: { requiresAuth: true, title: "Quản lý Bình luận" }
+      },
+      {
+        path: "profile",
+        component: () => import("@/pages/admin/AdminProfilePage.vue"),
+        meta: { requiresAuth: true, title: "Hồ sơ Tác giả" }
+      },
+      {
+        path: "skills",
+        component: () => import("@/pages/admin/AdminSkillsPage.vue"),
+        meta: { requiresAuth: true, title: "Kỹ năng & Học vấn" }
+      },
+      {
+        path: "security",
+        component: () => import("@/pages/admin/AdminSecurityPage.vue"),
+        meta: { requiresAuth: true, title: "Bảo mật & Tài khoản" }
+      },
+      {
+        path: "settings",
+        component: () => import("@/pages/admin/AdminSettingsPage.vue"),
+        meta: { requiresAuth: true, title: "Cài đặt Hệ thống" }
+      }
     ]
   },
   {

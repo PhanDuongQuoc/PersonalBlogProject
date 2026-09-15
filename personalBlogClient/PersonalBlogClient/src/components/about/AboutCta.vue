@@ -10,9 +10,9 @@
           to="/contact"
           class="cta-primary-btn"
         >
-          <q-icon name="mail" size="18px" />
+          <q-icon name="fa-solid fa-envelope" size="15px" />
           <span>{{ text.sayHello }}</span>
-          <q-icon name="arrow_forward" size="16px" class="btn-arrow" />
+          <q-icon name="fa-solid fa-arrow-right" size="14px" class="btn-arrow" />
         </router-link>
 
         <a
@@ -22,7 +22,7 @@
           rel="noopener noreferrer"
           class="cta-secondary-btn"
         >
-          <q-icon name="description" size="17px" />
+          <q-icon name="fa-solid fa-file-arrow-down" size="15px" />
           <span>{{ text.downloadCv }}</span>
         </a>
       </div>

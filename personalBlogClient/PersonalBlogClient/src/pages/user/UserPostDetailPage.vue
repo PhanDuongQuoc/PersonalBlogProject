@@ -4,7 +4,7 @@
       <!-- Breadcrumb & Back Bar -->
       <nav class="editorial-nav-bar">
         <router-link to="/home" class="bc-link">
-          <q-icon name="arrow_back" size="16px" />
+          <q-icon name="fa-solid fa-arrow-left" size="13px" />
           <span>{{ text.backToHome }}</span>
         </router-link>
         <span class="bc-separator">/</span>
@@ -33,15 +33,15 @@
           <div class="author-left">
             <q-avatar size="44px" class="author-avatar">
               <img v-if="post.author.avatarUrl" :src="post.author.avatarUrl" :alt="post.author.name" />
-              <q-icon v-else name="person" size="24px" />
+              <q-icon v-else name="fa-solid fa-user" size="20px" />
               <q-badge floating color="teal" rounded class="verified-badge">
-                <q-icon name="check" size="10px" color="white" />
+                <q-icon name="fa-solid fa-check" size="9px" color="white" />
               </q-badge>
             </q-avatar>
             <div class="author-text">
               <div class="name-row">
                 <strong>{{ post.author.name }}</strong>
-                <q-icon name="verified" size="16px" class="verified-icon" />
+                <q-icon name="fa-solid fa-circle-check" size="15px" class="verified-icon" />
               </div>
               <span class="author-title">{{ post.author.jobTitle || post.author.role }}</span>
             </div>
@@ -67,20 +67,20 @@
             <!-- Like / Clap Button -->
             <button type="button" class="rail-btn like-btn" :class="{ 'is-active': isLiked }"
               :title="isLiked ? 'Liked' : 'Like post'" @click="toggleLike">
-              <q-icon :name="isLiked ? 'favorite' : 'favorite_border'" size="20px" />
+              <q-icon :name="isLiked ? 'fa-solid fa-heart' : 'fa-regular fa-heart'" size="18px" />
               <span class="btn-count">{{ currentLikeCount }}</span>
             </button>
 
             <!-- Comment Button -->
             <button type="button" class="rail-btn comment-btn" title="Jump to discussion" @click="scrollToComments">
-              <q-icon name="chat_bubble_outline" size="20px" />
+              <q-icon name="fa-regular fa-comment" size="18px" />
               <span class="btn-count">{{ post.comments.length }}</span>
             </button>
 
             <!-- Bookmark Button -->
             <button type="button" class="rail-btn bookmark-btn" :class="{ 'is-active': isBookmarked }"
               :title="isBookmarked ? 'Bookmarked' : 'Save story'" @click="toggleBookmark">
-              <q-icon :name="isBookmarked ? 'bookmark' : 'bookmark_border'" size="20px" />
+              <q-icon :name="isBookmarked ? 'fa-solid fa-bookmark' : 'fa-regular fa-bookmark'" size="18px" />
             </button>
 
             <!-- Text Size Toggle Button -->
@@ -91,7 +91,7 @@
 
             <!-- Share Button -->
             <button type="button" class="rail-btn share-btn" title="Share / Copy Link" @click="copyShareLink">
-              <q-icon name="share" size="18px" />
+              <q-icon name="fa-solid fa-share-nodes" size="16px" />
             </button>
           </div>
         </aside>
@@ -104,7 +104,7 @@
               <img v-if="getThumbnailUrl(post.thumbnailUrl)" :src="getThumbnailUrl(post.thumbnailUrl)!"
                 :alt="post.title" class="featured-image" />
               <div v-else class="media-placeholder-gradient">
-                <q-icon name="image" size="64px" class="ph-icon" />
+                <q-icon name="fa-solid fa-image" size="56px" class="ph-icon" />
               </div>
             </div>
             <p class="media-caption">
@@ -121,7 +121,7 @@
             <!-- Tags Row -->
             <div v-if="post.tags && post.tags.length" class="tags-section">
               <span class="tags-header">
-                <q-icon name="local_offer" size="15px" />
+                <q-icon name="fa-solid fa-tag" size="14px" />
                 {{ text.tagsTitle }}:
               </span>
               <div class="tags-cloud">
@@ -158,7 +158,7 @@
             </div>
 
             <div v-else class="empty-comments-state">
-              <q-icon name="chat_bubble_outline" size="28px" />
+              <q-icon name="fa-regular fa-comments" size="24px" />
               <p>{{ text.noCommentsMessage }}</p>
             </div>
 
@@ -167,7 +167,7 @@
               <h3 class="composer-title">{{ text.leaveAComment }}</h3>
 
               <div v-if="commentSuccess" class="composer-alert-success">
-                <q-icon name="check_circle" size="18px" />
+                <q-icon name="fa-solid fa-circle-check" size="16px" />
                 <span>{{ text.commentSuccessMsg }}</span>
               </div>
 
@@ -194,7 +194,7 @@
                 <button type="submit" :disabled="isSubmittingComment || !commentForm.content.trim()"
                   class="composer-submit-btn">
                   <q-spinner v-if="isSubmittingComment" size="16px" color="dark" />
-                  <q-icon v-else name="send" size="16px" />
+                  <q-icon v-else name="fa-solid fa-paper-plane" size="14px" />
                   <span>{{ isSubmittingComment ? text.postingComment : text.postCommentBtn }}</span>
                 </button>
               </form>
@@ -226,7 +226,7 @@
               <div class="dossier-head">
                 <q-avatar size="48px" class="dossier-avatar">
                   <img v-if="post.author.avatarUrl" :src="post.author.avatarUrl" :alt="post.author.name" />
-                  <q-icon v-else name="person" size="26px" />
+                  <q-icon v-else name="fa-solid fa-user" size="22px" />
                 </q-avatar>
                 <div class="dossier-author-info">
                   <strong>{{ post.author.name }}</strong>
@@ -241,7 +241,7 @@
                 <span class="dossier-subscribers">{{ post.viewCount * 12 + 150 }} {{ text.readersCount }}</span>
                 <router-link to="/about" class="dossier-action-link">
                   <span>{{ text.viewDossier }}</span>
-                  <q-icon name="arrow_forward" size="14px" />
+                  <q-icon name="fa-solid fa-arrow-right" size="13px" />
                 </router-link>
               </div>
             </div>
@@ -249,7 +249,7 @@
             <!-- Widget 3: Newsletter / Dispatch Card -->
             <div class="sidebar-card newsletter-card">
               <div class="newsletter-kicker">
-                <q-icon name="mail_outline" size="16px" />
+                <q-icon name="fa-solid fa-envelope" size="14px" />
                 <span>{{ text.newsletterTitle }}</span>
               </div>
               <h4 class="newsletter-heading">{{ text.newsletterHeading }}</h4>
@@ -264,7 +264,7 @@
                 </button>
               </form>
               <div v-if="newsletterSuccess" class="newsletter-success-toast">
-                <q-icon name="check_circle" size="15px" />
+                <q-icon name="fa-solid fa-circle-check" size="14px" />
                 <span>{{ text.subscribeSuccessMsg }}</span>
               </div>
             </div>
@@ -293,7 +293,7 @@
 
     <!-- Error / Loading States -->
     <div v-else-if="errorMessage" class="editorial-load-state">
-      <q-icon name="error_outline" size="48px" color="negative" />
+      <q-icon name="fa-solid fa-circle-exclamation" size="44px" color="negative" />
       <p>{{ errorMessage }}</p>
       <router-link to="/home" class="return-home-btn">{{ text.backToHome }}</router-link>
     </div>
@@ -306,12 +306,12 @@
     <!-- Toast Notification for Share Link -->
     <q-dialog v-model="showShareToast" position="top">
       <div class="share-toast-banner">
-        <q-icon name="check_circle" size="18px" color="primary" />
+        <q-icon name="fa-solid fa-circle-check" size="16px" color="primary" />
         <span>{{ text.copiedLink }}</span>
       </div>
     </q-dialog>
 
-    <portfolio-footer :email="post?.author.email ?? null" />
+    <portfolio-footer :email="null" />
   </q-page>
 </template>
 
@@ -442,7 +442,7 @@ const extractHeadings = () => {
   }
 
   tocHeadings.value = headings;
-  if (headings.length) {
+  if (headings.length && headings[0]) {
     activeHeadingId.value = headings[0].id;
   }
 };

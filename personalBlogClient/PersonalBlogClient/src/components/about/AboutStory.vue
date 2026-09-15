@@ -8,7 +8,7 @@
     <div class="story-grid">
       <div class="story-card main-narrative">
         <div class="card-icon-badge">
-          <q-icon name="auto_stories" size="22px" />
+          <q-icon name="fa-solid fa-book-open" size="18px" />
         </div>
         <p class="story-text">
           {{ story || defaultStory }}
@@ -18,7 +18,7 @@
       <div class="story-side-cards">
         <div class="side-card">
           <div class="side-card-header">
-            <q-icon name="code" size="20px" class="card-icon" />
+            <q-icon name="fa-solid fa-code" size="18px" class="card-icon" />
             <h3>Clean Architecture & Code Quality</h3>
           </div>
           <p>
@@ -30,7 +30,7 @@
 
         <div class="side-card">
           <div class="side-card-header">
-            <q-icon name="devices" size="20px" class="card-icon" />
+            <q-icon name="fa-solid fa-laptop-code" size="18px" class="card-icon" />
             <h3>User Experience & Modern Design</h3>
           </div>
           <p>

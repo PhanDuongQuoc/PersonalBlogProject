@@ -29,11 +29,11 @@
         <!-- Key Meta: Location & Email -->
         <div class="hero-meta-strip">
           <div v-if="profile.location" class="meta-entry">
-            <q-icon name="place" size="16px" class="meta-icon" />
+            <q-icon name="fa-solid fa-location-dot" size="14px" class="meta-icon" />
             <span>{{ profile.location }}</span>
           </div>
           <div class="meta-entry">
-            <q-icon name="mail_outline" size="16px" class="meta-icon" />
+            <q-icon name="fa-solid fa-envelope" size="14px" class="meta-icon" />
             <a :href="`mailto:${profile.email}`" class="meta-link">{{ profile.email }}</a>
           </div>
         </div>
@@ -47,7 +47,7 @@
             class="cta-primary-btn"
           >
             <span>{{ text.downloadCv }}</span>
-            <q-icon name="arrow_downward" size="15px" />
+            <q-icon name="fa-solid fa-arrow-down" size="13px" />
           </a>
           <a
             v-else
@@ -55,11 +55,11 @@
             class="cta-primary-btn"
           >
             <span>{{ text.viewPosts }}</span>
-            <q-icon name="arrow_forward" size="15px" />
+            <q-icon name="fa-solid fa-arrow-right" size="13px" />
           </a>
 
           <a href="#contact" class="cta-secondary-btn">
-            <q-icon name="chat_bubble_outline" size="15px" />
+            <q-icon name="fa-solid fa-comment-dots" size="13px" />
             <span>{{ text.sayHello }}</span>
           </a>
         </div>
@@ -74,7 +74,7 @@
             class="social-link-item"
             aria-label="GitHub"
           >
-            <q-icon name="code" size="15px" />
+            <q-icon name="fa-brands fa-github" size="15px" />
             <span>GitHub</span>
           </a>
           <a
@@ -85,7 +85,7 @@
             class="social-link-item"
             aria-label="LinkedIn"
           >
-            <q-icon name="public" size="15px" />
+            <q-icon name="fa-brands fa-linkedin" size="15px" />
             <span>LinkedIn</span>
           </a>
           <a
@@ -96,7 +96,7 @@
             class="social-link-item"
             aria-label="Website"
           >
-            <q-icon name="link" size="15px" />
+            <q-icon name="fa-solid fa-globe" size="14px" />
             <span>Website</span>
           </a>
         </div>
@@ -114,19 +114,19 @@
           <!-- Bottom Stats Float Bar -->
           <div class="hero-stats-bar">
             <div class="stat-box">
-              <q-icon name="article" size="16px" class="stat-icon" />
+              <q-icon name="fa-solid fa-newspaper" size="14px" class="stat-icon" />
               <span class="stat-num">{{ stats.publishedPostCount ?? 0 }}</span>
               <span class="stat-label">{{ text.posts }}</span>
             </div>
             <div class="stat-sep"></div>
             <router-link to="/topics" class="stat-box stat-box-interactive">
-              <q-icon name="folder_open" size="16px" class="stat-icon" />
+              <q-icon name="fa-solid fa-folder-open" size="14px" class="stat-icon" />
               <span class="stat-num">{{ stats.categoryCount ?? 0 }}</span>
               <span class="stat-label">{{ text.topics }}</span>
             </router-link>
             <div class="stat-sep"></div>
             <div class="stat-box">
-              <q-icon name="visibility" size="16px" class="stat-icon" />
+              <q-icon name="fa-solid fa-eye" size="14px" class="stat-icon" />
               <span class="stat-num">{{ stats.totalViewCount ?? 0 }}</span>
               <span class="stat-label">{{ text.views }}</span>
             </div>

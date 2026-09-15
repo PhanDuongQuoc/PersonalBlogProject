@@ -18,15 +18,15 @@
 
       <div class="meta-row">
         <div v-if="profile.location" class="meta-item">
-          <q-icon name="place" size="18px" />
+          <q-icon name="fa-solid fa-location-dot" size="15px" />
           <span>{{ profile.location }}</span>
         </div>
         <div class="meta-item">
-          <q-icon name="email" size="18px" />
+          <q-icon name="fa-solid fa-envelope" size="15px" />
           <a :href="`mailto:${profile.email}`">{{ profile.email }}</a>
         </div>
         <div v-if="profile.phone" class="meta-item">
-          <q-icon name="phone" size="18px" />
+          <q-icon name="fa-solid fa-phone" size="15px" />
           <span>{{ profile.phone }}</span>
         </div>
       </div>
@@ -39,7 +39,7 @@
           class="primary-action"
           :href="profile.cvUrl"
           target="_blank"
-          icon="description"
+          icon="fa-solid fa-file-arrow-down"
           :label="text.downloadCv"
         />
         <q-btn
@@ -47,7 +47,7 @@
           no-caps
           class="secondary-action"
           href="#contact"
-          icon="chat_bubble_outline"
+          icon="fa-solid fa-comment-dots"
           :label="text.sayHello"
         />
       </div>
@@ -62,7 +62,7 @@
           class="social-btn"
           aria-label="GitHub"
         >
-          <q-icon name="code" size="20px" />
+          <q-icon name="fa-brands fa-github" size="17px" />
           <span>GitHub</span>
         </a>
         <a
@@ -73,7 +73,7 @@
           class="social-btn"
           aria-label="LinkedIn"
         >
-          <q-icon name="public" size="20px" />
+          <q-icon name="fa-brands fa-linkedin" size="17px" />
           <span>LinkedIn</span>
         </a>
         <a
@@ -84,7 +84,7 @@
           class="social-btn"
           aria-label="Website"
         >
-          <q-icon name="language" size="20px" />
+          <q-icon name="fa-solid fa-globe" size="16px" />
           <span>Website</span>
         </a>
         <a
@@ -95,7 +95,7 @@
           class="social-btn"
           aria-label="Facebook"
         >
-          <q-icon name="share" size="20px" />
+          <q-icon name="fa-brands fa-facebook" size="17px" />
           <span>Facebook</span>
         </a>
       </div>

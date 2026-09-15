@@ -7,7 +7,7 @@
           <img v-if="getThumbnailUrl(posts[0].thumbnailUrl)" :src="getThumbnailUrl(posts[0].thumbnailUrl)!"
             :alt="posts[0].title" class="lead-thumbnail" />
           <div v-else class="lead-fallback-graphic">
-            <q-icon name="terminal" size="48px" class="graphic-icon" />
+            <q-icon name="fa-solid fa-code" size="40px" class="graphic-icon" />
           </div>
 
           <span class="lead-category-badge">{{ posts[0].category }}</span>
@@ -34,7 +34,7 @@
         <div class="lead-action-row">
           <router-link :to="`/posts/${posts[0].slug}`" class="read-essay-btn">
             <span>{{ text.viewPosts }}</span>
-            <q-icon name="arrow_forward" size="14px" class="btn-arrow" />
+            <q-icon name="fa-solid fa-arrow-right" size="13px" class="btn-arrow" />
           </router-link>
         </div>
       </div>
@@ -62,7 +62,7 @@
         <div class="secondary-footer">
           <router-link :to="`/posts/${post.slug}`" class="secondary-read-link">
             <span>{{ text.readArticle || 'Read note' }}</span>
-            <q-icon name="arrow_forward" size="13px" class="card-arrow" />
+            <q-icon name="fa-solid fa-arrow-right" size="12px" class="card-arrow" />
           </router-link>
         </div>
       </article>
@@ -70,7 +70,7 @@
   </div>
 
   <div v-else class="empty-writing-state">
-    <q-icon name="edit_note" size="36px" />
+    <q-icon name="fa-solid fa-pen-to-square" size="32px" />
     <p>{{ text.articlesPreparing }}</p>
   </div>
 </template>

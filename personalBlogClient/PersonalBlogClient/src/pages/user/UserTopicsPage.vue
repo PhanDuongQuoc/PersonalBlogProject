@@ -16,7 +16,7 @@
           <!-- Card 1: Topics -->
           <div class="metric-card">
             <div class="metric-icon-box">
-              <q-icon name="folder" size="20px" />
+              <q-icon name="fa-solid fa-folder" size="18px" />
             </div>
             <div class="metric-info">
               <span class="metric-number">{{ topics.length }}</span>
@@ -27,7 +27,7 @@
           <!-- Card 2: Published Posts -->
           <div class="metric-card">
             <div class="metric-icon-box">
-              <q-icon name="article" size="20px" />
+              <q-icon name="fa-solid fa-newspaper" size="18px" />
             </div>
             <div class="metric-info">
               <span class="metric-number">{{ totalAllPosts }}</span>
@@ -38,7 +38,7 @@
           <!-- Card 3: Total Views -->
           <div class="metric-card">
             <div class="metric-icon-box">
-              <q-icon name="visibility" size="20px" />
+              <q-icon name="fa-solid fa-eye" size="18px" />
             </div>
             <div class="metric-info">
               <span class="metric-number">{{ totalAllViews.toLocaleString() }}</span>
@@ -52,7 +52,7 @@
       <section class="unified-filter-bar">
         <!-- Search Input -->
         <div class="search-input-box">
-          <q-icon name="search" size="18px" class="search-ico" />
+          <q-icon name="fa-solid fa-magnifying-glass" size="15px" class="search-ico" />
           <input
             v-model="searchKeyword"
             type="text"
@@ -65,7 +65,7 @@
             class="search-clear-btn"
             @click="searchKeyword = ''"
           >
-            <q-icon name="close" size="14px" />
+            <q-icon name="fa-solid fa-xmark" size="13px" />
           </button>
         </div>
 
@@ -114,7 +114,7 @@
               aria-label="Grid View"
               @click="viewMode = 'grid'"
             >
-              <q-icon name="grid_view" size="17px" />
+              <q-icon name="fa-solid fa-table-cells-large" size="15px" />
             </button>
             <button
               type="button"
@@ -123,7 +123,7 @@
               aria-label="List View"
               @click="viewMode = 'list'"
             >
-              <q-icon name="view_list" size="17px" />
+              <q-icon name="fa-solid fa-list-ul" size="15px" />
             </button>
           </div>
         </div>
@@ -137,7 +137,7 @@
 
       <!-- Error State -->
       <div v-else-if="errorMessage" class="load-state error-state">
-        <q-icon name="error_outline" size="44px" color="negative" />
+        <q-icon name="fa-solid fa-circle-exclamation" size="40px" color="negative" />
         <p>{{ errorMessage }}</p>
         <q-btn unelevated no-caps color="teal-5" label="Thử lại" @click="fetchTopics" />
       </div>
@@ -168,7 +168,7 @@
                 :alt="topic.name"
                 class="topic-thumb-avatar"
               />
-              <q-icon v-else :name="getTopicIcon(topic.slug)" size="20px" />
+              <q-icon v-else :name="getTopicIcon(topic.slug)" size="18px" />
             </div>
             <div class="card-head-title-block">
               <h3 class="topic-item-title">
@@ -189,19 +189,19 @@
           <div class="topic-pills-row">
             <!-- Posts Count -->
             <div class="pill-chip">
-              <q-icon name="description" size="13px" />
+              <q-icon name="fa-solid fa-file-lines" size="12px" />
               <span>{{ topic.postCount }} {{ text.topicArticlesCount }}</span>
             </div>
 
             <!-- Views Count -->
             <div class="pill-chip">
-              <q-icon name="visibility" size="13px" />
+              <q-icon name="fa-solid fa-eye" size="12px" />
               <span>{{ topic.totalViews }} {{ text.viewsCount }}</span>
             </div>
 
             <!-- Date or Coming Soon Status -->
             <div v-if="topic.postCount > 0 && topic.latestPublishedAt" class="pill-chip">
-              <q-icon name="schedule" size="13px" />
+              <q-icon name="fa-solid fa-clock" size="12px" />
               <span>{{ formatDate(topic.latestPublishedAt) }}</span>
             </div>
             <div v-else class="pill-chip coming-soon-chip">
@@ -213,11 +213,11 @@
           <!-- Recent Post Section -->
           <div class="card-recent-section">
             <div class="recent-header-tag">
-              <q-icon name="trending_up" size="12px" />
+              <q-icon name="fa-solid fa-arrow-trend-up" size="11px" />
               <span>{{ text.recent.toUpperCase() }}</span>
             </div>
 
-            <div v-if="topic.recentPosts && topic.recentPosts.length > 0" class="recent-post-row">
+            <div v-if="topic.recentPosts && topic.recentPosts.length > 0 && topic.recentPosts[0]" class="recent-post-row">
               <span class="post-green-dot">•</span>
               <router-link :to="`/posts/${topic.recentPosts[0].slug}`" class="recent-post-link">
                 {{ topic.recentPosts[0].title }}
@@ -232,7 +232,7 @@
           <div class="card-bottom-row">
             <router-link :to="`/topics/${topic.slug}`" class="explore-topic-link">
               <span>{{ text.exploreTopic }}</span>
-              <q-icon name="arrow_forward" size="14px" class="arrow-ico" />
+              <q-icon name="fa-solid fa-arrow-right" size="13px" class="arrow-ico" />
             </router-link>
             <span class="post-count-mono">{{ topic.postCount }} {{ text.topicArticlesCount.slice(0, 3) }}</span>
           </div>
@@ -241,7 +241,7 @@
 
       <!-- Empty State -->
       <div v-else class="empty-state-box">
-        <q-icon name="search_off" size="48px" class="empty-ico" />
+        <q-icon name="fa-solid fa-magnifying-glass" size="44px" class="empty-ico" />
         <h3>{{ text.noTopicsFound }}</h3>
         <p>{{ text.clearFilters }}</p>
         <q-btn
@@ -250,7 +250,7 @@
           class="reset-filters-btn"
           @click="resetFilters"
         >
-          <q-icon name="restart_alt" size="16px" class="q-mr-xs" />
+          <q-icon name="fa-solid fa-rotate-right" size="14px" class="q-mr-xs" />
           {{ text.clearFilters }}
         </q-btn>
       </div>
@@ -385,24 +385,24 @@ const resetFilters = () => {
 const getTopicIcon = (slug: string): string => {
   const s = (slug || '').toLowerCase();
   if (s.includes('learning') || s.includes('note') || s.includes('ghi-chep')) {
-    return 'folder_open';
+    return 'fa-solid fa-folder-open';
   }
   if (s.includes('thought') || s.includes('personal') || s.includes('suy-nghi')) {
-    return 'folder';
+    return 'fa-solid fa-folder';
   }
   if (s.includes('web') || s.includes('frontend') || s.includes('vue') || s.includes('react')) {
-    return 'code';
+    return 'fa-solid fa-code';
   }
   if (s.includes('lap-trinh') || s.includes('code') || s.includes('net') || s.includes('csharp')) {
-    return 'terminal';
+    return 'fa-solid fa-terminal';
   }
   if (s.includes('devops') || s.includes('cloud') || s.includes('docker') || s.includes('k8s')) {
-    return 'cloud';
+    return 'fa-solid fa-cloud';
   }
   if (s.includes('design') || s.includes('ui') || s.includes('ux') || s.includes('system')) {
-    return 'layers';
+    return 'fa-solid fa-layer-group';
   }
-  return 'folder_open';
+  return 'fa-solid fa-folder-open';
 };
 
 const getDefaultDescription = (name: string): string => {

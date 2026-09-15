@@ -4,7 +4,7 @@
       <!-- 1. Editorial Breadcrumb -->
       <nav class="contact-breadcrumb">
         <router-link to="/home" class="bc-link">
-          <q-icon name="arrow_back" size="16px" />
+          <q-icon name="fa-solid fa-arrow-left" size="13px" />
           <span>{{ text.home }}</span>
         </router-link>
         <span class="bc-separator">/</span>
@@ -34,7 +34,7 @@
             <!-- Channel 1: Primary Email with Copy -->
             <div class="channel-card">
               <div class="channel-icon-box">
-                <q-icon name="mail" size="18px" />
+                <q-icon name="fa-solid fa-envelope" size="15px" />
               </div>
               <div class="channel-info">
                 <span class="channel-label">{{ text.email.toUpperCase() }}</span>
@@ -48,14 +48,14 @@
                 title="Copy email to clipboard"
                 @click="copyToClipboard(contactProfile.email, text.copiedLink)"
               >
-                <q-icon name="content_copy" size="15px" />
+                <q-icon name="fa-regular fa-copy" size="14px" />
               </button>
             </div>
 
             <!-- Channel 2: Response Window SLA -->
             <div class="channel-card">
               <div class="channel-icon-box">
-                <q-icon name="schedule" size="18px" />
+                <q-icon name="fa-solid fa-clock" size="15px" />
               </div>
               <div class="channel-info">
                 <span class="channel-label">{{ text.responseSla.toUpperCase() }}</span>
@@ -66,7 +66,7 @@
             <!-- Channel 3: Location & Timezone -->
             <div class="channel-card">
               <div class="channel-icon-box">
-                <q-icon name="public" size="18px" />
+                <q-icon name="fa-solid fa-earth-americas" size="15px" />
               </div>
               <div class="channel-info">
                 <span class="channel-label">{{ text.locationTimezone.toUpperCase() }}</span>
@@ -84,9 +84,9 @@
               rel="noopener noreferrer"
               class="social-pill-btn"
             >
-              <q-icon name="code" size="15px" />
+              <q-icon name="fa-brands fa-github" size="14px" />
               <span>GitHub</span>
-              <q-icon name="north_east" size="12px" class="arrow-up" />
+              <q-icon name="fa-solid fa-arrow-up-right-from-square" size="11px" class="arrow-up" />
             </a>
 
             <a
@@ -96,9 +96,9 @@
               rel="noopener noreferrer"
               class="social-pill-btn"
             >
-              <q-icon name="work_outline" size="15px" />
+              <q-icon name="fa-brands fa-linkedin" size="14px" />
               <span>LinkedIn</span>
-              <q-icon name="north_east" size="12px" class="arrow-up" />
+              <q-icon name="fa-solid fa-arrow-up-right-from-square" size="11px" class="arrow-up" />
             </a>
 
             <a
@@ -108,9 +108,9 @@
               rel="noopener noreferrer"
               class="social-pill-btn cv-accent"
             >
-              <q-icon name="description" size="15px" />
+              <q-icon name="fa-solid fa-file-arrow-down" size="14px" />
               <span>{{ text.downloadCv }}</span>
-              <q-icon name="north_east" size="12px" class="arrow-up" />
+              <q-icon name="fa-solid fa-arrow-up-right-from-square" size="11px" class="arrow-up" />
             </a>
           </div>
         </aside>
@@ -120,7 +120,7 @@
           <div class="contact-form-card">
             <div class="form-card-header">
               <div class="form-eyebrow">
-                <q-icon name="send" size="14px" />
+                <q-icon name="fa-solid fa-paper-plane" size="13px" />
                 <span>{{ text.contactPageEyebrow }}</span>
               </div>
               <h2 class="form-card-title">{{ text.sayHello }}</h2>
@@ -129,26 +129,26 @@
             <!-- Success State Banner -->
             <div v-if="submissionStatus === 'success'" class="submission-alert-banner success-banner">
               <div class="alert-icon-circle">
-                <q-icon name="check" size="20px" />
+                <q-icon name="fa-solid fa-check" size="18px" />
               </div>
               <div class="alert-text-block">
                 <strong>{{ text.contactSuccess }}</strong>
                 <p>{{ text.responseSlaDesc }}</p>
               </div>
               <button type="button" class="alert-reset-btn" @click="resetForm">
-                <q-icon name="refresh" size="14px" />
+                <q-icon name="fa-solid fa-rotate-right" size="13px" />
                 <span>Gửi tin nhắn khác</span>
               </button>
             </div>
 
             <!-- Error State Banner -->
             <div v-else-if="submissionStatus === 'error'" class="submission-alert-banner error-banner">
-              <q-icon name="error_outline" size="20px" class="error-ico" />
+              <q-icon name="fa-solid fa-circle-exclamation" size="18px" class="error-ico" />
               <div class="alert-text-block">
                 <strong>{{ errorMessage || text.contactError }}</strong>
               </div>
               <button type="button" class="alert-close-btn" @click="submissionStatus = 'idle'">
-                <q-icon name="close" size="14px" />
+                <q-icon name="fa-solid fa-xmark" size="13px" />
               </button>
             </div>
 
@@ -237,12 +237,12 @@
                   <q-spinner v-if="isSubmitting" size="18px" color="dark" />
                   <template v-else>
                     <span>{{ text.contactSubmit }}</span>
-                    <q-icon name="arrow_forward" size="16px" class="btn-arrow" />
+                    <q-icon name="fa-solid fa-arrow-right" size="14px" class="btn-arrow" />
                   </template>
                 </button>
 
                 <div class="form-trust-indicator">
-                  <q-icon name="lock_outline" size="13px" />
+                  <q-icon name="fa-solid fa-shield-halved" size="13px" />
                   <span>Chuyển tiếp tức thì qua Web3Forms</span>
                 </div>
               </div>

@@ -37,7 +37,7 @@
 
     <!-- Loading / Error States -->
     <div v-else-if="errorMessage" class="load-state error-state">
-      <q-icon name="error_outline" size="44px" color="negative" />
+      <q-icon name="fa-solid fa-circle-exclamation" size="40px" color="negative" />
       <p>{{ errorMessage }}</p>
     </div>
     

@@ -6,7 +6,7 @@
           flat
           dense
           round
-          icon="menu"
+          icon="fa-solid fa-bars"
           aria-label="Menu"
           @click="toggleLeftDrawer"
         />
@@ -45,43 +45,43 @@ const linksList: EssentialLinkProps[] = [
   {
     label: "Docs",
     caption: "quasar.dev",
-    icon: "school",
+    icon: "fa-solid fa-graduation-cap",
     link: "https://quasar.dev"
   },
   {
     label: "GitHub",
     caption: "github.com/quasarframework",
-    icon: "code",
+    icon: "fa-brands fa-github",
     link: "https://github.com/quasarframework"
   },
   {
     label: "Discord Chat Channel",
     caption: "chat.quasar.dev",
-    icon: "chat",
+    icon: "fa-brands fa-discord",
     link: "https://chat.quasar.dev"
   },
   {
     label: "Forum",
     caption: "forum.quasar.dev",
-    icon: "record_voice_over",
+    icon: "fa-solid fa-comments",
     link: "https://forum.quasar.dev"
   },
   {
     label: "Twitter",
     caption: "@quasarframework",
-    icon: "rss_feed",
+    icon: "fa-brands fa-x-twitter",
     link: "https://twitter.quasar.dev"
   },
   {
     label: "Facebook",
     caption: "@QuasarFramework",
-    icon: "public",
+    icon: "fa-brands fa-facebook",
     link: "https://facebook.quasar.dev"
   },
   {
     label: "Quasar Awesome",
     caption: "Community Quasar projects",
-    icon: "favorite",
+    icon: "fa-solid fa-heart",
     link: "https://awesome.quasar.dev"
   }
 ];
