@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using PersonalBlogServer.Models;
+using PersonalBlogServer.Services.Admin;
 using PersonalBlogServer.Services.Auth;
 using PersonalBlogServer.Services.Public;
 
@@ -68,6 +69,10 @@ builder.Services.AddScoped<IPublicLandingService, PublicLandingService>();
 builder.Services.AddScoped<IPublicAboutService, PublicAboutService>();
 builder.Services.AddScoped<IPublicPostService, PublicPostService>();
 builder.Services.AddScoped<IPublicTopicService, PublicTopicService>();
+builder.Services.AddScoped<IAdminPostService, AdminPostService>();
+builder.Services.AddScoped<IAdminCategoryService, AdminCategoryService>();
+builder.Services.AddScoped<IAdminTagService, AdminTagService>();
+builder.Services.AddScoped<IAdminCommentService, AdminCommentService>();
 
 // ============================================
 // Swagger
@@ -139,10 +144,7 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
     ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
 });
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseHttpsRedirection();
-}
+// HTTPS Redirection is handled by reverse proxy (e.g. Render / Cloudflare / Nginx)
 
 app.UseCors("AllowFrontend");
 
