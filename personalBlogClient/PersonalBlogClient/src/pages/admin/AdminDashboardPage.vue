@@ -16,7 +16,8 @@
 
         <h1 class="hero-title">Xin chào, {{ authStore.userDisplayName }}</h1>
         <p class="hero-description">
-          Chào mừng bạn quay trở lại. Tại đây bạn có thể theo dõi tổng quan hệ thống, phân loại chủ đề kỹ thuật và quản lý các bài viết trên Portfolio.
+          Chào mừng bạn quay trở lại. Tại đây bạn có thể theo dõi tổng quan hệ thống, phân loại chủ đề kỹ thuật và quản
+          lý các bài viết trên Portfolio.
         </p>
 
         <!-- Quick Editorial Actions with Color Accents -->
@@ -146,9 +147,9 @@ const userInitial = computed(() => {
 
 <style scoped lang="scss">
 .admin-dashboard-page {
-  max-width: 1200px;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 8px 0 32px;
+  padding: 8px 10px 32px;
 }
 
 /* Hero Card with Rose-to-Indigo Top Accent */
@@ -431,16 +432,19 @@ const userInitial = computed(() => {
         color: #df266a;
         border: 1px solid #fce7f3;
       }
+
       &.icon-indigo {
         background: #eef2ff;
         color: #4f46e5;
         border: 1px solid #e0e7ff;
       }
+
       &.icon-purple {
         background: #faf5ff;
         color: #9333ea;
         border: 1px solid #f3e8ff;
       }
+
       &.icon-emerald {
         background: #ecfdf5;
         color: #059669;
@@ -460,16 +464,19 @@ const userInitial = computed(() => {
         color: #df266a;
         border: 1px solid #fce7f3;
       }
+
       &.badge-indigo {
         background: #eef2ff;
         color: #4f46e5;
         border: 1px solid #e0e7ff;
       }
+
       &.badge-purple {
         background: #faf5ff;
         color: #9333ea;
         border: 1px solid #f3e8ff;
       }
+
       &.badge-emerald {
         background: #ecfdf5;
         color: #059669;
@@ -517,6 +524,7 @@ const userInitial = computed(() => {
     .tile-title {
       color: #df266a;
     }
+
     .tile-arrow {
       color: #df266a;
       transform: translateX(4px);
@@ -531,6 +539,7 @@ const userInitial = computed(() => {
     .tile-title {
       color: #4f46e5;
     }
+
     .tile-arrow {
       color: #4f46e5;
       transform: translateX(4px);
@@ -545,6 +554,7 @@ const userInitial = computed(() => {
     .tile-title {
       color: #9333ea;
     }
+
     .tile-arrow {
       color: #9333ea;
       transform: translateX(4px);
@@ -559,6 +569,7 @@ const userInitial = computed(() => {
     .tile-title {
       color: #059669;
     }
+
     .tile-arrow {
       color: #059669;
       transform: translateX(4px);
