@@ -36,7 +36,7 @@ public class AdminAnalyticsService : IAdminAnalyticsService
         return new AdminAnalyticsSummaryDto
         {
             TotalViews = totalViews,
-            ViewsGrowthRate = 15.8, // Percentage growth trend
+            ViewsGrowthRate = 0.0,
             TotalPosts = totalPosts,
             PublishedPosts = publishedPosts,
             DraftPosts = draftPosts,
@@ -52,7 +52,9 @@ public class AdminAnalyticsService : IAdminAnalyticsService
     public async Task<ViewsTrendResponse> GetViewsTrendAsync(string period)
     {
         var normalizedPeriod = (period ?? "monthly").ToLower().Trim();
-        var totalViews = await _context.Posts.SumAsync(p => (long)p.ViewCount);
+        var posts = await _context.Posts.AsNoTracking().ToListAsync();
+        var totalViews = posts.Sum(p => (long)p.ViewCount);
+
         var response = new ViewsTrendResponse
         {
             Period = normalizedPeriod,
@@ -60,81 +62,90 @@ public class AdminAnalyticsService : IAdminAnalyticsService
             DataPoints = new List<ViewsTrendPointDto>()
         };
 
+        var now = DateTime.UtcNow;
+
         if (normalizedPeriod == "7d")
         {
-            // Last 7 days
-            var now = DateTime.UtcNow;
+            // 7 ngày gần nhất (từ 6 ngày trước đến hôm nay)
             for (int i = 6; i >= 0; i--)
             {
-                var d = now.AddDays(-i);
-                var label = d.ToString("dd/MM");
-                // Base weight for dynamic realistic curves
-                var dayFactor = (i == 0) ? 1.4 : (1.0 + (i % 3) * 0.25);
-                var estimatedViews = (long)(Math.Max(10, totalViews / 35.0) * dayFactor);
-                var uniqueReaders = (long)(estimatedViews * 0.72);
+                var targetDate = now.AddDays(-i).Date;
+                var label = targetDate.ToString("dd/MM");
+
+                var dayPosts = posts.Where(p => (p.PublishedAt ?? p.CreatedAt).ToUniversalTime().Date == targetDate).ToList();
+                var views = dayPosts.Sum(p => (long)p.ViewCount);
 
                 response.DataPoints.Add(new ViewsTrendPointDto
                 {
                     DateLabel = label,
-                    Views = estimatedViews,
-                    UniqueReaders = uniqueReaders
+                    Views = views,
+                    UniqueReaders = views
                 });
             }
         }
         else if (normalizedPeriod == "30d")
         {
-            // Last 30 days (grouped in 6 intervals of 5 days)
-            var now = DateTime.UtcNow;
+            // 30 ngày qua (chia thành 6 mốc 5 ngày)
             for (int i = 5; i >= 0; i--)
             {
-                var d = now.AddDays(-i * 5);
-                var label = d.ToString("dd/MM");
-                var factor = 1.0 + (5 - i) * 0.18;
-                var estimatedViews = (long)(Math.Max(50, totalViews / 8.0) * factor);
-                var uniqueReaders = (long)(estimatedViews * 0.75);
+                var startDate = now.AddDays(-(i + 1) * 5).Date;
+                var endDate = now.AddDays(-i * 5).Date;
+                var label = endDate.ToString("dd/MM");
+
+                var intervalPosts = posts.Where(p =>
+                {
+                    var postDate = (p.PublishedAt ?? p.CreatedAt).ToUniversalTime().Date;
+                    return postDate > startDate && postDate <= endDate;
+                }).ToList();
+
+                var views = intervalPosts.Sum(p => (long)p.ViewCount);
 
                 response.DataPoints.Add(new ViewsTrendPointDto
                 {
                     DateLabel = label,
-                    Views = estimatedViews,
-                    UniqueReaders = uniqueReaders
+                    Views = views,
+                    UniqueReaders = views
                 });
             }
         }
         else if (normalizedPeriod == "yearly")
         {
-            // Last 4 years
-            int currentYear = DateTime.UtcNow.Year;
+            // 4 năm gần nhất
+            int currentYear = now.Year;
             for (int y = currentYear - 3; y <= currentYear; y++)
             {
-                var factor = (y == currentYear) ? 1.0 : (0.3 + (y - (currentYear - 3)) * 0.22);
-                var views = (long)(totalViews * factor);
-                var unique = (long)(views * 0.7);
+                var yearPosts = posts.Where(p => (p.PublishedAt ?? p.CreatedAt).ToUniversalTime().Year == y).ToList();
+                var views = yearPosts.Sum(p => (long)p.ViewCount);
 
                 response.DataPoints.Add(new ViewsTrendPointDto
                 {
                     DateLabel = y.ToString(),
                     Views = views,
-                    UniqueReaders = unique
+                    UniqueReaders = views
                 });
             }
         }
         else
         {
-            // Monthly: 12 months of current year
+            // Mặc định: 12 tháng của năm hiện tại
+            int currentYear = now.Year;
             string[] monthNames = { "Thg 1", "Thg 2", "Thg 3", "Thg 4", "Thg 5", "Thg 6", "Thg 7", "Thg 8", "Thg 9", "Thg 10", "Thg 11", "Thg 12" };
-            double[] monthWeights = { 0.45, 0.52, 0.61, 0.68, 0.74, 0.82, 0.89, 0.95, 1.05, 1.14, 1.25, 1.35 };
 
-            for (int m = 0; m < 12; m++)
+            for (int m = 1; m <= 12; m++)
             {
-                var views = (long)(Math.Max(20, totalViews / 10.0) * monthWeights[m]);
-                var unique = (long)(views * 0.72);
+                var monthPosts = posts.Where(p =>
+                {
+                    var postDate = (p.PublishedAt ?? p.CreatedAt).ToUniversalTime();
+                    return postDate.Year == currentYear && postDate.Month == m;
+                }).ToList();
+
+                var views = monthPosts.Sum(p => (long)p.ViewCount);
 
                 response.DataPoints.Add(new ViewsTrendPointDto
                 {
-                    DateLabel = monthNames[m],
+                    DateLabel = monthNames[m - 1],
                     Views = views,
-                    UniqueReaders = unique
+                    UniqueReaders = views
                 });
             }
         }
@@ -174,6 +185,7 @@ public class AdminAnalyticsService : IAdminAnalyticsService
     {
         int targetYear = year ?? DateTime.UtcNow.Year;
         var comments = await _context.Comments
+            .AsNoTracking()
             .Where(c => c.CreatedAt.Year == targetYear)
             .ToListAsync();
 
@@ -185,13 +197,7 @@ public class AdminAnalyticsService : IAdminAnalyticsService
             var total = comments.Count(c => c.CreatedAt.Month == m);
             var approved = comments.Count(c => c.CreatedAt.Month == m && c.Status == "Approved");
 
-            // If actual DB has few comments, provide a baseline distribution
-            if (total == 0)
-            {
-                total = (int)(Math.Max(1, (m * 2) % 9 + 2));
-                approved = (int)(total * 0.85);
-            }
-
+            // 100% dữ liệu thực từ bảng comments trong database:
             result.Add(new MonthlyCommentsDto
             {
                 Month = m,
