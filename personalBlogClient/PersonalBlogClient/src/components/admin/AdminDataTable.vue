@@ -2,15 +2,20 @@
   <div class="editorial-data-table-wrapper">
     <!-- 1. Single Unified Toolbar Row (Search + Filters + Action Button) -->
     <div class="table-unified-toolbar">
-      <!-- Search Input Box -->
-      <div class="toolbar-search-box">
-        <q-icon name="fa-solid fa-magnifying-glass" size="13px" class="search-icon" />
-        <input :value="search" type="text" :placeholder="searchPlaceholder" class="search-input"
-          @input="$emit('update:search', ($event.target as HTMLInputElement).value)" />
-        <button v-if="search" type="button" class="search-clear-btn" title="Xóa tìm kiếm"
-          @click="$emit('update:search', '')">
-          <q-icon name="fa-solid fa-xmark" size="11px" />
-        </button>
+      <!-- Left Controls Group (Prepend content like Tabs + Search Box) -->
+      <div class="toolbar-left-group">
+        <slot name="prepend-search"></slot>
+
+        <!-- Search Input Box -->
+        <div class="toolbar-search-box">
+          <q-icon name="fa-solid fa-magnifying-glass" size="13px" class="search-icon" />
+          <input :value="search" type="text" :placeholder="searchPlaceholder" class="search-input"
+            @input="$emit('update:search', ($event.target as HTMLInputElement).value)" />
+          <button v-if="search" type="button" class="search-clear-btn" title="Xóa tìm kiếm"
+            @click="$emit('update:search', '')">
+            <q-icon name="fa-solid fa-xmark" size="11px" />
+          </button>
+        </div>
       </div>
 
       <!-- Controls & Actions Group (Dropdowns + Action Buttons) -->
@@ -212,6 +217,15 @@ const paginationPages = computed<(number | string)[]>(() => {
   margin-bottom: 16px;
   flex-wrap: wrap;
   flex-shrink: 0;
+
+  .toolbar-left-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    flex: 1;
+    min-width: 0;
+  }
 
   .toolbar-search-box {
     position: relative;

@@ -73,6 +73,8 @@ builder.Services.AddScoped<IAdminPostService, AdminPostService>();
 builder.Services.AddScoped<IAdminCategoryService, AdminCategoryService>();
 builder.Services.AddScoped<IAdminTagService, AdminTagService>();
 builder.Services.AddScoped<IAdminCommentService, AdminCommentService>();
+builder.Services.AddScoped<IAdminProfileService, AdminProfileService>();
+builder.Services.AddScoped<IAdminAnalyticsService, AdminAnalyticsService>();
 
 // ============================================
 // Swagger
