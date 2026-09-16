@@ -75,6 +75,7 @@ builder.Services.AddScoped<IAdminTagService, AdminTagService>();
 builder.Services.AddScoped<IAdminCommentService, AdminCommentService>();
 builder.Services.AddScoped<IAdminProfileService, AdminProfileService>();
 builder.Services.AddScoped<IAdminAnalyticsService, AdminAnalyticsService>();
+builder.Services.AddScoped<ISiteSettingsService, SiteSettingsService>();
 
 // ============================================
 // Swagger

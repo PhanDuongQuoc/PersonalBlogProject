@@ -1,0 +1,48 @@
+{
+  "General": {
+    "SiteTitle": "PDQ Portfolio \u0026 Tech Blog",
+    "Tagline": "Chia s\u1EBB ki\u1EBFn tr\u00FAc ph\u1EA7n m\u1EC1m, Vue.js, .NET \u0026 Cloud Computing",
+    "SiteDescription": "Kh\u00F4ng gian chia s\u1EBB ki\u1EBFn th\u1EE9c chuy\u00EAn s\u00E2u v\u1EC1 c\u00F4ng ngh\u1EC7, ph\u00E1t tri\u1EC3n ph\u1EA7n m\u1EC1m v\u00E0 h\u00E0nh tr\u00ECnh s\u00E1ng t\u1EA1o k\u1EF9 thu\u1EADt c\u1EE7a Phan Duong Quoc.",
+    "FooterCopyright": "\u00A9 2026 Phan Duong Quoc. All rights reserved.",
+    "LogoText": "P.",
+    "LogoUrl": null,
+    "FaviconUrl": null
+  },
+  "Seo": {
+    "MetaTitleTemplate": "%title% \u00B7 PDQ Blog",
+    "DefaultKeywords": "Vue.js, .NET 9, Clean Architecture, PostgreSQL, Quasar, Tailwind, Frontend, Backend, Software Engineer",
+    "DefaultOgImageUrl": null,
+    "GoogleAnalyticsId": null,
+    "CanonicalBaseUrl": "https://phanduongquoc.dev"
+  },
+  "Reading": {
+    "PostsPerPage": 6,
+    "ShowReadingTime": true,
+    "ShowPublicViewCount": true,
+    "ShowRelatedPosts": true,
+    "ShowAuthorBioInPosts": true
+  },
+  "Comments": {
+    "EnableComments": true,
+    "RequireModeration": true,
+    "AllowGuestComments": false,
+    "ForbiddenKeywords": "spam, scam, qu\u1EA3ng c\u00E1o, c\u1EDD b\u1EA1c, l\u1EEBa \u0111\u1EA3o, casino"
+  },
+  "Contact": {
+    "ContactEmail": "phanduongquoc111@gmail.com",
+    "Phone": "\u002B84 987 654 321",
+    "Location": "H\u1ED3 Ch\u00ED Minh, Vi\u1EC7t Nam",
+    "GithubUrl": "https://github.com/phanduongquoc11",
+    "LinkedinUrl": "https://linkedin.com/in/phanduongquoc",
+    "FacebookUrl": "https://facebook.com/phanduongquoc",
+    "TwitterUrl": "https://twitter.com",
+    "YoutubeUrl": null,
+    "WebsiteUrl": "https://phanduongquoc.dev"
+  },
+  "Maintenance": {
+    "MaintenanceMode": false,
+    "MaintenanceNotice": "H\u1EC7 th\u1ED1ng \u0111ang \u0111\u01B0\u1EE3c b\u1EA3o tr\u00EC n\u00E2ng c\u1EA5p \u0111\u1ECBnh k\u1EF3. Vui l\u00F2ng quay l\u1EA1i sau \u00EDt ph\u00FAt!",
+    "LastCacheClearedAt": null,
+    "LastSettingsUpdatedAt": "2026-09-16T07:26:27.0821631Z"
+  }
+}
