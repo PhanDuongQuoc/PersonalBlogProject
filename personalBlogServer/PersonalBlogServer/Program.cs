@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using PersonalBlogServer.Models;
 using PersonalBlogServer.Services.Admin;
+using PersonalBlogServer.Services.Ai;
 using PersonalBlogServer.Services.Auth;
 using PersonalBlogServer.Services.Public;
 
@@ -76,6 +77,7 @@ builder.Services.AddScoped<IAdminCommentService, AdminCommentService>();
 builder.Services.AddScoped<IAdminProfileService, AdminProfileService>();
 builder.Services.AddScoped<IAdminAnalyticsService, AdminAnalyticsService>();
 builder.Services.AddScoped<ISiteSettingsService, SiteSettingsService>();
+builder.Services.AddHttpClient<IGeminiChatService, GeminiChatService>();
 
 // ============================================
 // Swagger
