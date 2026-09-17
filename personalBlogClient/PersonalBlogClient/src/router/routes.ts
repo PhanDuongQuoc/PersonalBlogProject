@@ -74,6 +74,11 @@ const routes: RouteRecordRaw[] = [
         meta: { requiresAuth: true, title: "Bảo mật & Tài khoản" }
       },
       {
+        path: "contacts",
+        component: () => import("@/pages/admin/AdminContactsPage.vue"),
+        meta: { requiresAuth: true, title: "Hộp thư liên hệ" }
+      },
+      {
         path: "settings",
         component: () => import("@/pages/admin/AdminSettingsPage.vue"),
         meta: { requiresAuth: true, title: "Cài đặt Hệ thống" }

@@ -220,6 +220,7 @@ import { ref, reactive, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useQuasar } from 'quasar';
 import api from '@/boot/ApiGateway/axios';
+import { publicContactService } from '@/services/public-contact.service';
 import PortfolioFooter from '@/components/portfolio/PortfolioFooter.vue';
 import PortfolioLocationMap from '@/components/portfolio/PortfolioLocationMap.vue';
 import PortfolioSectionTitle from '@/components/portfolio/PortfolioSectionTitle.vue';
@@ -255,15 +256,15 @@ const isSubmitting = ref(false);
 const submissionStatus = ref<'idle' | 'success' | 'error'>('idle');
 const errorMessage = ref('');
 
-// 4. Fetch Profile từ API Backend để hiển thị chính xác email, location, social links
-const loadAuthorData = async () => {
+// 4. Fetch Thông tin liên hệ Profile thực tế từ Database
+const fetchContactProfile = async () => {
   try {
     const username = typeof route.query.username === 'string' ? route.query.username : undefined;
     const res = await api.get<PublicLandingResponse>('/public/landing', {
       params: { username }
     });
-    if (res.data?.profile) {
-      contactProfile.name = res.data.profile.name;
+    if (res.data && res.data.profile) {
+      contactProfile.name = res.data.profile.name || contactProfile.name;
       contactProfile.email = res.data.profile.email;
       contactProfile.location = res.data.profile.location || contactProfile.location;
       contactProfile.phone = res.data.profile.phone || contactProfile.phone;
@@ -276,7 +277,7 @@ const loadAuthorData = async () => {
   }
 };
 
-// 5. Xử lý Submit Form qua Web3Forms API
+// 5. Xử lý Submit Form (Lưu Database + Bắn SignalR Real-time + Gửi Web3Forms Email)
 const handleSubmit = async () => {
   if (form.botcheck) return; // Anti-bot honeypot check
   if (!form.name.trim() || !form.email.trim() || !form.message.trim()) return;
@@ -285,52 +286,72 @@ const handleSubmit = async () => {
     isSubmitting.value = true;
     errorMessage.value = '';
 
-    const payload = {
-      access_key: WEB3FORMS_ACCESS_KEY,
-      name: form.name.trim(),
-      email: form.email.trim(),
-      subject: form.subject.trim() || `Tin nhắn liên hệ mới từ ${form.name.trim()} - Personal Blog`,
-      message: form.message.trim(),
-      from_name: 'Personal Portfolio Contact Page'
-    };
-    console.log("Web3Forms payload:", payload);
+    const name = form.name.trim();
+    const email = form.email.trim();
+    const subject = form.subject.trim() || `Tin nhắn liên hệ mới từ ${name} - Personal Blog`;
+    const message = form.message.trim();
 
-    const response = await fetch('https://api.web3forms.com/submit', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json'
-      },
-      body: JSON.stringify(payload)
+    // 1. Lưu vào PostgreSQL Database & Kích hoạt SignalR Real-time sang Admin Dashboard
+    const dbResult = await publicContactService.submitContact({
+      name,
+      email,
+      subject,
+      message,
+      botcheck: form.botcheck
     });
 
-    const result = await response.json();
-    console.log("Web3Forms response status:", response.status, "result:", result);
+    // 2. Gửi thông báo về Gmail của tác giả qua Web3Forms
+    try {
+      const web3Payload = {
+        access_key: WEB3FORMS_ACCESS_KEY,
+        name,
+        email,
+        subject,
+        message,
+        from_name: 'Personal Portfolio Contact Page'
+      };
 
-    if (response.ok && result.success) {
+      fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json'
+        },
+        body: JSON.stringify(web3Payload)
+      }).catch((e) => console.warn('Web3Forms background send warning:', e));
+    } catch (e) {
+      // Non-blocking Web3Forms email delivery
+    }
+
+    if (dbResult.success) {
       submissionStatus.value = 'success';
       $q.notify({
         type: 'positive',
-        message: text.value.contactSuccess,
+        message: text.value.contactSuccess || 'Cảm ơn bạn! Tin nhắn đã được gửi thành công.',
         position: 'top',
         timeout: 4000
       });
+      resetForm();
     } else {
       submissionStatus.value = 'error';
-      const detailError = result.message || text.value.contactError;
-      errorMessage.value = detailError;
-      console.error('Web3Forms Error Detail:', detailError, result);
+      errorMessage.value = dbResult.message || text.value.contactError;
       $q.notify({
         type: 'negative',
-        message: `Gửi tin nhắn thất bại: ${detailError}`,
+        message: errorMessage.value,
         position: 'top',
-        timeout: 5000
+        timeout: 4000
       });
     }
-  } catch (err) {
-    console.error('Web3Forms submit exception:', err);
+  } catch (err: any) {
+    console.error('Submit contact error:', err);
     submissionStatus.value = 'error';
-    errorMessage.value = text.value.contactError;
+    errorMessage.value = err.response?.data?.message || text.value.contactError;
+    $q.notify({
+      type: 'negative',
+      message: errorMessage.value,
+      position: 'top',
+      timeout: 4000
+    });
   } finally {
     isSubmitting.value = false;
   }
@@ -361,7 +382,7 @@ const copyToClipboard = async (textToCopy: string, successMsg: string) => {
 
 onMounted(() => {
   window.scrollTo({ top: 0, behavior: 'instant' });
-  loadAuthorData();
+  fetchContactProfile();
 });
 </script>
 
