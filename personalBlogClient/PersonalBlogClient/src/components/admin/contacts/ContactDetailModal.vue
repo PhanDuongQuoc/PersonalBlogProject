@@ -144,6 +144,7 @@ import type { ContactMessage, ContactStatus } from "@/types/admin-contact";
 import { adminContactService } from "@/services/admin-contact.service";
 import { swalToast, swalError } from "@/utils/swal";
 import { formatDateTime } from "@/utils/date";
+import { replyViaEmail } from "@/utils/email";
 
 const props = defineProps<{
   modelValue: boolean;
@@ -201,12 +202,12 @@ async function handleSaveStatus() {
 
 function openMailClient() {
   if (!props.contact) return;
-  const email = encodeURIComponent(props.contact.email);
-  const subject = encodeURIComponent(`Re: ${props.contact.subject || 'Liên hệ từ PDQ Portfolio'}`);
-  const body = encodeURIComponent(
-    `\n\n---\nTin nhắn gốc từ ${props.contact.name} (${props.contact.email}):\n"${props.contact.message}"`
-  );
-  window.open(`mailto:${email}?subject=${subject}&body=${body}`, "_blank");
+  replyViaEmail({
+    email: props.contact.email,
+    name: props.contact.name,
+    subject: props.contact.subject,
+    message: props.contact.message
+  });
 }
 
 async function copyMessage(text: string) {
