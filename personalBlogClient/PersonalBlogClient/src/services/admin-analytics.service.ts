@@ -4,6 +4,7 @@ import type {
   ViewsTrendData,
   CategoryAnalyticsItem,
   MonthlyCommentsItem,
+  MonthlyContactsItem,
   TopPerformingPost
 } from "@/types/admin-analytics";
 
@@ -25,9 +26,16 @@ export const adminAnalyticsService = {
     return res.data;
   },
 
-  async getCommentsTrend(year?: number): Promise<MonthlyCommentsItem[]> {
+  async getCommentsTrend(period: "7d" | "30d" | "monthly" | "yearly" | string = "monthly"): Promise<MonthlyCommentsItem[]> {
     const res = await axiosInstance.get<MonthlyCommentsItem[]>("/admin/analytics/comments-trend", {
-      params: { year }
+      params: { period }
+    });
+    return res.data;
+  },
+
+  async getContactsTrend(period: "7d" | "30d" | "monthly" | "yearly" | string = "monthly"): Promise<MonthlyContactsItem[]> {
+    const res = await axiosInstance.get<MonthlyContactsItem[]>("/admin/analytics/contacts-trend", {
+      params: { period }
     });
     return res.data;
   },

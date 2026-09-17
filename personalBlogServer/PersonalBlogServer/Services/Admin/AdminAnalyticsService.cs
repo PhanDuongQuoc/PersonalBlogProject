@@ -33,6 +33,10 @@ public class AdminAnalyticsService : IAdminAnalyticsService
         var totalCategories = await _context.Categories.CountAsync();
         var totalTags = await _context.Tags.CountAsync();
 
+        var totalContacts = await _context.ContactMessages.CountAsync();
+        var unreadContacts = await _context.ContactMessages.CountAsync(c => c.Status == "Unread");
+        var repliedContacts = await _context.ContactMessages.CountAsync(c => c.Status == "Replied");
+
         return new AdminAnalyticsSummaryDto
         {
             TotalViews = totalViews,
@@ -45,7 +49,10 @@ public class AdminAnalyticsService : IAdminAnalyticsService
             ApprovedComments = approvedComments,
             PendingComments = pendingComments,
             TotalCategories = totalCategories,
-            TotalTags = totalTags
+            TotalTags = totalTags,
+            TotalContacts = totalContacts,
+            UnreadContacts = unreadContacts,
+            RepliedContacts = repliedContacts
         };
     }
 
@@ -181,30 +188,183 @@ public class AdminAnalyticsService : IAdminAnalyticsService
         return result;
     }
 
-    public async Task<List<MonthlyCommentsDto>> GetMonthlyCommentsAsync(int? year)
+    public async Task<List<MonthlyCommentsDto>> GetMonthlyCommentsAsync(string? period = "monthly", int? year = null)
     {
-        int targetYear = year ?? DateTime.UtcNow.Year;
-        var comments = await _context.Comments
-            .AsNoTracking()
-            .Where(c => c.CreatedAt.Year == targetYear)
-            .ToListAsync();
-
-        string[] monthNames = { "Thg 1", "Thg 2", "Thg 3", "Thg 4", "Thg 5", "Thg 6", "Thg 7", "Thg 8", "Thg 9", "Thg 10", "Thg 11", "Thg 12" };
+        var normalizedPeriod = (period ?? "monthly").ToLower().Trim();
+        var allComments = await _context.Comments.AsNoTracking().ToListAsync();
+        var now = DateTime.UtcNow;
         var result = new List<MonthlyCommentsDto>();
 
-        for (int m = 1; m <= 12; m++)
+        if (normalizedPeriod == "7d")
         {
-            var total = comments.Count(c => c.CreatedAt.Month == m);
-            var approved = comments.Count(c => c.CreatedAt.Month == m && c.Status == "Approved");
-
-            // 100% dữ liệu thực từ bảng comments trong database:
-            result.Add(new MonthlyCommentsDto
+            for (int i = 6; i >= 0; i--)
             {
-                Month = m,
-                MonthLabel = monthNames[m - 1],
-                TotalComments = total,
-                ApprovedComments = approved
-            });
+                var targetDate = now.AddDays(-i).Date;
+                var label = targetDate.ToString("dd/MM");
+                var dayComments = allComments.Where(c => c.CreatedAt.ToUniversalTime().Date == targetDate).ToList();
+
+                result.Add(new MonthlyCommentsDto
+                {
+                    Month = 7 - i,
+                    MonthLabel = label,
+                    TotalComments = dayComments.Count,
+                    ApprovedComments = dayComments.Count(c => c.Status == "Approved")
+                });
+            }
+        }
+        else if (normalizedPeriod == "30d")
+        {
+            for (int i = 5; i >= 0; i--)
+            {
+                var startDate = now.AddDays(-(i + 1) * 5).Date;
+                var endDate = now.AddDays(-i * 5).Date;
+                var label = endDate.ToString("dd/MM");
+
+                var intervalComments = allComments.Where(c =>
+                {
+                    var cDate = c.CreatedAt.ToUniversalTime().Date;
+                    return cDate > startDate && cDate <= endDate;
+                }).ToList();
+
+                result.Add(new MonthlyCommentsDto
+                {
+                    Month = 6 - i,
+                    MonthLabel = label,
+                    TotalComments = intervalComments.Count,
+                    ApprovedComments = intervalComments.Count(c => c.Status == "Approved")
+                });
+            }
+        }
+        else if (normalizedPeriod == "yearly")
+        {
+            int currentYear = now.Year;
+            for (int y = currentYear - 3; y <= currentYear; y++)
+            {
+                var yearComments = allComments.Where(c => c.CreatedAt.ToUniversalTime().Year == y).ToList();
+
+                result.Add(new MonthlyCommentsDto
+                {
+                    Month = y,
+                    MonthLabel = y.ToString(),
+                    TotalComments = yearComments.Count,
+                    ApprovedComments = yearComments.Count(c => c.Status == "Approved")
+                });
+            }
+        }
+        else
+        {
+            int targetYear = year ?? (int.TryParse(normalizedPeriod, out int parsedY) ? parsedY : now.Year);
+            string[] monthNames = { "Thg 1", "Thg 2", "Thg 3", "Thg 4", "Thg 5", "Thg 6", "Thg 7", "Thg 8", "Thg 9", "Thg 10", "Thg 11", "Thg 12" };
+
+            for (int m = 1; m <= 12; m++)
+            {
+                var monthComments = allComments.Where(c =>
+                {
+                    var cDate = c.CreatedAt.ToUniversalTime();
+                    return cDate.Year == targetYear && cDate.Month == m;
+                }).ToList();
+
+                result.Add(new MonthlyCommentsDto
+                {
+                    Month = m,
+                    MonthLabel = monthNames[m - 1],
+                    TotalComments = monthComments.Count,
+                    ApprovedComments = monthComments.Count(c => c.Status == "Approved")
+                });
+            }
+        }
+
+        return result;
+    }
+
+    public async Task<List<MonthlyContactsDto>> GetMonthlyContactsAsync(string? period = "monthly", int? year = null)
+    {
+        var normalizedPeriod = (period ?? "monthly").ToLower().Trim();
+        var allMessages = await _context.ContactMessages.AsNoTracking().ToListAsync();
+        var now = DateTime.UtcNow;
+        var result = new List<MonthlyContactsDto>();
+
+        if (normalizedPeriod == "7d")
+        {
+            for (int i = 6; i >= 0; i--)
+            {
+                var targetDate = now.AddDays(-i).Date;
+                var label = targetDate.ToString("dd/MM");
+                var dayMessages = allMessages.Where(c => (c.CreatedAt ?? now).ToUniversalTime().Date == targetDate).ToList();
+
+                result.Add(new MonthlyContactsDto
+                {
+                    Month = 7 - i,
+                    MonthLabel = label,
+                    TotalMessages = dayMessages.Count,
+                    RepliedMessages = dayMessages.Count(c => c.Status == "Replied"),
+                    UnreadMessages = dayMessages.Count(c => c.Status == "Unread")
+                });
+            }
+        }
+        else if (normalizedPeriod == "30d")
+        {
+            for (int i = 5; i >= 0; i--)
+            {
+                var startDate = now.AddDays(-(i + 1) * 5).Date;
+                var endDate = now.AddDays(-i * 5).Date;
+                var label = endDate.ToString("dd/MM");
+
+                var intervalMessages = allMessages.Where(c =>
+                {
+                    var cDate = (c.CreatedAt ?? now).ToUniversalTime().Date;
+                    return cDate > startDate && cDate <= endDate;
+                }).ToList();
+
+                result.Add(new MonthlyContactsDto
+                {
+                    Month = 6 - i,
+                    MonthLabel = label,
+                    TotalMessages = intervalMessages.Count,
+                    RepliedMessages = intervalMessages.Count(c => c.Status == "Replied"),
+                    UnreadMessages = intervalMessages.Count(c => c.Status == "Unread")
+                });
+            }
+        }
+        else if (normalizedPeriod == "yearly")
+        {
+            int currentYear = now.Year;
+            for (int y = currentYear - 3; y <= currentYear; y++)
+            {
+                var yearMessages = allMessages.Where(c => (c.CreatedAt ?? now).ToUniversalTime().Year == y).ToList();
+
+                result.Add(new MonthlyContactsDto
+                {
+                    Month = y,
+                    MonthLabel = y.ToString(),
+                    TotalMessages = yearMessages.Count,
+                    RepliedMessages = yearMessages.Count(c => c.Status == "Replied"),
+                    UnreadMessages = yearMessages.Count(c => c.Status == "Unread")
+                });
+            }
+        }
+        else
+        {
+            int targetYear = year ?? (int.TryParse(normalizedPeriod, out int parsedY) ? parsedY : now.Year);
+            string[] monthNames = { "Thg 1", "Thg 2", "Thg 3", "Thg 4", "Thg 5", "Thg 6", "Thg 7", "Thg 8", "Thg 9", "Thg 10", "Thg 11", "Thg 12" };
+
+            for (int m = 1; m <= 12; m++)
+            {
+                var monthMessages = allMessages.Where(c =>
+                {
+                    var cDate = (c.CreatedAt ?? now).ToUniversalTime();
+                    return cDate.Year == targetYear && cDate.Month == m;
+                }).ToList();
+
+                result.Add(new MonthlyContactsDto
+                {
+                    Month = m,
+                    MonthLabel = monthNames[m - 1],
+                    TotalMessages = monthMessages.Count,
+                    RepliedMessages = monthMessages.Count(c => c.Status == "Replied"),
+                    UnreadMessages = monthMessages.Count(c => c.Status == "Unread")
+                });
+            }
         }
 
         return result;

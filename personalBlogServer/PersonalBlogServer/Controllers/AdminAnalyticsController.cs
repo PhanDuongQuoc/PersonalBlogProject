@@ -38,9 +38,16 @@ public class AdminAnalyticsController : ControllerBase
     }
 
     [HttpGet("comments-trend")]
-    public async Task<IActionResult> GetCommentsTrend([FromQuery] int? year)
+    public async Task<IActionResult> GetCommentsTrend([FromQuery] string? period, [FromQuery] int? year)
     {
-        var trend = await _analyticsService.GetMonthlyCommentsAsync(year);
+        var trend = await _analyticsService.GetMonthlyCommentsAsync(period ?? "monthly", year);
+        return Ok(trend);
+    }
+
+    [HttpGet("contacts-trend")]
+    public async Task<IActionResult> GetContactsTrend([FromQuery] string? period, [FromQuery] int? year)
+    {
+        var trend = await _analyticsService.GetMonthlyContactsAsync(period ?? "monthly", year);
         return Ok(trend);
     }
 

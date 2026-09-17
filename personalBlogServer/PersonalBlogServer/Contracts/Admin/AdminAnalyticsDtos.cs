@@ -16,6 +16,9 @@ public class AdminAnalyticsSummaryDto
     public int PendingComments { get; set; }
     public int TotalCategories { get; set; }
     public int TotalTags { get; set; }
+    public int TotalContacts { get; set; }
+    public int UnreadContacts { get; set; }
+    public int RepliedContacts { get; set; }
 }
 
 public class ViewsTrendPointDto
@@ -48,6 +51,15 @@ public class MonthlyCommentsDto
     public string MonthLabel { get; set; } = string.Empty;
     public int TotalComments { get; set; }
     public int ApprovedComments { get; set; }
+}
+
+public class MonthlyContactsDto
+{
+    public int Month { get; set; }
+    public string MonthLabel { get; set; } = string.Empty;
+    public int TotalMessages { get; set; }
+    public int RepliedMessages { get; set; }
+    public int UnreadMessages { get; set; }
 }
 
 public class TopPerformingPostDto

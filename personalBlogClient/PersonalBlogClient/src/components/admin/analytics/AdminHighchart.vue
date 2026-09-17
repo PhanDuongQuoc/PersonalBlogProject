@@ -107,7 +107,7 @@ watch(
   () => props.options,
   (newOptions) => {
     if (chartInstance && newOptions) {
-      chartInstance.update(newOptions, true, true);
+      chartInstance.update(newOptions, true, false);
     } else if (!chartInstance && chartContainer.value) {
       initChart();
     }

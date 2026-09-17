@@ -3,6 +3,7 @@ import type {
   AdminAnalyticsSummary,
   CategoryAnalyticsItem,
   MonthlyCommentsItem,
+  MonthlyContactsItem,
   ViewsTrendPoint
 } from "@/types/admin-analytics";
 
@@ -489,3 +490,81 @@ export async function exportPostStatusPptx(summary: AdminAnalyticsSummary) {
 
   await pptx.writeFile({ fileName: "post-status-distribution.pptx" });
 }
+
+/**
+ * 6. Xuất biểu đồ Thống kê Email & Hộp thư Liên hệ (Contacts Trend PPTX)
+ */
+export async function exportContactsTrendPptx(
+  contactsData: MonthlyContactsItem[],
+  year: string | number
+) {
+  const pptx = new pptxgen();
+  pptx.layout = "LAYOUT_16x9";
+  pptx.title = `Thống kê Email & Hộp thư Liên hệ Năm ${year}`;
+
+  const slide = pptx.addSlide();
+  slide.background = { color: "F8FAFC" };
+
+  slide.addText(`THỐNG KÊ EMAIL & HỘP THƯ LIÊN HỆ NĂM ${year}`, {
+    x: 0.8,
+    y: 0.5,
+    w: 8.4,
+    h: 0.5,
+    fontSize: 18,
+    fontFace: "Arial",
+    bold: true,
+    color: BRAND_ROSE
+  });
+
+  const months = contactsData.map((c) => c.monthLabel);
+  const totalMessages = contactsData.map((c) => c.totalMessages);
+  const repliedMessages = contactsData.map((c) => c.repliedMessages);
+  const unreadMessages = contactsData.map((c) => c.unreadMessages);
+
+  if (months.length > 0) {
+    const chartData = [
+      {
+        name: "Tổng email / tin nhắn nhận",
+        labels: months,
+        values: totalMessages
+      },
+      {
+        name: "Đã phản hồi",
+        labels: months,
+        values: repliedMessages
+      },
+      {
+        name: "Chưa đọc",
+        labels: months,
+        values: unreadMessages
+      }
+    ];
+
+    slide.addChart(pptx.ChartType.line, chartData, {
+      x: 0.8,
+      y: 1.1,
+      w: 8.4,
+      h: 3.8,
+      showTitle: false,
+      showLegend: true,
+      legendPos: "b",
+      chartColors: [BRAND_ROSE, BRAND_EMERALD, BRAND_AMBER],
+      lineSize: 3,
+      lineSmooth: true
+    });
+  }
+
+  slide.addText("PDQ Portfolio Blog System · Xuất slide định dạng PowerPoint (.pptx)", {
+    x: 0.8,
+    y: 5.0,
+    w: 8.4,
+    h: 0.3,
+    fontSize: 9,
+    fontFace: "Arial",
+    color: "94A3B8",
+    align: "right"
+  });
+
+  await pptx.writeFile({ fileName: `monthly-contacts-${year}.pptx` });
+}
+

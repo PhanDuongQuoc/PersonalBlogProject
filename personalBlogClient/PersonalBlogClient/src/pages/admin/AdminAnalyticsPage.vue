@@ -44,9 +44,12 @@
       </div>
     </section>
 
-    <!-- 4. Grid Row 2: Full Width Monthly Reader Engagement Chart -->
+    <!-- 4. Grid Row 2: Reader Engagement & Contact Email Channels (2 Cols) -->
     <section class="analytics-section">
-      <CommentsEngagementChart ref="commentsRef" />
+      <div class="grid-col">
+        <CommentsEngagementChart ref="commentsRef" />
+      </div>
+
     </section>
 
     <!-- 5. Grid Row 3: Post Status Donut (Left) & Top Performing Posts (Right) -->
@@ -58,6 +61,11 @@
         <TopPostsTableCard />
       </div>
     </section>
+    <section class="analytics-section">
+      <div class="grid-col">
+        <ContactsTrendChart ref="contactsTrendRef" />
+      </div>
+    </section>
   </q-page>
 </template>
 
@@ -67,6 +75,7 @@ import AnalyticsStatCards from "@/components/admin/analytics/AnalyticsStatCards.
 import ViewsTrendChart from "@/components/admin/analytics/ViewsTrendChart.vue";
 import CategoryDistributionChart from "@/components/admin/analytics/CategoryDistributionChart.vue";
 import CommentsEngagementChart from "@/components/admin/analytics/CommentsEngagementChart.vue";
+import ContactsTrendChart from "@/components/admin/analytics/ContactsTrendChart.vue";
 import PostStatusDonutChart from "@/components/admin/analytics/PostStatusDonutChart.vue";
 import TopPostsTableCard from "@/components/admin/analytics/TopPostsTableCard.vue";
 import type { AdminAnalyticsSummary } from "@/types/admin-analytics";
@@ -92,6 +101,7 @@ const summary = reactive<AdminAnalyticsSummary>({
 const viewsTrendRef = ref<any>(null);
 const categoryDistRef = ref<any>(null);
 const commentsRef = ref<any>(null);
+const contactsTrendRef = ref<any>(null);
 
 async function fetchSummary() {
   try {
@@ -110,6 +120,7 @@ function refreshAllData() {
   if (viewsTrendRef.value?.fetchTrendData) viewsTrendRef.value.fetchTrendData();
   if (categoryDistRef.value?.fetchCategoriesData) categoryDistRef.value.fetchCategoriesData();
   if (commentsRef.value?.fetchCommentsData) commentsRef.value.fetchCommentsData();
+  if (contactsTrendRef.value?.fetchContactsData) contactsTrendRef.value.fetchContactsData();
   swalToast("Đã làm mới dữ liệu thống kê!", "success");
 }
 
