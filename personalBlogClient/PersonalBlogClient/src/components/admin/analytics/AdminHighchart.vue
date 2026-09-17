@@ -48,6 +48,18 @@ function getBaseThemeOptions(): Highcharts.Options {
     credits: {
       enabled: false
     },
+    loading: {
+      style: {
+        backgroundColor: dark ? "rgba(6, 14, 32, 0.9)" : "rgba(255, 255, 255, 0.9)",
+        opacity: 1
+      },
+      labelStyle: {
+        color: dark ? "#dae2fd" : "#0b1326",
+        fontFamily: "var(--font-headline, sans-serif)",
+        fontSize: "13px",
+        fontWeight: "600"
+      }
+    },
     tooltip: {
       backgroundColor: dark ? "#0b1326" : "#ffffff",
       borderColor: dark ? "rgba(248, 250, 252, 0.15)" : "#e2e8f0",
@@ -199,28 +211,29 @@ defineExpose({
 .chart-loading-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(255, 255, 255, 0.78);
-  backdrop-filter: blur(2px);
+  background: var(--bg-surface-lowest, #060e20);
+  backdrop-filter: blur(4px);
   z-index: 5;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 10px;
+  border-radius: 12px;
 
   .loading-text {
     font-family: var(--font-headline, sans-serif);
     font-size: 13px;
     font-weight: 600;
-    color: #64748b;
+    color: var(--text-primary, #dae2fd);
   }
 }
 
-:global(body:not(.portfolio-light)) .chart-loading-overlay {
-  background: rgba(11, 19, 38, 0.85);
+:global(body.portfolio-light) .admin-highchart-wrapper .chart-loading-overlay {
+  background: rgba(255, 255, 255, 0.88);
 
   .loading-text {
-    color: #dae2fd;
+    color: #64748b;
   }
 }
 </style>

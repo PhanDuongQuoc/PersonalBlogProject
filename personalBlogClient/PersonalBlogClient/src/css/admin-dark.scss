@@ -2176,4 +2176,40 @@ body:not(.portfolio-light) {
       color: #94a3b8 !important;
     }
   }
+
+  /* 24. Analytics, Charts & Loading Overlays */
+  .analytics-chart-card,
+  .top-posts-table-card {
+    background: #0b1326 !important;
+    border-color: rgba(248, 250, 252, 0.08) !important;
+    color: #dae2fd !important;
+
+    .chart-title,
+    .card-title {
+      color: #dae2fd !important;
+    }
+  }
+
+  .chart-loading-overlay,
+  .table-loading,
+  .page-loading-box,
+  .highcharts-loading {
+    background: rgba(6, 14, 32, 0.9) !important;
+    color: #dae2fd !important;
+
+    .loading-text,
+    span {
+      color: #dae2fd !important;
+    }
+  }
+
+  .admin-highchart-wrapper {
+    background: transparent !important;
+  }
+
+  .highcharts-container,
+  .highcharts-root {
+    background: transparent !important;
+  }
 }
+
