@@ -161,6 +161,7 @@ import { adminContactService } from "@/services/admin-contact.service";
 import { signalRService } from "@/services/signalr.service";
 import { swalConfirm, swalToast, swalError } from "@/utils/swal";
 import { formatDateTime, formatFullDateTime } from "@/utils/date";
+import { replyViaEmail } from "@/utils/email";
 
 const $q = useQuasar();
 
@@ -271,12 +272,12 @@ async function handleSelectMessage(item: ContactMessage) {
 }
 
 function handleQuickReply(item: ContactMessage) {
-  const email = encodeURIComponent(item.email);
-  const subject = encodeURIComponent(`Re: ${item.subject || "Liên hệ từ PDQ Portfolio"}`);
-  const body = encodeURIComponent(
-    `\n\n---\nTin nhắn gốc từ ${item.name} (${item.email}):\n"${item.message}"`
-  );
-  window.open(`mailto:${email}?subject=${subject}&body=${body}`, "_blank");
+  replyViaEmail({
+    email: item.email,
+    name: item.name,
+    subject: item.subject,
+    message: item.message
+  });
 }
 
 function handleStatusUpdated(updated: ContactMessage) {
