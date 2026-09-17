@@ -155,8 +155,8 @@ function formatDate(dateStr?: string | null): string {
 
 <style scoped lang="scss">
 .settings-card {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
+  background: var(--bg-surface-low, #ffffff);
+  border: 1px solid var(--border-hairline, #e2e8f0);
   border-radius: 16px;
   padding: 24px;
   box-shadow: 0 4px 20px rgba(11, 19, 38, 0.03);
@@ -164,7 +164,7 @@ function formatDate(dateStr?: string | null): string {
 
   &:hover {
     box-shadow: 0 8px 26px rgba(11, 19, 38, 0.06);
-    border-color: #cbd5e1;
+    border-color: var(--border-subtle, #cbd5e1);
   }
 }
 
@@ -190,9 +190,9 @@ function formatDate(dateStr?: string | null): string {
       flex-shrink: 0;
 
       &.icon-purple {
-        background: #f5f3ff;
+        background: rgba(124, 58, 237, 0.12);
         color: #7c3aed;
-        border: 1px solid #ede9fe;
+        border: 1px solid rgba(124, 58, 237, 0.25);
       }
     }
 
@@ -200,14 +200,14 @@ function formatDate(dateStr?: string | null): string {
       font-family: var(--font-headline, sans-serif);
       font-size: 16px;
       font-weight: 700;
-      color: #0b1326;
+      color: var(--text-primary, #0b1326);
       margin: 0 0 2px;
     }
 
     .card-subtitle {
       font-family: var(--font-body, sans-serif);
       font-size: 12.5px;
-      color: #64748b;
+      color: var(--text-muted, #64748b);
       margin: 0;
     }
   }
@@ -216,9 +216,9 @@ function formatDate(dateStr?: string | null): string {
     font-family: var(--font-mono, monospace);
     font-size: 10.5px;
     font-weight: 700;
-    background: #f8fafc;
-    color: #475569;
-    border: 1px solid #e2e8f0;
+    background: var(--bg-surface-lowest, #f8fafc);
+    color: var(--text-secondary, #475569);
+    border: 1px solid var(--border-hairline, #e2e8f0);
     padding: 3px 8px;
     border-radius: 6px;
   }
@@ -231,15 +231,15 @@ function formatDate(dateStr?: string | null): string {
 }
 
 .maintenance-toggle-box {
-  background: #f8fafc;
-  border: 1px solid #f1f5f9;
+  background: var(--bg-surface-lowest, #f8fafc);
+  border: 1px solid var(--border-hairline, #f1f5f9);
   border-radius: 12px;
   padding: 14px 16px;
   transition: all 0.2s ease;
 
   &.in-maintenance {
-    background: #fffbeb;
-    border-color: #fde68a;
+    background: rgba(245, 158, 11, 0.1);
+    border-color: rgba(245, 158, 11, 0.3);
   }
 
   .toggle-row {
@@ -256,7 +256,7 @@ function formatDate(dateStr?: string | null): string {
         font-family: var(--font-headline, sans-serif);
         font-size: 13.5px;
         font-weight: 700;
-        color: #0b1326;
+        color: var(--text-primary, #0b1326);
         margin-bottom: 2px;
         display: flex;
         align-items: center;
@@ -265,7 +265,7 @@ function formatDate(dateStr?: string | null): string {
       .toggle-desc {
         font-family: var(--font-body, sans-serif);
         font-size: 12px;
-        color: #64748b;
+        color: var(--text-muted, #64748b);
       }
     }
   }
@@ -273,7 +273,7 @@ function formatDate(dateStr?: string | null): string {
   .maintenance-notice-field {
     margin-top: 12px;
     padding-top: 12px;
-    border-top: 1px dashed #fed7aa;
+    border-top: 1px dashed rgba(245, 158, 11, 0.3);
     display: flex;
     flex-direction: column;
     gap: 6px;
@@ -281,17 +281,17 @@ function formatDate(dateStr?: string | null): string {
     .form-label {
       font-size: 12.5px;
       font-weight: 700;
-      color: #92400e;
+      color: #d97706;
     }
 
     .form-input {
       width: 100%;
-      background: #ffffff;
-      border: 1px solid #fcd34d;
+      background: var(--bg-surface-low, #ffffff);
+      border: 1px solid rgba(245, 158, 11, 0.4);
       border-radius: 8px;
       padding: 8px 12px;
       font-size: 13px;
-      color: #0b1326;
+      color: var(--text-primary, #0b1326);
       outline: none;
 
       &:focus {
@@ -315,14 +315,14 @@ function formatDate(dateStr?: string | null): string {
     align-items: center;
     gap: 12px;
     padding: 14px 16px;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
+    background: var(--bg-surface-lowest, #f8fafc);
+    border: 1px solid var(--border-hairline, #e2e8f0);
     border-radius: 12px;
     transition: all 0.2s ease;
 
     &:hover {
-      background: #ffffff;
-      border-color: #cbd5e1;
+      background: var(--bg-surface-low, #ffffff);
+      border-color: var(--border-subtle, #cbd5e1);
     }
 
     .utility-icon {
@@ -335,12 +335,12 @@ function formatDate(dateStr?: string | null): string {
       flex-shrink: 0;
 
       &.icon-rose {
-        background: #fdf2f6;
+        background: rgba(223, 38, 106, 0.12);
         color: #df266a;
       }
 
       &.icon-indigo {
-        background: #eef2ff;
+        background: rgba(79, 70, 229, 0.12);
         color: #4f46e5;
       }
     }
@@ -353,14 +353,14 @@ function formatDate(dateStr?: string | null): string {
         font-family: var(--font-headline, sans-serif);
         font-size: 13px;
         font-weight: 700;
-        color: #0b1326;
+        color: var(--text-primary, #0b1326);
         margin-bottom: 2px;
       }
 
       .utility-desc {
         font-family: var(--font-body, sans-serif);
         font-size: 11.5px;
-        color: #64748b;
+        color: var(--text-muted, #64748b);
         line-height: 1.35;
       }
     }
@@ -379,9 +379,9 @@ function formatDate(dateStr?: string | null): string {
       flex-shrink: 0;
 
       &.btn-clear-cache {
-        background: #fdf2f6;
+        background: rgba(223, 38, 106, 0.12);
         color: #df266a;
-        border: 1px solid #fce7f3;
+        border: 1px solid rgba(223, 38, 106, 0.25);
 
         &:hover:not(:disabled) {
           background: #df266a;
@@ -390,9 +390,9 @@ function formatDate(dateStr?: string | null): string {
       }
 
       &.btn-export-config {
-        background: #eef2ff;
+        background: rgba(79, 70, 229, 0.12);
         color: #4f46e5;
-        border: 1px solid #e0e7ff;
+        border: 1px solid rgba(79, 70, 229, 0.25);
 
         &:hover {
           background: #4f46e5;
@@ -414,7 +414,7 @@ function formatDate(dateStr?: string | null): string {
   justify-content: space-between;
   gap: 16px;
   padding-top: 12px;
-  border-top: 1px solid #f1f5f9;
+  border-top: 1px solid var(--border-hairline, #f1f5f9);
   font-size: 12px;
   flex-wrap: wrap;
 
@@ -424,11 +424,11 @@ function formatDate(dateStr?: string | null): string {
     gap: 6px;
 
     .ts-lbl {
-      color: #64748b;
+      color: var(--text-muted, #64748b);
     }
 
     .ts-val {
-      color: #0b1326;
+      color: var(--text-primary, #0b1326);
       font-weight: 600;
 
       &.font-mono {

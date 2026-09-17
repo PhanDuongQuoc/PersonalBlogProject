@@ -293,19 +293,22 @@ onBeforeUnmount(() => {
 
 .desktop-nav a {
   font-family: var(--font-headline);
-  color: var(--text-secondary);
+  color: var(--text-primary);
+  opacity: 0.85;
   font-size: 0.88rem;
   font-weight: 600;
   text-decoration: none;
   padding: 24px 0;
   position: relative;
-  transition: color 0.2s ease;
+  transition: all 0.2s ease;
 
   &:hover {
+    opacity: 1;
     color: var(--accent-primary);
   }
 
   &.active {
+    opacity: 1;
     color: var(--accent-primary);
 
     &::after {
@@ -333,10 +336,12 @@ onBeforeUnmount(() => {
   :deep(.q-btn) {
     min-height: 28px;
     padding: 0 8px;
-    color: var(--text-secondary);
+    color: var(--text-primary);
+    opacity: 0.85;
   }
 
   :deep(.q-btn--active) {
+    opacity: 1;
     background: var(--accent-primary);
     color: var(--accent-on-primary);
     font-weight: 800;
@@ -344,11 +349,13 @@ onBeforeUnmount(() => {
 }
 
 .theme-button {
-  color: var(--text-secondary);
+  color: var(--text-primary);
+  opacity: 0.85;
   margin-right: 16px;
-  transition: color 0.2s ease, transform 0.2s ease;
+  transition: color 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
 
   &:hover {
+    opacity: 1;
     color: var(--accent-primary);
     transform: rotate(15deg);
   }
@@ -429,7 +436,8 @@ onBeforeUnmount(() => {
   font-family: var(--font-headline);
   font-size: 0.95rem;
   font-weight: 600;
-  color: var(--text-secondary);
+  color: var(--text-primary);
+  opacity: 0.9;
   text-decoration: none;
   transition: all 0.2s ease;
 
@@ -440,6 +448,7 @@ onBeforeUnmount(() => {
 
   &:hover,
   &.active {
+    opacity: 1;
     background: var(--accent-primary-container);
     color: var(--accent-primary);
 
@@ -463,7 +472,7 @@ onBeforeUnmount(() => {
   align-items: center;
   justify-content: space-between;
   font-size: 0.85rem;
-  color: var(--text-secondary);
+  color: var(--text-primary);
 }
 
 .drawer-theme {

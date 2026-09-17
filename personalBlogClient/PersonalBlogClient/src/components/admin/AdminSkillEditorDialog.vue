@@ -451,8 +451,8 @@ async function handleSubmit() {
 
 /* Preview Card */
 .skill-preview-card {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
+  background: var(--bg-surface-low, #ffffff);
+  border: 1px solid var(--border-hairline, #e2e8f0);
   border-radius: 12px;
   padding: 16px;
   display: flex;
@@ -463,7 +463,7 @@ async function handleSubmit() {
     font-family: var(--font-mono, monospace);
     font-size: 10.5px;
     font-weight: 700;
-    color: #64748b;
+    color: var(--text-secondary, #64748b);
     letter-spacing: 0.05em;
   }
 
@@ -471,8 +471,8 @@ async function handleSubmit() {
     display: flex;
     align-items: center;
     gap: 14px;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
+    background: var(--bg-surface-lowest, #f8fafc);
+    border: 1px solid var(--border-hairline, #e2e8f0);
     border-radius: 10px;
     padding: 12px 16px;
 
@@ -480,8 +480,8 @@ async function handleSubmit() {
       width: 40px;
       height: 40px;
       border-radius: 10px;
-      background: #ffffff;
-      border: 1px solid #e2e8f0;
+      background: var(--bg-surface-low, #ffffff);
+      border: 1px solid var(--border-hairline, #e2e8f0);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -504,21 +504,21 @@ async function handleSubmit() {
           font-family: var(--font-headline, sans-serif);
           font-size: 14px;
           font-weight: 700;
-          color: #0b1326;
+          color: var(--text-primary, #0b1326);
         }
 
         .preview-percent {
           font-family: var(--font-mono, monospace);
           font-size: 12px;
           font-weight: 700;
-          color: #64748b;
+          color: var(--text-secondary, #64748b);
         }
       }
 
       .preview-progress-bar {
         width: 100%;
         height: 6px;
-        background: #e2e8f0;
+        background: var(--border-hairline, #e2e8f0);
         border-radius: 9999px;
         overflow: hidden;
 

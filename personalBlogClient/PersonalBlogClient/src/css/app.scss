@@ -10,13 +10,13 @@
   --font-mono: 'JetBrains Mono', monospace;
 
   /* Dark Theme Tokens (Default) */
-  --bg-canvas: #0b1326;
+  --bg-canvas: #060e20;
   --bg-surface: #0b1326;
   --bg-surface-lowest: #060e20;
-  --bg-surface-low: #131b2e;
-  --bg-surface-container: #171f33;
-  --bg-surface-high: #222a3d;
-  --bg-surface-highest: #2d3449;
+  --bg-surface-low: #0b1326;
+  --bg-surface-container: #131b2e;
+  --bg-surface-high: #171f33;
+  --bg-surface-highest: #222a3d;
 
   --text-primary: #dae2fd;
   --text-secondary: #94a3b8;
@@ -63,6 +63,15 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+#q-app,
+.q-layout,
+.portfolio-layout,
+.portfolio-page,
+.q-page-container {
+  background: var(--bg-canvas);
+  background-color: var(--bg-canvas);
 }
 
 /* Headings Typography Mandate: Plus Jakarta Sans with negative letter-spacing */
@@ -393,4 +402,8 @@ body.portfolio-light {
   font-size: 13.5px !important;
   font-weight: 600 !important;
 }
+
+/* Import Admin Dark Mode Styles */
+@import './admin-dark.scss';
+
 

@@ -221,7 +221,7 @@ const userInitial = computed(() => {
     font-family: var(--font-headline, sans-serif);
     font-size: 26px;
     font-weight: 800;
-    color: #0b1326;
+    color: var(--text-primary, #0b1326);
     letter-spacing: -0.025em;
     margin: 0 0 10px;
     line-height: 1.25;
@@ -230,7 +230,7 @@ const userInitial = computed(() => {
   .hero-description {
     font-family: var(--font-body, sans-serif);
     font-size: 14.5px;
-    color: #475569;
+    color: var(--text-secondary, #475569);
     line-height: 1.6;
     margin: 0 0 24px;
   }
@@ -270,17 +270,17 @@ const userInitial = computed(() => {
       font-family: var(--font-headline, sans-serif);
       font-size: 13.5px;
       font-weight: 700;
-      color: #4f46e5;
-      background: #eef2ff;
-      border: 1px solid #c7d2fe;
+      color: #818cf8;
+      background: rgba(99, 102, 241, 0.15);
+      border: 1px solid rgba(99, 102, 241, 0.3);
       padding: 9px 16px;
       border-radius: 9999px;
       text-decoration: none;
       transition: all 0.2s ease;
 
       &:hover {
-        background: #e0e7ff;
-        border-color: #a5b4fc;
+        background: rgba(99, 102, 241, 0.25);
+        border-color: #818cf8;
         transform: translateY(-1px);
       }
     }
@@ -292,7 +292,7 @@ const userInitial = computed(() => {
       font-family: var(--font-headline, sans-serif);
       font-size: 13.5px;
       font-weight: 600;
-      color: #64748b;
+      color: var(--text-muted, #64748b);
       padding: 9px 12px;
       text-decoration: none;
       transition: all 0.2s ease;
@@ -308,8 +308,8 @@ const userInitial = computed(() => {
   display: flex;
   align-items: center;
   gap: 16px;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
+  background: var(--bg-surface-low, #f8fafc);
+  border: 1px solid var(--border-hairline, #e2e8f0);
   border-radius: 14px;
   padding: 18px 22px;
   min-width: 250px;
@@ -343,7 +343,7 @@ const userInitial = computed(() => {
     .author-name {
       font-size: 14.5px;
       font-weight: 700;
-      color: #0b1326;
+      color: var(--text-primary, #0b1326);
     }
 
     .author-role-badge {
@@ -351,7 +351,7 @@ const userInitial = computed(() => {
       font-size: 10px;
       font-weight: 700;
       color: #df266a;
-      background: #fdf2f6;
+      background: rgba(223, 38, 106, 0.12);
       border: 1px solid rgba(223, 38, 106, 0.2);
       padding: 1px 6px;
       border-radius: 4px;
@@ -364,7 +364,7 @@ const userInitial = computed(() => {
 
     .author-email {
       font-size: 11.5px;
-      color: #64748b;
+      color: var(--text-muted, #64748b);
     }
   }
 }
@@ -389,7 +389,7 @@ const userInitial = computed(() => {
       font-size: 11.5px;
       font-weight: 700;
       letter-spacing: 0.06em;
-      color: #64748b;
+      color: var(--text-muted, #64748b);
       text-transform: uppercase;
     }
   }
@@ -402,8 +402,8 @@ const userInitial = computed(() => {
 }
 
 .management-tile {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
+  background: var(--bg-surface-low, #ffffff);
+  border: 1px solid var(--border-hairline, #e2e8f0);
   border-radius: 14px;
   padding: 22px 24px;
   display: flex;
@@ -428,27 +428,27 @@ const userInitial = computed(() => {
       transition: all 0.2s ease;
 
       &.icon-rose {
-        background: #fdf2f6;
+        background: rgba(223, 38, 106, 0.12);
         color: #df266a;
-        border: 1px solid #fce7f3;
+        border: 1px solid rgba(223, 38, 106, 0.25);
       }
 
       &.icon-indigo {
-        background: #eef2ff;
-        color: #4f46e5;
-        border: 1px solid #e0e7ff;
+        background: rgba(99, 102, 241, 0.12);
+        color: #818cf8;
+        border: 1px solid rgba(99, 102, 241, 0.25);
       }
 
       &.icon-purple {
-        background: #faf5ff;
-        color: #9333ea;
-        border: 1px solid #f3e8ff;
+        background: rgba(168, 85, 247, 0.12);
+        color: #c084fc;
+        border: 1px solid rgba(168, 85, 247, 0.25);
       }
 
       &.icon-emerald {
-        background: #ecfdf5;
-        color: #059669;
-        border: 1px solid #d1fae5;
+        background: rgba(16, 185, 129, 0.12);
+        color: #10b981;
+        border: 1px solid rgba(16, 185, 129, 0.25);
       }
     }
 
@@ -460,27 +460,27 @@ const userInitial = computed(() => {
       border-radius: 6px;
 
       &.badge-rose {
-        background: #fdf2f6;
+        background: rgba(223, 38, 106, 0.12);
         color: #df266a;
-        border: 1px solid #fce7f3;
+        border: 1px solid rgba(223, 38, 106, 0.25);
       }
 
       &.badge-indigo {
-        background: #eef2ff;
-        color: #4f46e5;
-        border: 1px solid #e0e7ff;
+        background: rgba(99, 102, 241, 0.12);
+        color: #818cf8;
+        border: 1px solid rgba(99, 102, 241, 0.25);
       }
 
       &.badge-purple {
-        background: #faf5ff;
-        color: #9333ea;
-        border: 1px solid #f3e8ff;
+        background: rgba(168, 85, 247, 0.12);
+        color: #c084fc;
+        border: 1px solid rgba(168, 85, 247, 0.25);
       }
 
       &.badge-emerald {
-        background: #ecfdf5;
-        color: #059669;
-        border: 1px solid #d1fae5;
+        background: rgba(16, 185, 129, 0.12);
+        color: #10b981;
+        border: 1px solid rgba(16, 185, 129, 0.25);
       }
     }
   }
@@ -496,13 +496,13 @@ const userInitial = computed(() => {
         font-family: var(--font-headline, sans-serif);
         font-size: 15.5px;
         font-weight: 700;
-        color: #0b1326;
+        color: var(--text-primary, #0b1326);
         letter-spacing: -0.01em;
         transition: color 0.2s ease;
       }
 
       .tile-arrow {
-        color: #cbd5e1;
+        color: var(--text-muted, #cbd5e1);
         transition: all 0.2s ease;
       }
     }
@@ -510,7 +510,7 @@ const userInitial = computed(() => {
     .tile-desc {
       font-family: var(--font-body, sans-serif);
       font-size: 13px;
-      color: #64748b;
+      color: var(--text-muted, #64748b);
       line-height: 1.5;
     }
   }

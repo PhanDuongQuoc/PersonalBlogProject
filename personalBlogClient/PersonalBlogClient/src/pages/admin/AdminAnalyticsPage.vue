@@ -167,7 +167,7 @@ onMounted(() => {
       font-family: var(--font-mono, monospace);
       font-size: 11px;
       font-weight: 700;
-      color: #64748b;
+      color: var(--text-muted, #64748b);
       letter-spacing: 0.08em;
       margin-bottom: 4px;
     }
@@ -176,7 +176,7 @@ onMounted(() => {
       font-family: var(--font-headline, sans-serif);
       font-size: 24px;
       font-weight: 800;
-      color: #0b1326;
+      color: var(--text-primary, #0b1326);
       margin: 0 0 4px;
       letter-spacing: -0.02em;
     }
@@ -184,7 +184,7 @@ onMounted(() => {
     .page-subtitle {
       font-family: var(--font-body, sans-serif);
       font-size: 13.5px;
-      color: #64748b;
+      color: var(--text-muted, #64748b);
       margin: 0;
       line-height: 1.45;
     }
@@ -212,14 +212,14 @@ onMounted(() => {
     }
 
     .btn-action-refresh {
-      background: #ffffff;
-      border: 1px solid #e2e8f0;
-      color: #475569;
+      background: var(--bg-surface-low, #ffffff);
+      border: 1px solid var(--border-hairline, #e2e8f0);
+      color: var(--text-secondary, #475569);
 
       &:hover:not(:disabled) {
         border-color: #df266a;
         color: #df266a;
-        background: #fdf2f6;
+        background: rgba(223, 38, 106, 0.12);
       }
     }
 
@@ -229,7 +229,7 @@ onMounted(() => {
       color: #ffffff;
       box-shadow: 0 4px 14px rgba(223, 38, 106, 0.25);
 
-      &:hover {
+      &:hover:not(:disabled) {
         background: #be185d;
         transform: translateY(-1px);
         box-shadow: 0 6px 18px rgba(223, 38, 106, 0.35);
@@ -238,8 +238,25 @@ onMounted(() => {
   }
 }
 
-/* 2. Layout Sections & Grids */
+/* 2. Loading State */
+.page-loading-box {
+  padding: 80px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  .loading-text {
+    font-family: var(--font-headline, sans-serif);
+    font-size: 14px;
+    color: var(--text-muted, #64748b);
+  }
+}
+
+/* 3. Sections */
 .analytics-section {
+  width: 100%;
   margin-bottom: 22px;
 }
 

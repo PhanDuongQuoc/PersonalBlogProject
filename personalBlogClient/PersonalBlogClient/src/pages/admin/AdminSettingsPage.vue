@@ -210,9 +210,9 @@ onMounted(() => {
       font-family: var(--font-headline, sans-serif);
       font-size: 12.5px;
       font-weight: 700;
-      color: #475569;
-      background: #ffffff;
-      border: 1px solid #e2e8f0;
+      color: var(--text-secondary, #475569);
+      background: var(--bg-surface-low, #ffffff);
+      border: 1px solid var(--border-hairline, #e2e8f0);
       cursor: pointer;
       display: inline-flex;
       align-items: center;
@@ -220,14 +220,14 @@ onMounted(() => {
       transition: all 0.2s ease;
 
       &:hover {
-        border-color: #cbd5e1;
-        background: #f8fafc;
-        color: #0b1326;
+        border-color: var(--border-subtle, #cbd5e1);
+        background: var(--bg-surface-high, #f8fafc);
+        color: var(--text-primary, #0b1326);
       }
 
       &.active {
-        background: #fdf2f6;
-        border-color: #fce7f3;
+        background: rgba(223, 38, 106, 0.12);
+        border-color: rgba(223, 38, 106, 0.25);
         color: #df266a;
       }
     }
@@ -250,15 +250,15 @@ onMounted(() => {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: #ffffff;
-      border: 1px solid #e2e8f0;
-      color: #475569;
+      background: var(--bg-surface-low, #ffffff);
+      border: 1px solid var(--border-hairline, #e2e8f0);
+      color: var(--text-secondary, #475569);
       transition: all 0.2s ease;
 
       &:hover:not(:disabled) {
         border-color: #df266a;
         color: #df266a;
-        background: #fdf2f6;
+        background: rgba(223, 38, 106, 0.12);
       }
     }
 
@@ -305,7 +305,7 @@ onMounted(() => {
   .loading-text {
     font-family: var(--font-headline, sans-serif);
     font-size: 14px;
-    color: #64748b;
+    color: var(--text-muted, #64748b);
   }
 }
 

@@ -94,8 +94,8 @@ const model = defineModel<SeoMetaSettings>({ required: true });
 
 <style scoped lang="scss">
 .settings-card {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
+  background: var(--bg-surface-low, #ffffff);
+  border: 1px solid var(--border-hairline, #e2e8f0);
   border-radius: 16px;
   padding: 24px;
   box-shadow: 0 4px 20px rgba(11, 19, 38, 0.03);
@@ -103,7 +103,7 @@ const model = defineModel<SeoMetaSettings>({ required: true });
 
   &:hover {
     box-shadow: 0 8px 26px rgba(11, 19, 38, 0.06);
-    border-color: #cbd5e1;
+    border-color: var(--border-subtle, #cbd5e1);
   }
 }
 
@@ -129,9 +129,9 @@ const model = defineModel<SeoMetaSettings>({ required: true });
       flex-shrink: 0;
 
       &.icon-indigo {
-        background: #eef2ff;
-        color: #4f46e5;
-        border: 1px solid #e0e7ff;
+        background: rgba(79, 70, 229, 0.12);
+        color: #6366f1;
+        border: 1px solid rgba(79, 70, 229, 0.25);
       }
     }
 
@@ -139,14 +139,14 @@ const model = defineModel<SeoMetaSettings>({ required: true });
       font-family: var(--font-headline, sans-serif);
       font-size: 16px;
       font-weight: 700;
-      color: #0b1326;
+      color: var(--text-primary, #0b1326);
       margin: 0 0 2px;
     }
 
     .card-subtitle {
       font-family: var(--font-body, sans-serif);
       font-size: 12.5px;
-      color: #64748b;
+      color: var(--text-muted, #64748b);
       margin: 0;
     }
   }
@@ -155,9 +155,9 @@ const model = defineModel<SeoMetaSettings>({ required: true });
     font-family: var(--font-mono, monospace);
     font-size: 10.5px;
     font-weight: 700;
-    background: #f8fafc;
-    color: #475569;
-    border: 1px solid #e2e8f0;
+    background: var(--bg-surface-lowest, #f8fafc);
+    color: var(--text-secondary, #475569);
+    border: 1px solid var(--border-hairline, #e2e8f0);
     padding: 3px 8px;
     border-radius: 6px;
   }
@@ -188,28 +188,28 @@ const model = defineModel<SeoMetaSettings>({ required: true });
     font-family: var(--font-headline, sans-serif);
     font-size: 13px;
     font-weight: 700;
-    color: #334155;
+    color: var(--text-secondary, #334155);
   }
 
   .form-input {
     width: 100%;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
+    background: var(--bg-surface-lowest, #f8fafc);
+    border: 1px solid var(--border-hairline, #e2e8f0);
     border-radius: 9px;
     padding: 10px 14px;
     font-family: var(--font-body, sans-serif);
     font-size: 13.5px;
-    color: #0b1326;
+    color: var(--text-primary, #0b1326);
     outline: none;
     transition: all 0.2s ease;
 
     &::placeholder {
-      color: #94a3b8;
+      color: var(--text-muted, #94a3b8);
       font-size: 13px;
     }
 
     &:focus {
-      background: #ffffff;
+      background: var(--bg-surface-low, #ffffff);
       border-color: #4f46e5;
       box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
     }
@@ -221,7 +221,7 @@ const model = defineModel<SeoMetaSettings>({ required: true });
 
   .form-help-text {
     font-size: 11.5px;
-    color: #94a3b8;
+    color: var(--text-muted, #94a3b8);
   }
 }
 </style>

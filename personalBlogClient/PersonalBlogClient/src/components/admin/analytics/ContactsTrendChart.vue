@@ -84,7 +84,7 @@ const chartOptions = computed<Highcharts.Options>(() => {
     tooltip: {
       shared: true,
       useHTML: true,
-      headerFormat: '<div style="font-weight:700;margin-bottom:4px;color:#0b1326">{point.key}</div>',
+      headerFormat: '<div style="font-weight:700;margin-bottom:4px;color:inherit">{point.key}</div>',
       pointFormat:
         '<div style="display:flex;align-items:center;gap:6px;font-size:12px;margin-top:2px;">' +
         '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background-color:{series.color}"></span>' +

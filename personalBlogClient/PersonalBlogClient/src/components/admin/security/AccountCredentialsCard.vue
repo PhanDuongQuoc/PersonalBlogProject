@@ -145,8 +145,8 @@ function formatDate(dateStr?: string | null): string {
 
 <style scoped lang="scss">
 .security-card {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
+  background: var(--bg-surface-low, #ffffff);
+  border: 1px solid var(--border-hairline, #e2e8f0);
   border-radius: 16px;
   padding: 24px;
   box-shadow: 0 4px 20px rgba(11, 19, 38, 0.03);
@@ -156,7 +156,7 @@ function formatDate(dateStr?: string | null): string {
 
   &:hover {
     box-shadow: 0 8px 26px rgba(11, 19, 38, 0.06);
-    border-color: #cbd5e1;
+    border-color: var(--border-subtle, #cbd5e1);
   }
 }
 
@@ -182,9 +182,9 @@ function formatDate(dateStr?: string | null): string {
       flex-shrink: 0;
 
       &.icon-indigo {
-        background: #eef2ff;
-        color: #4f46e5;
-        border: 1px solid #e0e7ff;
+        background: rgba(79, 70, 229, 0.12);
+        color: #6366f1;
+        border: 1px solid rgba(79, 70, 229, 0.25);
       }
     }
 
@@ -192,14 +192,14 @@ function formatDate(dateStr?: string | null): string {
       font-family: var(--font-headline, sans-serif);
       font-size: 16px;
       font-weight: 700;
-      color: #0b1326;
+      color: var(--text-primary, #0b1326);
       margin: 0 0 2px;
     }
 
     .card-subtitle {
       font-family: var(--font-body, sans-serif);
       font-size: 12.5px;
-      color: #64748b;
+      color: var(--text-muted, #64748b);
       margin: 0;
     }
   }
@@ -208,8 +208,8 @@ function formatDate(dateStr?: string | null): string {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    background: #ecfdf5;
-    border: 1px solid #a7f3d0;
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid rgba(16, 185, 129, 0.3);
     padding: 3px 8px;
     border-radius: 6px;
 
@@ -225,7 +225,7 @@ function formatDate(dateStr?: string | null): string {
       font-family: var(--font-mono, monospace);
       font-size: 10.5px;
       font-weight: 700;
-      color: #059669;
+      color: #10b981;
       letter-spacing: 0.04em;
     }
   }
@@ -237,8 +237,8 @@ function formatDate(dateStr?: string | null): string {
   align-items: center;
   gap: 16px;
   padding: 16px 18px;
-  background: #f8fafc;
-  border: 1px solid #f1f5f9;
+  background: var(--bg-surface-lowest, #f8fafc);
+  border: 1px solid var(--border-hairline, #f1f5f9);
   border-radius: 12px;
   margin-bottom: 20px;
 
@@ -248,7 +248,7 @@ function formatDate(dateStr?: string | null): string {
     border-radius: 12px;
     overflow: hidden;
     flex-shrink: 0;
-    border: 2px solid #ffffff;
+    border: 2px solid var(--border-hairline, #ffffff);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 
     .user-avatar-img {
@@ -279,14 +279,14 @@ function formatDate(dateStr?: string | null): string {
       font-family: var(--font-headline, sans-serif);
       font-size: 16px;
       font-weight: 700;
-      color: #0b1326;
+      color: var(--text-primary, #0b1326);
       margin-bottom: 2px;
     }
 
     .user-job-title {
       font-family: var(--font-body, sans-serif);
       font-size: 12.5px;
-      color: #64748b;
+      color: var(--text-muted, #64748b);
       margin-bottom: 6px;
     }
 
@@ -300,9 +300,9 @@ function formatDate(dateStr?: string | null): string {
         font-family: var(--font-mono, monospace);
         font-size: 11px;
         font-weight: 700;
-        background: #eef2ff;
-        color: #4f46e5;
-        border: 1px solid #c7d2fe;
+        background: rgba(99, 102, 241, 0.15);
+        color: #818cf8;
+        border: 1px solid rgba(99, 102, 241, 0.3);
         padding: 2px 8px;
         border-radius: 6px;
       }
@@ -311,9 +311,9 @@ function formatDate(dateStr?: string | null): string {
         font-family: var(--font-mono, monospace);
         font-size: 11px;
         font-weight: 700;
-        background: #ecfdf5;
-        color: #059669;
-        border: 1px solid #a7f3d0;
+        background: rgba(16, 185, 129, 0.15);
+        color: #34d399;
+        border: 1px solid rgba(16, 185, 129, 0.3);
         padding: 2px 8px;
         border-radius: 6px;
       }
@@ -333,8 +333,8 @@ function formatDate(dateStr?: string | null): string {
     align-items: center;
     justify-content: space-between;
     padding: 10px 14px;
-    background: #ffffff;
-    border: 1px solid #f1f5f9;
+    background: var(--bg-surface-lowest, #ffffff);
+    border: 1px solid var(--border-hairline, #f1f5f9);
     border-radius: 8px;
 
     .info-label {
@@ -344,19 +344,19 @@ function formatDate(dateStr?: string | null): string {
       font-family: var(--font-body, sans-serif);
       font-size: 13px;
       font-weight: 600;
-      color: #475569;
+      color: var(--text-secondary, #475569);
     }
 
     .info-value {
       font-family: var(--font-body, sans-serif);
       font-size: 13px;
       font-weight: 600;
-      color: #0b1326;
+      color: var(--text-primary, #0b1326);
 
       &.font-mono {
         font-family: var(--font-mono, monospace);
         font-size: 12.5px;
-        color: #334155;
+        color: var(--text-primary, #334155);
       }
     }
   }
@@ -364,8 +364,8 @@ function formatDate(dateStr?: string | null): string {
 
 /* Session Snapshot */
 .session-snapshot-box {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
+  background: var(--bg-surface-lowest, #f8fafc);
+  border: 1px solid var(--border-hairline, #e2e8f0);
   border-radius: 10px;
   padding: 14px 16px;
 
@@ -379,7 +379,7 @@ function formatDate(dateStr?: string | null): string {
       font-family: var(--font-headline, sans-serif);
       font-size: 13px;
       font-weight: 700;
-      color: #0b1326;
+      color: var(--text-primary, #0b1326);
       display: flex;
       align-items: center;
     }
@@ -388,8 +388,8 @@ function formatDate(dateStr?: string | null): string {
       font-family: var(--font-mono, monospace);
       font-size: 10.5px;
       font-weight: 700;
-      background: #eef2ff;
-      color: #4f46e5;
+      background: rgba(99, 102, 241, 0.15);
+      color: #818cf8;
       padding: 1px 6px;
       border-radius: 4px;
     }
@@ -408,11 +408,11 @@ function formatDate(dateStr?: string | null): string {
       gap: 5px;
 
       .snapshot-lbl {
-        color: #64748b;
+        color: var(--text-muted, #64748b);
       }
 
       .snapshot-val {
-        color: #0b1326;
+        color: var(--text-primary, #0b1326);
         font-weight: 600;
 
         &.font-mono {

@@ -454,8 +454,8 @@ async function handleSubmit() {
   }
 
   .tag-preview-card {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
+    background: var(--bg-surface-lowest, #ffffff);
+    border: 1px solid var(--border-hairline, #e2e8f0);
     border-radius: 12px;
     padding: 16px;
     display: flex;
@@ -466,7 +466,7 @@ async function handleSubmit() {
       font-family: var(--font-mono, monospace);
       font-size: 10.5px;
       font-weight: 700;
-      color: #64748b;
+      color: var(--text-secondary, #64748b);
       letter-spacing: 0.05em;
     }
 
@@ -479,9 +479,9 @@ async function handleSubmit() {
         font-family: var(--font-mono, monospace);
         font-size: 13px;
         font-weight: 700;
-        color: #059669;
-        background: #ecfdf5;
-        border: 1px solid #a7f3d0;
+        color: #10b981;
+        background: rgba(16, 185, 129, 0.15);
+        border: 1px solid rgba(16, 185, 129, 0.3);
         padding: 6px 14px;
         border-radius: 6px;
         display: inline-flex;
@@ -490,7 +490,7 @@ async function handleSubmit() {
 
       .text-placeholder-muted {
         font-size: 12px;
-        color: #94a3b8;
+        color: var(--text-muted, #94a3b8);
         font-style: italic;
       }
     }
