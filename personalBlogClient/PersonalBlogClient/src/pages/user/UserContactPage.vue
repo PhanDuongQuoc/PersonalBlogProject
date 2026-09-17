@@ -42,12 +42,8 @@
                   {{ contactProfile.email }}
                 </a>
               </div>
-              <button
-                type="button"
-                class="channel-action-btn"
-                title="Copy email to clipboard"
-                @click="copyToClipboard(contactProfile.email, text.copiedLink)"
-              >
+              <button type="button" class="channel-action-btn" title="Copy email to clipboard"
+                @click="copyToClipboard(contactProfile.email, text.copiedLink)">
                 <q-icon name="fa-regular fa-copy" size="14px" />
               </button>
             </div>
@@ -77,37 +73,22 @@
 
           <!-- Social & Network Profiles Row -->
           <div class="social-channels-group">
-            <a
-              v-if="contactProfile.githubUrl"
-              :href="contactProfile.githubUrl"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="social-pill-btn"
-            >
+            <a v-if="contactProfile.githubUrl" :href="contactProfile.githubUrl" target="_blank"
+              rel="noopener noreferrer" class="social-pill-btn">
               <q-icon name="fa-brands fa-github" size="14px" />
               <span>GitHub</span>
               <q-icon name="fa-solid fa-arrow-up-right-from-square" size="11px" class="arrow-up" />
             </a>
 
-            <a
-              v-if="contactProfile.linkedinUrl"
-              :href="contactProfile.linkedinUrl"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="social-pill-btn"
-            >
+            <a v-if="contactProfile.linkedinUrl" :href="contactProfile.linkedinUrl" target="_blank"
+              rel="noopener noreferrer" class="social-pill-btn">
               <q-icon name="fa-brands fa-linkedin" size="14px" />
               <span>LinkedIn</span>
               <q-icon name="fa-solid fa-arrow-up-right-from-square" size="11px" class="arrow-up" />
             </a>
 
-            <a
-              v-if="contactProfile.cvUrl"
-              :href="contactProfile.cvUrl"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="social-pill-btn cv-accent"
-            >
+            <a v-if="contactProfile.cvUrl" :href="contactProfile.cvUrl" target="_blank" rel="noopener noreferrer"
+              class="social-pill-btn cv-accent">
               <q-icon name="fa-solid fa-file-arrow-down" size="14px" />
               <span>{{ text.downloadCv }}</span>
               <q-icon name="fa-solid fa-arrow-up-right-from-square" size="11px" class="arrow-up" />
@@ -164,15 +145,8 @@
                   <label class="field-label" for="contact-name">
                     {{ text.contactName }}
                   </label>
-                  <input
-                    id="contact-name"
-                    v-model="form.name"
-                    type="text"
-                    required
-                    class="editorial-input"
-                    :placeholder="text.contactNamePlaceholder"
-                    :disabled="isSubmitting"
-                  />
+                  <input id="contact-name" v-model="form.name" type="text" required class="editorial-input"
+                    :placeholder="text.contactNamePlaceholder" :disabled="isSubmitting" />
                 </div>
 
                 <!-- Email Field -->
@@ -180,15 +154,8 @@
                   <label class="field-label" for="contact-email">
                     {{ text.contactEmail }}
                   </label>
-                  <input
-                    id="contact-email"
-                    v-model="form.email"
-                    type="email"
-                    required
-                    class="editorial-input"
-                    :placeholder="text.contactEmailPlaceholder"
-                    :disabled="isSubmitting"
-                  />
+                  <input id="contact-email" v-model="form.email" type="email" required class="editorial-input"
+                    :placeholder="text.contactEmailPlaceholder" :disabled="isSubmitting" />
                 </div>
               </div>
 
@@ -197,14 +164,8 @@
                 <label class="field-label" for="contact-subject">
                   {{ text.contactSubject }}
                 </label>
-                <input
-                  id="contact-subject"
-                  v-model="form.subject"
-                  type="text"
-                  class="editorial-input"
-                  :placeholder="text.contactSubjectPlaceholder"
-                  :disabled="isSubmitting"
-                />
+                <input id="contact-subject" v-model="form.subject" type="text" class="editorial-input"
+                  :placeholder="text.contactSubjectPlaceholder" :disabled="isSubmitting" />
               </div>
 
               <!-- Row 3: Message Content -->
@@ -215,25 +176,16 @@
                   </label>
                   <span class="char-count">{{ form.message.length }} / 2000</span>
                 </div>
-                <textarea
-                  id="contact-message"
-                  v-model="form.message"
-                  required
-                  rows="6"
-                  maxlength="2000"
-                  class="editorial-textarea"
-                  :placeholder="text.contactMessagePlaceholder"
-                  :disabled="isSubmitting"
-                ></textarea>
+                <textarea id="contact-message" v-model="form.message" required rows="6" maxlength="2000"
+                  class="editorial-textarea" :placeholder="text.contactMessagePlaceholder"
+                  :disabled="isSubmitting"></textarea>
               </div>
 
               <!-- Form Footer: Submit Button & Security Note -->
               <div class="form-action-row">
-                <button
-                  type="submit"
+                <button type="submit"
                   :disabled="isSubmitting || !form.name.trim() || !form.email.trim() || !form.message.trim()"
-                  class="editorial-submit-btn"
-                >
+                  class="editorial-submit-btn">
                   <q-spinner v-if="isSubmitting" size="18px" color="dark" />
                   <template v-else>
                     <span>{{ text.contactSubmit }}</span>
@@ -253,11 +205,8 @@
 
       <!-- 3. Stylized Google Map Frame Section (Below the Contact Form) -->
       <section class="contact-map-section">
-        <portfolio-section-title
-          :eyebrow="text.mapSectionEyebrow"
-          :title="text.mapSectionTitle"
-          :description="text.mapSectionDesc"
-        />
+        <portfolio-section-title :eyebrow="text.mapSectionEyebrow" :title="text.mapSectionTitle"
+          :description="text.mapSectionDesc" />
         <portfolio-location-map :location-name="contactProfile.location" />
       </section>
     </main>
@@ -281,11 +230,8 @@ const $q = useQuasar();
 const route = useRoute();
 const { text } = usePortfolioLocale();
 
-// 1. Cấu hình Web3Forms Access Key (Bạn có thể thay bằng key cá nhân của bạn tại https://web3forms.com)
-// Mặc định sử dụng Access Key công khai hoặc demo
-const WEB3FORMS_ACCESS_KEY = '5f492b4c-9fcf-49b8-8097-f50f28e21ec3';
+const WEB3FORMS_ACCESS_KEY = '2716227d-35d7-4652-9b27-bd18af340705';
 
-// 2. Profile tác giả (Đồng bộ trực tiếp từ Database PostgreSQL qua API)
 const contactProfile = reactive({
   name: 'Phan Duong Quoc',
   email: 'phanduongquoc@example.com',
@@ -347,6 +293,7 @@ const handleSubmit = async () => {
       message: form.message.trim(),
       from_name: 'Personal Portfolio Contact Page'
     };
+    console.log("Web3Forms payload:", payload);
 
     const response = await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
@@ -358,6 +305,7 @@ const handleSubmit = async () => {
     });
 
     const result = await response.json();
+    console.log("Web3Forms response status:", response.status, "result:", result);
 
     if (response.ok && result.success) {
       submissionStatus.value = 'success';
@@ -369,16 +317,18 @@ const handleSubmit = async () => {
       });
     } else {
       submissionStatus.value = 'error';
-      errorMessage.value = result.message || text.value.contactError;
+      const detailError = result.message || text.value.contactError;
+      errorMessage.value = detailError;
+      console.error('Web3Forms Error Detail:', detailError, result);
       $q.notify({
         type: 'negative',
-        message: errorMessage.value,
+        message: `Gửi tin nhắn thất bại: ${detailError}`,
         position: 'top',
-        timeout: 4000
+        timeout: 5000
       });
     }
   } catch (err) {
-    console.error('Web3Forms submit error:', err);
+    console.error('Web3Forms submit exception:', err);
     submissionStatus.value = 'error';
     errorMessage.value = text.value.contactError;
   } finally {
@@ -513,10 +463,13 @@ onMounted(() => {
 }
 
 @keyframes pulseGlow {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 1;
     transform: scale(1);
   }
+
   50% {
     opacity: 0.5;
     transform: scale(1.3);
