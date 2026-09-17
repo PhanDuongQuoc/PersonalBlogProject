@@ -81,10 +81,10 @@ defineEmits<{
 
 <style scoped lang="scss">
 .analytics-chart-card {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
+  background: var(--bg-surface, #0b1326);
+  border: 1px solid var(--border-hairline, rgba(248, 250, 252, 0.08));
   border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(11, 19, 38, 0.03);
+  box-shadow: var(--shadow-card, 0 4px 20px rgba(0, 0, 0, 0.3));
   padding: 20px 22px;
   display: flex;
   flex-direction: column;
@@ -93,8 +93,8 @@ defineEmits<{
   transition: all 0.25s ease;
 
   &:hover {
-    box-shadow: 0 8px 26px rgba(11, 19, 38, 0.06);
-    border-color: #cbd5e1;
+    box-shadow: var(--shadow-card-hover, 0 8px 26px rgba(0, 0, 0, 0.4));
+    border-color: var(--border-subtle, rgba(248, 250, 252, 0.15));
   }
 }
 
@@ -115,19 +115,19 @@ defineEmits<{
       width: 30px;
       height: 30px;
       border-radius: 8px;
-      background: #fdf2f6;
-      color: #df266a;
+      background: var(--accent-primary-container, rgba(223, 38, 106, 0.12));
+      color: var(--accent-primary, #df266a);
       display: flex;
       align-items: center;
       justify-content: center;
-      border: 1px solid #fce7f3;
+      border: 1px solid rgba(223, 38, 106, 0.25);
     }
 
     .chart-title {
       font-family: var(--font-headline, sans-serif);
       font-size: 15.5px;
       font-weight: 700;
-      color: #0b1326;
+      color: var(--text-primary, #dae2fd);
       margin: 0;
       letter-spacing: -0.01em;
     }
@@ -147,34 +147,39 @@ defineEmits<{
 
   .filter-select {
     appearance: none;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
+    background: var(--bg-surface-container, #131b2e);
+    border: 1px solid var(--border-subtle, rgba(248, 250, 252, 0.12));
     border-radius: 9px;
     padding: 7px 28px 7px 12px;
     font-family: var(--font-headline, sans-serif);
     font-size: 12.5px;
     font-weight: 600;
-    color: #334155;
+    color: var(--text-primary, #dae2fd);
     cursor: pointer;
     outline: none;
     transition: all 0.2s ease;
 
     &:hover {
-      border-color: #cbd5e1;
-      background: #ffffff;
+      border-color: var(--accent-primary, #df266a);
+      background: var(--bg-surface-high, #171f33);
     }
 
     &:focus {
-      border-color: #4f46e5;
-      background: #ffffff;
-      box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.1);
+      border-color: var(--accent-primary, #df266a);
+      background: var(--bg-surface-high, #171f33);
+      box-shadow: 0 0 0 2px var(--accent-primary-container, rgba(223, 38, 106, 0.15));
+    }
+
+    option {
+      background: var(--bg-surface, #0b1326);
+      color: var(--text-primary, #dae2fd);
     }
   }
 
   .select-chevron {
     position: absolute;
     right: 10px;
-    color: #64748b;
+    color: var(--text-muted, #94a3b8);
     pointer-events: none;
   }
 }
@@ -196,9 +201,9 @@ defineEmits<{
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 
     &.btn-excel {
-      background: #eef2ff;
-      color: #4f46e5;
-      border-color: #e0e7ff;
+      background: rgba(99, 102, 241, 0.15);
+      color: #a5b4fc;
+      border-color: rgba(99, 102, 241, 0.25);
 
       &:hover {
         background: #4f46e5;
@@ -209,9 +214,9 @@ defineEmits<{
     }
 
     &.btn-ppt {
-      background: #fff7ed;
-      color: #ea580c;
-      border-color: #ffedd5;
+      background: rgba(234, 88, 12, 0.15);
+      color: #fb923c;
+      border-color: rgba(234, 88, 12, 0.25);
 
       &:hover {
         background: #ea580c;

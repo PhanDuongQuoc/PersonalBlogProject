@@ -87,10 +87,10 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .top-posts-table-card {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
+  background: var(--bg-surface, #0b1326);
+  border: 1px solid var(--border-hairline, rgba(248, 250, 252, 0.08));
   border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(11, 19, 38, 0.03);
+  box-shadow: var(--shadow-card, 0 4px 20px rgba(0, 0, 0, 0.3));
   padding: 20px 22px;
   display: flex;
   flex-direction: column;
@@ -99,8 +99,8 @@ onMounted(() => {
   transition: all 0.25s ease;
 
   &:hover {
-    box-shadow: 0 8px 26px rgba(11, 19, 38, 0.06);
-    border-color: #cbd5e1;
+    box-shadow: var(--shadow-card-hover, 0 8px 26px rgba(0, 0, 0, 0.4));
+    border-color: var(--border-subtle, rgba(248, 250, 252, 0.15));
   }
 }
 
@@ -121,19 +121,19 @@ onMounted(() => {
       width: 30px;
       height: 30px;
       border-radius: 8px;
-      background: #fffbeb;
+      background: rgba(245, 158, 11, 0.15);
       color: #f59e0b;
       display: flex;
       align-items: center;
       justify-content: center;
-      border: 1px solid #fef3c7;
+      border: 1px solid rgba(245, 158, 11, 0.25);
     }
 
     .card-title {
       font-family: var(--font-headline, sans-serif);
       font-size: 15.5px;
       font-weight: 700;
-      color: #0b1326;
+      color: var(--text-primary, #dae2fd);
       margin: 0;
     }
   }
@@ -142,7 +142,7 @@ onMounted(() => {
     font-family: var(--font-headline, sans-serif);
     font-size: 12px;
     font-weight: 700;
-    color: #df266a;
+    color: var(--accent-primary, #df266a);
     text-decoration: none;
     display: inline-flex;
     align-items: center;
@@ -150,7 +150,7 @@ onMounted(() => {
     transition: all 0.2s ease;
 
     &:hover {
-      color: #be185d;
+      color: var(--accent-primary-hover, #f43f7e);
       transform: translateX(2px);
     }
   }
@@ -169,13 +169,13 @@ onMounted(() => {
   gap: 12px;
   padding: 10px 12px;
   border-radius: 10px;
-  background: #f8fafc;
-  border: 1px solid #f1f5f9;
+  background: var(--bg-surface-container, #131b2e);
+  border: 1px solid var(--border-hairline, rgba(248, 250, 252, 0.08));
   transition: all 0.2s ease;
 
   &:hover {
-    background: #fdf2f6;
-    border-color: #fce7f3;
+    background: var(--accent-primary-container, rgba(223, 38, 106, 0.12));
+    border-color: var(--accent-primary, #df266a);
   }
 
   .rank-badge {
@@ -189,12 +189,12 @@ onMounted(() => {
     font-size: 12px;
     font-weight: 800;
     flex-shrink: 0;
-    background: #e2e8f0;
-    color: #475569;
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-primary, #dae2fd);
 
-    &.rank-1 { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
-    &.rank-2 { background: #e2e8f0; color: #334155; border: 1px solid #cbd5e1; }
-    &.rank-3 { background: #ffedd5; color: #c2410c; border: 1px solid #fed7aa; }
+    &.rank-1 { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.35); }
+    &.rank-2 { background: rgba(148, 163, 184, 0.2); color: #cbd5e1; border: 1px solid rgba(148, 163, 184, 0.35); }
+    &.rank-3 { background: rgba(234, 88, 12, 0.2); color: #fb923c; border: 1px solid rgba(234, 88, 12, 0.35); }
   }
 
   .post-info {
@@ -205,7 +205,7 @@ onMounted(() => {
       font-family: var(--font-headline, sans-serif);
       font-size: 13.5px;
       font-weight: 700;
-      color: #0b1326;
+      color: var(--text-primary, #dae2fd);
       text-decoration: none;
       display: block;
       white-space: nowrap;
@@ -214,7 +214,7 @@ onMounted(() => {
       margin-bottom: 3px;
 
       &:hover {
-        color: #df266a;
+        color: var(--accent-primary, #df266a);
       }
     }
 
@@ -228,18 +228,18 @@ onMounted(() => {
         font-family: var(--font-mono, monospace);
         font-size: 10.5px;
         font-weight: 700;
-        background: #eef2ff;
-        color: #4f46e5;
+        background: rgba(99, 102, 241, 0.15);
+        color: #a5b4fc;
         padding: 1px 6px;
         border-radius: 4px;
       }
 
       .meta-dot {
-        color: #94a3b8;
+        color: var(--text-muted, #64748b);
       }
 
       .comment-count-text {
-        color: #64748b;
+        color: var(--text-secondary, #94a3b8);
       }
     }
   }
@@ -252,13 +252,13 @@ onMounted(() => {
       font-family: var(--font-mono, monospace);
       font-size: 13.5px;
       font-weight: 800;
-      color: #0b1326;
+      color: var(--text-primary, #dae2fd);
     }
 
     .views-label {
       font-family: var(--font-mono, monospace);
       font-size: 10px;
-      color: #94a3b8;
+      color: var(--text-muted, #94a3b8);
     }
   }
 }
@@ -269,7 +269,7 @@ onMounted(() => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: #64748b;
+  color: var(--text-muted, #94a3b8);
   font-size: 13px;
   gap: 8px;
 }
