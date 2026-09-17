@@ -10,6 +10,9 @@ export interface AdminAnalyticsSummary {
   pendingComments: number;
   totalCategories: number;
   totalTags: number;
+  totalContacts?: number;
+  unreadContacts?: number;
+  repliedContacts?: number;
 }
 
 export interface ViewsTrendPoint {
@@ -38,6 +41,14 @@ export interface MonthlyCommentsItem {
   monthLabel: string;
   totalComments: number;
   approvedComments: number;
+}
+
+export interface MonthlyContactsItem {
+  month: number;
+  monthLabel: string;
+  totalMessages: number;
+  repliedMessages: number;
+  unreadMessages: number;
 }
 
 export interface TopPerformingPost {

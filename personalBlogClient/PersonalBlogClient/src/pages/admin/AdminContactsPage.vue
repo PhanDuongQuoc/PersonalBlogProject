@@ -434,7 +434,7 @@ onUnmounted(() => {
   min-height: calc(100vh - 84px);
 }
 
-/* 1. Stats Grid */
+/* 1. Stats Overview Grid */
 .contacts-stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -443,8 +443,8 @@ onUnmounted(() => {
   flex-shrink: 0;
 
   .stat-card {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
+    background: var(--bg-surface-low, #ffffff);
+    border: 1px solid var(--border-hairline, #e2e8f0);
     border-radius: 14px;
     padding: 18px 20px;
     display: flex;
@@ -467,24 +467,24 @@ onUnmounted(() => {
       flex-shrink: 0;
 
       &.icon-rose {
-        background: #fdf2f6;
+        background: rgba(223, 38, 106, 0.12);
         color: #df266a;
-        border: 1px solid #fce7f3;
-      }
-      &.icon-red {
-        background: #fff1f2;
-        color: #e11d48;
-        border: 1px solid #ffe4e6;
-      }
-      &.icon-emerald {
-        background: #ecfdf5;
-        color: #059669;
-        border: 1px solid #d1fae5;
+        border: 1px solid rgba(223, 38, 106, 0.25);
       }
       &.icon-indigo {
-        background: #eef2ff;
-        color: #4f46e5;
-        border: 1px solid #e0e7ff;
+        background: rgba(99, 102, 241, 0.12);
+        color: #818cf8;
+        border: 1px solid rgba(99, 102, 241, 0.25);
+      }
+      &.icon-emerald {
+        background: rgba(16, 185, 129, 0.12);
+        color: #10b981;
+        border: 1px solid rgba(16, 185, 129, 0.25);
+      }
+      &.icon-slate {
+        background: var(--bg-surface-high, #f1f5f9);
+        color: var(--text-muted, #64748b);
+        border: 1px solid var(--border-hairline, #e2e8f0);
       }
     }
 
@@ -496,7 +496,7 @@ onUnmounted(() => {
         font-family: var(--font-headline, sans-serif);
         font-size: 22px;
         font-weight: 800;
-        color: #0b1326;
+        color: var(--text-primary, #0b1326);
         line-height: 1.2;
       }
 
@@ -504,7 +504,7 @@ onUnmounted(() => {
         font-family: var(--font-mono, monospace);
         font-size: 10.5px;
         font-weight: 700;
-        color: #64748b;
+        color: var(--text-muted, #64748b);
         letter-spacing: 0.06em;
         margin-top: 2px;
       }
@@ -524,14 +524,14 @@ onUnmounted(() => {
 .filter-select-wrap {
   .custom-filter-select {
     height: 40px;
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
+    background: var(--bg-surface-low, #ffffff);
+    border: 1px solid var(--border-hairline, #e2e8f0);
     border-radius: 10px;
     padding: 0 14px;
     font-family: var(--font-headline, sans-serif);
     font-size: 13px;
     font-weight: 600;
-    color: #0b1326;
+    color: var(--text-primary, #0b1326);
     outline: none;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -547,9 +547,9 @@ onUnmounted(() => {
   width: 40px;
   height: 40px;
   border-radius: 10px;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  color: #64748b;
+  background: var(--bg-surface-low, #ffffff);
+  border: 1px solid var(--border-hairline, #e2e8f0);
+  color: var(--text-secondary, #64748b);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -598,7 +598,7 @@ onUnmounted(() => {
       font-family: var(--font-headline, sans-serif);
       font-size: 13.5px;
       font-weight: 700;
-      color: #0b1326;
+      color: var(--text-primary, #0b1326);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -617,7 +617,7 @@ onUnmounted(() => {
 
     .sender-email-text {
       font-size: 11px;
-      color: #64748b;
+      color: var(--text-muted, #64748b);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -632,14 +632,14 @@ onUnmounted(() => {
   transition: background 0.15s ease;
 
   &:hover {
-    background: #f8fafc;
+    background: rgba(255, 255, 255, 0.04);
   }
 
   .subject-title-line {
     font-family: var(--font-headline, sans-serif);
     font-size: 13px;
     font-weight: 600;
-    color: #1e293b;
+    color: var(--text-secondary, #1e293b);
     margin-bottom: 2px;
     white-space: nowrap;
     overflow: hidden;
@@ -647,14 +647,14 @@ onUnmounted(() => {
 
     &.is-unread {
       font-weight: 800;
-      color: #0b1326;
+      color: var(--text-primary, #0b1326);
     }
   }
 
   .content-excerpt-line {
     font-family: var(--font-body, sans-serif);
     font-size: 12px;
-    color: #64748b;
+    color: var(--text-muted, #64748b);
     line-height: 1.4;
     white-space: nowrap;
     overflow: hidden;
@@ -682,9 +682,9 @@ onUnmounted(() => {
   }
 
   &.status-unread {
-    background: #fff1f2;
-    color: #df266a;
-    border: 1px solid #ffe4e6;
+    background: rgba(225, 29, 72, 0.15);
+    color: #fb7185;
+    border: 1px solid rgba(225, 29, 72, 0.3);
 
     .status-indicator-dot {
       background: #df266a;
@@ -692,28 +692,28 @@ onUnmounted(() => {
     }
 
     &:hover {
-      background: #fee2e2;
+      background: rgba(225, 29, 72, 0.25);
     }
   }
 
   &.status-read {
-    background: #eef2ff;
-    color: #4f46e5;
-    border: 1px solid #e0e7ff;
+    background: rgba(99, 102, 241, 0.15);
+    color: #818cf8;
+    border: 1px solid rgba(99, 102, 241, 0.3);
 
     .status-indicator-dot {
       background: #6366f1;
     }
 
     &:hover {
-      background: #e0e7ff;
+      background: rgba(99, 102, 241, 0.25);
     }
   }
 
   &.status-replied {
-    background: #ecfdf5;
-    color: #059669;
-    border: 1px solid #a7f3d0;
+    background: rgba(16, 185, 129, 0.15);
+    color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.3);
 
     .status-indicator-dot {
       background: #10b981;
@@ -721,21 +721,21 @@ onUnmounted(() => {
     }
 
     &:hover {
-      background: #d1fae5;
+      background: rgba(16, 185, 129, 0.25);
     }
   }
 
   &.status-archived {
-    background: #f1f5f9;
-    color: #64748b;
-    border: 1px solid #e2e8f0;
+    background: var(--bg-surface-high, #f1f5f9);
+    color: var(--text-muted, #64748b);
+    border: 1px solid var(--border-hairline, #e2e8f0);
 
     .status-indicator-dot {
       background: #94a3b8;
     }
 
     &:hover {
-      background: #e2e8f0;
+      background: var(--bg-surface-highest, #e2e8f0);
     }
   }
 }
@@ -743,7 +743,7 @@ onUnmounted(() => {
 .date-cell {
   font-family: var(--font-mono, monospace);
   font-size: 11.5px;
-  color: #64748b;
+  color: var(--text-secondary, #64748b);
 }
 
 /* Table Actions */
@@ -757,9 +757,9 @@ onUnmounted(() => {
     width: 30px;
     height: 30px;
     border-radius: 8px;
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    color: #64748b;
+    background: var(--bg-surface-low, #ffffff);
+    border: 1px solid var(--border-hairline, #e2e8f0);
+    color: var(--text-secondary, #64748b);
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -767,15 +767,15 @@ onUnmounted(() => {
     transition: all 0.15s ease;
 
     &.btn-view:hover {
-      color: #4f46e5;
-      border-color: #4f46e5;
-      background: #eef2ff;
+      color: #818cf8;
+      border-color: #818cf8;
+      background: rgba(99, 102, 241, 0.12);
     }
 
     &.btn-reply:hover {
-      color: #059669;
-      border-color: #059669;
-      background: #ecfdf5;
+      color: #34d399;
+      border-color: #34d399;
+      background: rgba(16, 185, 129, 0.12);
     }
 
     &.btn-delete:hover {

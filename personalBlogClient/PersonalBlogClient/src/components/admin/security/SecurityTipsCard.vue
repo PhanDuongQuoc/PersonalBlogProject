@@ -61,8 +61,8 @@
 
 <style scoped lang="scss">
 .security-card {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
+  background: var(--bg-surface-low, #ffffff);
+  border: 1px solid var(--border-hairline, #e2e8f0);
   border-radius: 16px;
   padding: 24px;
   box-shadow: 0 4px 20px rgba(11, 19, 38, 0.03);
@@ -72,7 +72,7 @@
 
   &:hover {
     box-shadow: 0 8px 26px rgba(11, 19, 38, 0.06);
-    border-color: #cbd5e1;
+    border-color: var(--border-subtle, #cbd5e1);
   }
 }
 
@@ -98,9 +98,9 @@
       flex-shrink: 0;
 
       &.icon-amber {
-        background: #fffbeb;
+        background: rgba(245, 158, 11, 0.12);
         color: #d97706;
-        border: 1px solid #fef3c7;
+        border: 1px solid rgba(245, 158, 11, 0.25);
       }
     }
 
@@ -108,14 +108,14 @@
       font-family: var(--font-headline, sans-serif);
       font-size: 16px;
       font-weight: 700;
-      color: #0b1326;
+      color: var(--text-primary, #0b1326);
       margin: 0 0 2px;
     }
 
     .card-subtitle {
       font-family: var(--font-body, sans-serif);
       font-size: 12.5px;
-      color: #64748b;
+      color: var(--text-muted, #64748b);
       margin: 0;
     }
   }
@@ -132,14 +132,14 @@
     align-items: flex-start;
     gap: 12px;
     padding: 12px 14px;
-    background: #f8fafc;
-    border: 1px solid #f1f5f9;
+    background: var(--bg-surface-lowest, #f8fafc);
+    border: 1px solid var(--border-hairline, #f1f5f9);
     border-radius: 10px;
     transition: all 0.2s ease;
 
     &:hover {
-      background: #fdf2f6;
-      border-color: #fce7f3;
+      background: var(--bg-surface-low, #fdf2f6);
+      border-color: var(--border-subtle, #fce7f3);
     }
 
     .tip-icon-dot {
@@ -152,9 +152,9 @@
       flex-shrink: 0;
       margin-top: 1px;
 
-      &.icon-emerald { background: #ecfdf5; color: #059669; }
-      &.icon-rose { background: #fdf2f6; color: #df266a; }
-      &.icon-indigo { background: #eef2ff; color: #4f46e5; }
+      &.icon-emerald { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+      &.icon-rose { background: rgba(223, 38, 106, 0.15); color: #df266a; }
+      &.icon-indigo { background: rgba(79, 70, 229, 0.15); color: #6366f1; }
     }
 
     .tip-content {
@@ -164,14 +164,14 @@
         font-family: var(--font-headline, sans-serif);
         font-size: 13.5px;
         font-weight: 700;
-        color: #0b1326;
+        color: var(--text-primary, #0b1326);
         margin-bottom: 2px;
       }
 
       .tip-desc {
         font-family: var(--font-body, sans-serif);
         font-size: 12px;
-        color: #64748b;
+        color: var(--text-muted, #64748b);
         line-height: 1.45;
       }
     }
@@ -182,24 +182,24 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  background: #fffbeb;
-  border: 1px solid #fde68a;
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.25);
   border-radius: 10px;
   padding: 12px 16px;
 
   .banner-icon {
-    color: #d97706;
+    color: #f59e0b;
     flex-shrink: 0;
   }
 
   .banner-text {
     font-family: var(--font-body, sans-serif);
     font-size: 12px;
-    color: #78350f;
+    color: #fde68a;
     line-height: 1.45;
 
     strong {
-      color: #92400e;
+      color: #fbbf24;
     }
   }
 }

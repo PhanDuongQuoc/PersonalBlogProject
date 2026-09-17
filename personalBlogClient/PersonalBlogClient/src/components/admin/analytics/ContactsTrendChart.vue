@@ -1,10 +1,10 @@
 <template>
   <AnalyticsChartCard
-    title="Tương tác Bình luận Độc giả"
-    icon="fa-solid fa-comments"
+    title="Thống kê Hộp thư & Email Liên hệ gửi về"
+    icon="fa-solid fa-envelope-open-text"
     :filter-options="filterOptions"
     v-model="currentPeriod"
-    @update:model-value="fetchCommentsData"
+    @update:model-value="fetchContactsData"
     @export-excel="exportToCsv"
     @export-ppt="exportToPpt"
   >
@@ -22,10 +22,10 @@ import { ref, computed, onMounted } from "vue";
 import type Highcharts from "highcharts";
 import AnalyticsChartCard, { type ChartFilterOption } from "./AnalyticsChartCard.vue";
 import AdminHighchart from "./AdminHighchart.vue";
-import type { MonthlyCommentsItem } from "@/types/admin-analytics";
+import type { MonthlyContactsItem } from "@/types/admin-analytics";
 import { adminAnalyticsService } from "@/services/admin-analytics.service";
 import { swalToast } from "@/utils/swal";
-import { exportCommentsTrendPptx } from "@/utils/pptx-export";
+import { exportContactsTrendPptx } from "@/utils/pptx-export";
 
 const DEFAULT_MONTHS = [
   "Thg 1", "Thg 2", "Thg 3", "Thg 4", "Thg 5", "Thg 6",
@@ -41,26 +41,27 @@ const filterOptions: ChartFilterOption[] = [
 
 const currentPeriod = ref<"7d" | "30d" | "monthly" | "yearly">("monthly");
 const loading = ref(false);
-const commentsData = ref<MonthlyCommentsItem[]>([]);
+const contactsData = ref<MonthlyContactsItem[]>([]);
 const chartRef = ref<InstanceType<typeof AdminHighchart> | null>(null);
 
-async function fetchCommentsData() {
+async function fetchContactsData() {
   try {
     loading.value = true;
-    const res = await adminAnalyticsService.getCommentsTrend(currentPeriod.value);
-    commentsData.value = res || [];
+    const res = await adminAnalyticsService.getContactsTrend(currentPeriod.value);
+    contactsData.value = res || [];
   } catch (err) {
-    console.error("Failed to load comments analytics:", err);
+    console.error("Failed to load contacts analytics:", err);
   } finally {
     loading.value = false;
   }
 }
 
 const chartOptions = computed<Highcharts.Options>(() => {
-  const items = commentsData.value && commentsData.value.length > 0 ? commentsData.value : [];
+  const items = contactsData.value && contactsData.value.length > 0 ? contactsData.value : [];
   const categories = items.length > 0 ? items.map((i) => i.monthLabel) : DEFAULT_MONTHS;
-  const totalComments = items.length > 0 ? items.map((i) => i.totalComments) : Array(12).fill(0);
-  const approvedComments = items.length > 0 ? items.map((i) => i.approvedComments) : Array(12).fill(0);
+  const totalMessages = items.length > 0 ? items.map((i) => i.totalMessages) : Array(12).fill(0);
+  const repliedMessages = items.length > 0 ? items.map((i) => i.repliedMessages) : Array(12).fill(0);
+  const unreadMessages = items.length > 0 ? items.map((i) => i.unreadMessages) : Array(12).fill(0);
 
   return {
     chart: {
@@ -87,7 +88,7 @@ const chartOptions = computed<Highcharts.Options>(() => {
       pointFormat:
         '<div style="display:flex;align-items:center;gap:6px;font-size:12px;margin-top:2px;">' +
         '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background-color:{series.color}"></span>' +
-        '<span>{series.name}:</span> <b>{point.y} bình luận</b>' +
+        '<span>{series.name}:</span> <b>{point.y} email</b>' +
         '</div>'
     },
     plotOptions: {
@@ -105,43 +106,50 @@ const chartOptions = computed<Highcharts.Options>(() => {
     series: [
       {
         type: "spline",
-        name: "Tổng bình luận gửi về",
-        data: totalComments,
-        color: "#059669" // Emerald Teal matching sample image
+        name: "Tổng email / tin nhắn nhận",
+        data: totalMessages,
+        color: "#df266a" // Rose Brand Color
       },
       {
         type: "spline",
-        name: "Bình luận đã phê duyệt",
-        data: approvedComments,
-        color: "#4f46e5",
+        name: "Đã phản hồi qua email",
+        data: repliedMessages,
+        color: "#059669", // Emerald Teal
         dashStyle: "ShortDot"
+      },
+      {
+        type: "spline",
+        name: "Chưa đọc / Chưa xử lý",
+        data: unreadMessages,
+        color: "#f59e0b", // Amber
+        dashStyle: "Dash"
       }
     ]
   };
 });
 
 function exportToCsv() {
-  if (!commentsData.value.length) return;
-  const headers = "Thời gian,Tổng bình luận,Đã duyệt\n";
-  const rows = commentsData.value
-    .map((c) => `"${c.monthLabel}",${c.totalComments},${c.approvedComments}`)
+  if (!contactsData.value.length) return;
+  const headers = "Thời gian,Tổng email nhận,Đã phản hồi,Chưa đọc\n";
+  const rows = contactsData.value
+    .map((c) => `"${c.monthLabel}",${c.totalMessages},${c.repliedMessages},${c.unreadMessages}`)
     .join("\n");
   const blob = new Blob([headers + rows], { type: "text/csv;charset=utf-8;" });
   const link = document.createElement("a");
   link.href = URL.createObjectURL(blob);
-  link.download = `comments-trend-${currentPeriod.value}.csv`;
+  link.download = `contacts-trend-${currentPeriod.value}.csv`;
   link.click();
-  swalToast("Đã xuất dữ liệu bình luận thành công!", "success");
+  swalToast("Đã xuất dữ liệu email & hộp thư thành công!", "success");
 }
 
 async function exportToPpt() {
-  if (!commentsData.value.length) {
+  if (!contactsData.value.length) {
     swalToast("Chưa có dữ liệu để xuất slide", "info");
     return;
   }
   try {
-    await exportCommentsTrendPptx(commentsData.value, currentPeriod.value);
-    swalToast("Đã xuất slide PPTX bình luận thành công!", "success");
+    await exportContactsTrendPptx(contactsData.value, currentPeriod.value);
+    swalToast("Đã xuất slide PPTX hộp thư liên hệ thành công!", "success");
   } catch (err) {
     console.error("Failed to export PPTX:", err);
     swalToast("Có lỗi khi xuất file PowerPoint", "error");
@@ -149,10 +157,10 @@ async function exportToPpt() {
 }
 
 defineExpose({
-  fetchCommentsData
+  fetchContactsData
 });
 
 onMounted(() => {
-  fetchCommentsData();
+  fetchContactsData();
 });
 </script>

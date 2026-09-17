@@ -532,7 +532,7 @@ onMounted(() => {
           font-family: var(--font-headline, sans-serif);
           font-size: 22px;
           font-weight: 800;
-          color: #0b1326;
+          color: var(--text-primary, #0b1326);
           margin: 0;
           line-height: 1.2;
         }
@@ -542,8 +542,8 @@ onMounted(() => {
           font-size: 10.5px;
           font-weight: 700;
           color: #df266a;
-          background: #fdf2f6;
-          border: 1px solid #fce7f3;
+          background: rgba(223, 38, 106, 0.12);
+          border: 1px solid rgba(223, 38, 106, 0.25);
           padding: 3px 8px;
           border-radius: 6px;
           display: inline-flex;
@@ -556,11 +556,11 @@ onMounted(() => {
         align-items: center;
         gap: 8px;
         font-size: 13px;
-        color: #64748b;
+        color: var(--text-muted, #64748b);
         flex-wrap: wrap;
 
         .meta-dot {
-          color: #cbd5e1;
+          color: var(--border-subtle, #cbd5e1);
         }
       }
     }
@@ -572,9 +572,9 @@ onMounted(() => {
     gap: 12px;
 
     .btn-preview-public {
-      background: #ffffff;
-      border: 1px solid #e2e8f0;
-      color: #475569;
+      background: var(--bg-surface-low, #ffffff);
+      border: 1px solid var(--border-hairline, #e2e8f0);
+      color: var(--text-secondary, #475569);
       font-family: var(--font-headline, sans-serif);
       font-size: 13px;
       font-weight: 600;
@@ -587,9 +587,9 @@ onMounted(() => {
       transition: all 0.2s ease;
 
       &:hover {
-        background: #f1f5f9;
-        color: #0b1326;
-        border-color: #cbd5e1;
+        background: var(--bg-surface-high, #f1f5f9);
+        color: var(--text-primary, #0b1326);
+        border-color: var(--border-subtle, #cbd5e1);
       }
     }
 
@@ -643,20 +643,20 @@ onMounted(() => {
 
 /* 3. Editorial Cards */
 .editorial-card {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
+  background: var(--bg-surface-low, #ffffff);
+  border: 1px solid var(--border-hairline, #e2e8f0);
   border-radius: 14px;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
 
   .card-header {
-    background: #f8fafc;
-    border-bottom: 1px solid #e2e8f0;
+    background: var(--bg-surface-lowest, #f8fafc);
+    border-bottom: 1px solid var(--border-hairline, #e2e8f0);
     padding: 12px 20px;
     font-family: var(--font-mono, monospace);
     font-size: 11px;
     font-weight: 700;
-    color: #475569;
+    color: var(--text-secondary, #475569);
     letter-spacing: 0.06em;
     display: flex;
     align-items: center;
@@ -697,7 +697,7 @@ onMounted(() => {
     font-family: var(--font-mono, monospace);
     font-size: 10.5px;
     font-weight: 700;
-    color: #475569;
+    color: var(--text-secondary, #475569);
     letter-spacing: 0.05em;
 
     .text-danger {
@@ -707,20 +707,20 @@ onMounted(() => {
 
   .field-hint {
     font-size: 11px;
-    color: #94a3b8;
+    color: var(--text-muted, #94a3b8);
     margin-top: 2px;
   }
 }
 
 .input-custom-field {
   width: 100%;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
+  background: var(--bg-surface-lowest, #ffffff);
+  border: 1px solid var(--border-hairline, #e2e8f0);
   border-radius: 10px;
   padding: 10px 14px;
   font-family: var(--font-headline, sans-serif);
   font-size: 13.5px;
-  color: #0b1326;
+  color: var(--text-primary, #0b1326);
   outline: none;
   transition: all 0.2s ease;
 
@@ -730,8 +730,8 @@ onMounted(() => {
   }
 
   &:disabled {
-    background: #f8fafc;
-    color: #94a3b8;
+    background: var(--bg-surface-high, #f8fafc);
+    color: var(--text-muted, #94a3b8);
     cursor: not-allowed;
   }
 
@@ -743,14 +743,14 @@ onMounted(() => {
 
 .textarea-custom-field {
   width: 100%;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
+  background: var(--bg-surface-lowest, #ffffff);
+  border: 1px solid var(--border-hairline, #e2e8f0);
   border-radius: 10px;
   padding: 12px 14px;
   font-family: var(--font-body, sans-serif);
   font-size: 13.5px;
   line-height: 1.55;
-  color: #0b1326;
+  color: var(--text-primary, #0b1326);
   outline: none;
   resize: vertical;
   transition: all 0.2s ease;
@@ -779,8 +779,8 @@ onMounted(() => {
     height: 100px;
     border-radius: 50%;
     overflow: hidden;
-    background: #f1f5f9;
-    border: 3px solid #fce7f3;
+    background: var(--bg-surface-low, #f1f5f9);
+    border: 3px solid rgba(223, 38, 106, 0.25);
     box-shadow: 0 4px 12px rgba(223, 38, 106, 0.15);
 
     .preview-circle-img {
@@ -795,7 +795,7 @@ onMounted(() => {
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #cbd5e1;
+      color: var(--text-muted, #cbd5e1);
     }
   }
 

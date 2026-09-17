@@ -28,12 +28,14 @@
     <!-- 2. The Main Editorial Table Card -->
     <div class="table-card">
       <!-- Loading Skeleton Overlay -->
-      <div v-if="loading" class="table-loading-container">
-        <div class="loading-spinner-box">
-          <q-spinner-tail color="pink-7" size="32px" />
-          <span class="loading-label">Đang tải dữ liệu...</span>
+      <transition name="fade-loading">
+        <div v-if="loading" class="table-loading-container">
+          <div class="loading-spinner-box">
+            <q-spinner-tail color="pink-7" size="32px" />
+            <span class="loading-label">Đang tải dữ liệu...</span>
+          </div>
         </div>
-      </div>
+      </transition>
 
       <div class="table-scroll-container">
         <table class="editorial-table">
@@ -48,7 +50,7 @@
             </tr>
           </thead>
 
-          <tbody v-if="!loading && items && items.length > 0">
+          <tbody v-if="items && items.length > 0">
             <tr v-for="(row, rowIndex) in items" :key="getRowKey(row, rowIndex)" class="editorial-tr">
               <td v-for="col in columns" :key="col.key" :style="{ textAlign: col.align || 'left' }"
                 class="editorial-td">
@@ -238,7 +240,7 @@ const paginationPages = computed<(number | string)[]>(() => {
     .search-icon {
       position: absolute;
       left: 14px;
-      color: #94a3b8;
+      color: var(--text-muted, #94a3b8);
       pointer-events: none;
     }
 
@@ -248,9 +250,9 @@ const paginationPages = computed<(number | string)[]>(() => {
       padding: 0 36px 0 38px;
       font-family: var(--font-body, sans-serif);
       font-size: 13.5px;
-      color: #0b1326;
-      background: #ffffff;
-      border: 1px solid #e2e8f0;
+      color: var(--text-primary, #0b1326);
+      background: var(--bg-surface-low, #ffffff);
+      border: 1px solid var(--border-hairline, #e2e8f0);
       border-radius: 10px;
       outline: none;
       transition: all 0.2s ease;
@@ -261,7 +263,7 @@ const paginationPages = computed<(number | string)[]>(() => {
       }
 
       &::placeholder {
-        color: #94a3b8;
+        color: var(--text-muted, #94a3b8);
       }
     }
 
@@ -271,17 +273,17 @@ const paginationPages = computed<(number | string)[]>(() => {
       width: 20px;
       height: 20px;
       border-radius: 50%;
-      background: #e2e8f0;
+      background: var(--bg-surface-high, #e2e8f0);
       border: none;
-      color: #64748b;
+      color: var(--text-secondary, #64748b);
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
 
       &:hover {
-        background: #cbd5e1;
-        color: #0b1326;
+        background: var(--bg-surface-highest, #cbd5e1);
+        color: var(--text-primary, #0b1326);
       }
     }
   }
@@ -296,8 +298,8 @@ const paginationPages = computed<(number | string)[]>(() => {
 
 /* 2. Table Card (Full height flex) */
 .table-card {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
+  background: var(--bg-surface-lowest, #ffffff);
+  border: 1px solid var(--border-hairline, #e2e8f0);
   border-radius: 14px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
   overflow: hidden;
@@ -310,7 +312,7 @@ const paginationPages = computed<(number | string)[]>(() => {
   .table-loading-container {
     position: absolute;
     inset: 0;
-    background: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.65);
     backdrop-filter: blur(2px);
     z-index: 10;
     display: flex;
@@ -327,9 +329,19 @@ const paginationPages = computed<(number | string)[]>(() => {
         font-family: var(--font-headline, sans-serif);
         font-size: 13px;
         font-weight: 600;
-        color: #475569;
+        color: var(--text-secondary, #475569);
       }
     }
+  }
+
+  .fade-loading-enter-active,
+  .fade-loading-leave-active {
+    transition: opacity 0.2s ease;
+  }
+
+  .fade-loading-enter-from,
+  .fade-loading-leave-to {
+    opacity: 0;
   }
 
   .table-scroll-container {
@@ -369,16 +381,16 @@ const paginationPages = computed<(number | string)[]>(() => {
       transition: background 0.15s ease;
 
       &:hover {
-        background: #fdf2f6;
+        background: rgba(223, 38, 106, 0.08);
       }
     }
 
     .editorial-td {
       padding: 14px 18px;
-      color: #1e293b;
+      color: var(--text-primary, #1e293b);
       vertical-align: middle;
-      border-right: 1px solid #eaeff3;
-      border-bottom: 1px solid #e2e8f0;
+      border-right: 1px solid var(--border-hairline, #eaeff3);
+      border-bottom: 1px solid var(--border-hairline, #e2e8f0);
 
       &:last-child {
         border-right: none;
@@ -400,9 +412,9 @@ const paginationPages = computed<(number | string)[]>(() => {
     width: 64px;
     height: 64px;
     border-radius: 16px;
-    background: #f8fafc;
-    border: 1px dashed #cbd5e1;
-    color: #94a3b8;
+    background: var(--bg-surface-low, #f8fafc);
+    border: 1px dashed var(--border-subtle, #cbd5e1);
+    color: var(--text-muted, #94a3b8);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -413,14 +425,14 @@ const paginationPages = computed<(number | string)[]>(() => {
     font-family: var(--font-headline, sans-serif);
     font-size: 16px;
     font-weight: 700;
-    color: #0b1326;
+    color: var(--text-primary, #0b1326);
     margin-bottom: 6px;
   }
 
   .empty-desc {
     font-family: var(--font-body, sans-serif);
     font-size: 13.5px;
-    color: #64748b;
+    color: var(--text-muted, #64748b);
     max-width: 420px;
     line-height: 1.5;
   }
@@ -432,19 +444,19 @@ const paginationPages = computed<(number | string)[]>(() => {
   align-items: center;
   justify-content: space-between;
   padding: 14px 20px;
-  background: #f8fafc;
-  border-top: 1px solid #e2e8f0;
+  background: var(--bg-surface-lowest, #f8fafc);
+  border-top: 1px solid var(--border-hairline, #e2e8f0);
   flex-wrap: wrap;
   gap: 12px;
 
   .footer-info {
     font-family: var(--font-body, sans-serif);
     font-size: 13px;
-    color: #64748b;
+    color: var(--text-muted, #64748b);
 
     .text-highlight {
       font-weight: 700;
-      color: #0b1326;
+      color: var(--text-primary, #0b1326);
     }
   }
 
@@ -458,9 +470,9 @@ const paginationPages = computed<(number | string)[]>(() => {
       height: 34px;
       padding: 0 8px;
       border-radius: 8px;
-      background: #ffffff;
-      border: 1px solid #e2e8f0;
-      color: #475569;
+      background: var(--bg-surface-low, #ffffff);
+      border: 1px solid var(--border-hairline, #e2e8f0);
+      color: var(--text-secondary, #475569);
       font-family: var(--font-mono, monospace);
       font-size: 12.5px;
       font-weight: 700;
@@ -474,7 +486,7 @@ const paginationPages = computed<(number | string)[]>(() => {
       &:hover:not(:disabled):not(.active) {
         border-color: #df266a;
         color: #df266a;
-        background: #fdf2f6;
+        background: rgba(223, 38, 106, 0.12);
         transform: translateY(-1px);
       }
 
@@ -496,7 +508,7 @@ const paginationPages = computed<(number | string)[]>(() => {
       font-family: var(--font-mono, monospace);
       font-size: 13px;
       font-weight: 700;
-      color: #94a3b8;
+      color: var(--text-muted, #94a3b8);
       padding: 0 4px;
     }
   }

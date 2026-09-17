@@ -26,88 +26,102 @@ const props = withDefaults(
 
 const chartContainer = ref<HTMLElement | null>(null);
 let chartInstance: Highcharts.Chart | null = null;
+let themeObserver: MutationObserver | null = null;
 
-// Global theme options for Editorial styling
-const baseThemeOptions: Highcharts.Options = {
-  chart: {
-    backgroundColor: "transparent",
-    style: {
-      fontFamily: "var(--font-body, 'Plus Jakarta Sans', sans-serif)"
-    },
-    spacing: [15, 10, 15, 10]
-  },
-  title: {
-    text: ""
-  },
-  credits: {
-    enabled: false
-  },
-  tooltip: {
-    backgroundColor: "#ffffff",
-    borderColor: "#e2e8f0",
-    borderRadius: 10,
-    shadow: {
-      color: "rgba(11, 19, 38, 0.08)",
-      offsetX: 0,
-      offsetY: 4,
-      opacity: 0.12,
-      width: 12
-    },
-    style: {
-      color: "#0b1326",
-      fontSize: "12.5px",
-      fontFamily: "var(--font-body, 'Plus Jakarta Sans', sans-serif)"
-    }
-  },
-  xAxis: {
-    lineColor: "#e2e8f0",
-    tickColor: "#e2e8f0",
-    labels: {
+function isDarkMode(): boolean {
+  return !document.body.classList.contains("portfolio-light");
+}
+
+function getBaseThemeOptions(): Highcharts.Options {
+  const dark = isDarkMode();
+  return {
+    chart: {
+      backgroundColor: "transparent",
       style: {
-        color: "#64748b",
-        fontSize: "11.5px",
-        fontFamily: "var(--font-mono, monospace)"
-      }
-    }
-  },
-  yAxis: {
-    gridLineColor: "#f1f5f9",
-    gridLineDashStyle: "Solid",
+        fontFamily: "var(--font-body, 'Plus Jakarta Sans', sans-serif)"
+      },
+      spacing: [15, 10, 15, 10]
+    },
     title: {
-      text: undefined
+      text: ""
     },
-    labels: {
+    credits: {
+      enabled: false
+    },
+    tooltip: {
+      backgroundColor: dark ? "#0b1326" : "#ffffff",
+      borderColor: dark ? "rgba(248, 250, 252, 0.15)" : "#e2e8f0",
+      borderRadius: 10,
+      shadow: {
+        color: dark ? "rgba(0, 0, 0, 0.6)" : "rgba(11, 19, 38, 0.08)",
+        offsetX: 0,
+        offsetY: 4,
+        opacity: dark ? 0.4 : 0.12,
+        width: 12
+      },
       style: {
-        color: "#64748b",
-        fontSize: "11.5px",
-        fontFamily: "var(--font-mono, monospace)"
+        color: dark ? "#dae2fd" : "#0b1326",
+        fontSize: "12.5px",
+        fontFamily: "var(--font-body, 'Plus Jakarta Sans', sans-serif)"
+      }
+    },
+    xAxis: {
+      lineColor: dark ? "rgba(248, 250, 252, 0.12)" : "#e2e8f0",
+      tickColor: dark ? "rgba(248, 250, 252, 0.12)" : "#e2e8f0",
+      labels: {
+        style: {
+          color: dark ? "#94a3b8" : "#64748b",
+          fontSize: "11.5px",
+          fontFamily: "var(--font-mono, monospace)"
+        }
+      }
+    },
+    yAxis: {
+      gridLineColor: dark ? "rgba(248, 250, 252, 0.06)" : "#f1f5f9",
+      gridLineDashStyle: "Solid",
+      title: {
+        text: undefined
+      },
+      labels: {
+        style: {
+          color: dark ? "#94a3b8" : "#64748b",
+          fontSize: "11.5px",
+          fontFamily: "var(--font-mono, monospace)"
+        }
+      }
+    },
+    legend: {
+      itemStyle: {
+        color: dark ? "#dae2fd" : "#475569",
+        fontWeight: "600",
+        fontSize: "12px"
+      },
+      itemHoverStyle: {
+        color: "#df266a"
       }
     }
-  },
-  legend: {
-    itemStyle: {
-      color: "#475569",
-      fontWeight: "600",
-      fontSize: "12px"
-    },
-    itemHoverStyle: {
-      color: "#0b1326"
-    }
-  }
-};
+  };
+}
 
 function initChart() {
   if (!chartContainer.value) return;
 
-  const mergedOptions = Highcharts.merge(baseThemeOptions, props.options);
+  const mergedOptions = Highcharts.merge(getBaseThemeOptions(), props.options);
   chartInstance = Highcharts.chart(chartContainer.value, mergedOptions);
+}
+
+function handleThemeChange() {
+  if (chartInstance && chartContainer.value) {
+    const mergedOptions = Highcharts.merge(getBaseThemeOptions(), props.options);
+    chartInstance.update(mergedOptions, true, true);
+  }
 }
 
 watch(
   () => props.options,
   (newOptions) => {
     if (chartInstance && newOptions) {
-      chartInstance.update(newOptions, true, true);
+      chartInstance.update(newOptions, true, false);
     } else if (!chartInstance && chartContainer.value) {
       initChart();
     }
@@ -119,9 +133,24 @@ onMounted(() => {
   nextTick(() => {
     initChart();
   });
+
+  themeObserver = new MutationObserver((mutations) => {
+    for (const m of mutations) {
+      if (m.attributeName === "class") {
+        handleThemeChange();
+        break;
+      }
+    }
+  });
+
+  themeObserver.observe(document.body, { attributes: true, attributeFilter: ["class"] });
 });
 
 onBeforeUnmount(() => {
+  if (themeObserver) {
+    themeObserver.disconnect();
+    themeObserver = null;
+  }
   if (chartInstance) {
     chartInstance.destroy();
     chartInstance = null;
@@ -141,7 +170,6 @@ function reflow() {
 
 function exportAsImage(type: "image/png" | "image/jpeg" | "application/pdf" | "image/svg+xml" = "image/png") {
   if (chartInstance) {
-    // If exporting module is available or fallback print
     if (typeof (chartInstance as any).exportChartLocal === "function") {
       (chartInstance as any).exportChartLocal({ type });
     } else if (typeof (chartInstance as any).print === "function") {
@@ -185,6 +213,14 @@ defineExpose({
     font-size: 13px;
     font-weight: 600;
     color: #64748b;
+  }
+}
+
+:global(body:not(.portfolio-light)) .chart-loading-overlay {
+  background: rgba(11, 19, 38, 0.85);
+
+  .loading-text {
+    color: #dae2fd;
   }
 }
 </style>

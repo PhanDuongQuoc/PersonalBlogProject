@@ -30,6 +30,18 @@
 
         <!-- Quick actions & User menu -->
         <div class="header-actions">
+          <!-- Theme Switcher Button -->
+          <q-btn
+            flat
+            round
+            dense
+            class="theme-toggle-btn"
+            :icon="isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon'"
+            :title="isDark ? 'Chuyển sang giao diện sáng' : 'Chuyển sang giao diện tối'"
+            :aria-label="isDark ? 'Chuyển sang giao diện sáng' : 'Chuyển sang giao diện tối'"
+            @click="toggleTheme"
+          />
+
           <!-- Notification Bell Dropdown Button -->
           <div class="notification-bell-wrap">
             <q-btn
@@ -486,7 +498,23 @@ function getAvatarColor(name: string): string {
 }
 
 
+const isDark = ref(true)
+
+function applyTheme(dark: boolean) {
+  isDark.value = dark
+  document.body.classList.toggle('portfolio-light', !dark)
+  localStorage.setItem('portfolio-theme', dark ? 'dark' : 'light')
+}
+
+function toggleTheme() {
+  applyTheme(!isDark.value)
+}
+
 onMounted(() => {
+  const savedTheme = localStorage.getItem('portfolio-theme')
+  const preferDark = savedTheme !== 'light'
+  applyTheme(preferDark)
+
   fetchUnreadCount()
   signalRService.start()
   signalRService.onNewContactMessage(handleGlobalNewContact)
@@ -604,6 +632,24 @@ async function handleLogout() {
   display: flex;
   align-items: center;
   gap: 12px;
+}
+
+/* Theme Switcher Button */
+.theme-toggle-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  color: #64748b;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: #df266a;
+    border-color: #df266a;
+    background: #fdf2f6;
+    transform: rotate(15deg);
+  }
 }
 
 /* Notification Bell Button */
@@ -1032,10 +1078,15 @@ async function handleLogout() {
 
 /* Drawer / Sidebar */
 .admin-drawer {
-  background-color: #ffffff !important;
-  border-right: 1px solid #e2e8f0 !important;
+  background-color: #ffffff;
+  border-right: 1px solid #e2e8f0;
   display: flex;
   flex-direction: column;
+}
+
+:global(body:not(.portfolio-light)) .admin-drawer {
+  background-color: #0b1326 !important;
+  border-right: 1px solid rgba(248, 250, 252, 0.08) !important;
 }
 
 .drawer-header {
@@ -1201,12 +1252,9 @@ async function handleLogout() {
 <!-- Global / Unscoped style for Teleported Dropdown Menu -->
 <style lang="scss">
 .user-dropdown-menu {
-  background: #ffffff !important;
-  border: 1px solid #e2e8f0 !important;
   border-radius: 14px !important;
   min-width: 240px !important;
   box-shadow: 0 16px 36px rgba(0, 0, 0, 0.1) !important;
-  color: #0b1326 !important;
 
   .dropdown-header {
     padding: 14px 18px 10px;
@@ -1214,12 +1262,10 @@ async function handleLogout() {
     .user-full-name {
       font-weight: 800;
       font-size: 14.5px;
-      color: #0b1326 !important;
     }
 
     .user-full-email {
       font-size: 12px;
-      color: #64748b !important;
       margin-top: 2px;
     }
   }
@@ -1231,7 +1277,6 @@ async function handleLogout() {
       border-radius: 8px;
       margin-bottom: 2px;
       min-height: 40px;
-      color: #0b1326 !important;
       font-weight: 600;
       font-size: 13.5px;
       transition: all 0.2s ease;
@@ -1239,14 +1284,53 @@ async function handleLogout() {
       .item-avatar {
         min-width: 28px;
         padding-right: 8px;
-        color: #df266a !important;
+        color: #df266a;
       }
 
       .item-label,
       .q-item__section--main {
-        color: #0b1326 !important;
         font-size: 13.5px;
         font-weight: 600;
+      }
+
+      &.logout-item {
+        color: #ef4444 !important;
+
+        .item-avatar,
+        .item-label,
+        .q-item__section--main {
+          color: #ef4444 !important;
+        }
+
+        &:hover {
+          background: rgba(239, 68, 68, 0.12) !important;
+        }
+      }
+    }
+  }
+}
+
+body.portfolio-light .user-dropdown-menu {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #0b1326 !important;
+
+  .dropdown-header {
+    .user-full-name {
+      color: #0b1326 !important;
+    }
+    .user-full-email {
+      color: #64748b !important;
+    }
+  }
+
+  .dropdown-list {
+    .dropdown-item {
+      color: #0b1326 !important;
+
+      .item-label,
+      .q-item__section--main {
+        color: #0b1326 !important;
       }
 
       &:hover {
@@ -1260,20 +1344,6 @@ async function handleLogout() {
 
         .item-avatar {
           color: #df266a !important;
-        }
-      }
-
-      &.logout-item {
-        color: #ef4444 !important;
-
-        .item-avatar,
-        .item-label,
-        .q-item__section--main {
-          color: #ef4444 !important;
-        }
-
-        &:hover {
-          background: #fef2f2 !important;
         }
       }
     }

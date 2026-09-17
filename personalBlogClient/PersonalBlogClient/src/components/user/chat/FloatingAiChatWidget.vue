@@ -13,9 +13,14 @@
       </button>
     </transition>
 
+    <!-- Backdrop overlay when expanded as a dialog -->
+    <transition name="pop-scale">
+      <div v-if="isOpen && isExpanded" class="chat-dialog-backdrop" @click="toggleExpand"></div>
+    </transition>
+
     <!-- 2. Chat Window Panel -->
     <transition name="chat-panel-slide">
-      <div v-if="isOpen" class="ai-chat-panel">
+      <div v-if="isOpen" class="ai-chat-panel" :class="{ 'is-expanded': isExpanded }">
         <!-- Header -->
         <header class="panel-header">
           <div class="header-left">
@@ -33,10 +38,23 @@
           </div>
 
           <div class="header-actions">
+            <!-- Maximize / Expand Dialog Toggle Button -->
+            <button
+              type="button"
+              class="btn-header-action btn-expand"
+              :title="isExpanded ? 'Thu nhỏ cửa sổ' : 'Phóng to thành hộp thoại lớn'"
+              @click="toggleExpand"
+            >
+              <q-icon :name="isExpanded ? 'fa-solid fa-compress' : 'fa-solid fa-up-right-and-down-left-from-center'" size="11px" />
+            </button>
+
+            <!-- Clear history button -->
             <button type="button" class="btn-header-action" title="Xóa đoạn hội thoại" @click="clearHistory">
               <q-icon name="fa-solid fa-trash-can" size="12px" />
             </button>
-            <button type="button" class="btn-header-action btn-close" title="Thu nhỏ cửa sổ chat" @click="toggleChat">
+
+            <!-- Close / Minimize button -->
+            <button type="button" class="btn-header-action btn-close" title="Đóng cửa sổ chat" @click="toggleChat">
               <q-icon name="fa-solid fa-xmark" size="14px" />
             </button>
           </div>
@@ -142,6 +160,7 @@ import type { ChatMessage } from "@/types/ai-chat";
 import { aiChatService } from "@/services/ai-chat.service";
 
 const isOpen = ref(false);
+const isExpanded = ref(false);
 const isTyping = ref(false);
 const inputMessage = ref("");
 const messagesContainer = ref<HTMLElement | null>(null);
@@ -165,7 +184,17 @@ function toggleChat() {
       scrollToBottom();
       inputRef.value?.focus();
     });
+  } else {
+    isExpanded.value = false;
   }
+}
+
+function toggleExpand() {
+  isExpanded.value = !isExpanded.value;
+  nextTick(() => {
+    scrollToBottom();
+    inputRef.value?.focus();
+  });
 }
 
 function clearHistory() {
@@ -316,7 +345,7 @@ function renderMarkdown(raw: string): string {
   height: 52px;
   padding: 0 20px 0 16px;
   border-radius: 999px;
-  background: #0b1326;
+  background: var(--bg-surface, #0b1326);
   border: 1px solid rgba(223, 38, 106, 0.4);
   color: #ffffff;
   display: flex;
@@ -382,14 +411,57 @@ function renderMarkdown(raw: string): string {
   height: 550px;
   max-width: calc(100vw - 32px);
   max-height: calc(100vh - 48px);
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
+  background: var(--bg-surface, #0b1326);
+  border: 1px solid var(--border-subtle, rgba(248, 250, 252, 0.12));
   border-radius: 20px;
-  box-shadow: 0 20px 45px rgba(11, 19, 38, 0.2), 0 0 1px rgba(11, 19, 38, 0.1);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.4), 0 0 1px rgba(248, 250, 252, 0.08);
   display: flex;
   flex-direction: column;
   overflow: hidden;
   animation: panelIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: width 0.3s ease, height 0.3s ease, transform 0.3s ease;
+
+  &.is-expanded {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: min(900px, 94vw);
+    height: min(780px, 88vh);
+    max-width: 94vw;
+    max-height: 88vh;
+    border-radius: 22px;
+    z-index: 10001;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(248, 250, 252, 0.12);
+
+    .panel-messages {
+      padding: 22px 28px;
+    }
+
+    .welcome-card {
+      max-width: 650px;
+      margin: 16px auto;
+      padding: 24px 28px;
+    }
+
+    .user-msg .msg-bubble {
+      max-width: 600px;
+      font-size: 13.5px;
+    }
+
+    .model-msg .msg-bubble-container {
+      max-width: calc(100% - 44px);
+    }
+
+    .model-msg .msg-bubble {
+      font-size: 13.5px;
+      padding: 14px 18px;
+    }
+
+    .panel-footer {
+      padding: 14px 20px 12px;
+    }
+  }
 
   @media (max-width: 480px) {
     width: calc(100vw - 24px);
@@ -399,15 +471,24 @@ function renderMarkdown(raw: string): string {
   }
 }
 
+.chat-dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(6, 14, 32, 0.72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 10000;
+}
+
 /* Header */
 .panel-header {
   padding: 14px 18px;
-  background: #0b1326;
+  background: var(--bg-surface-lowest, #060e20);
   color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid rgba(248, 250, 252, 0.08);
+  border-bottom: 1px solid var(--border-hairline, rgba(248, 250, 252, 0.08));
 
   .header-left {
     display: flex;
@@ -433,7 +514,7 @@ function renderMarkdown(raw: string): string {
         height: 10px;
         border-radius: 50%;
         background: #10b981;
-        border: 2px solid #0b1326;
+        border: 2px solid var(--bg-surface-lowest, #060e20);
       }
     }
 
@@ -444,32 +525,6 @@ function renderMarkdown(raw: string): string {
         font-weight: 700;
         color: #ffffff;
         margin: 0 0 1px;
-      }
-
-      .bot-status {
-        margin: 0;
-        font-size: 11px;
-        display: flex;
-        align-items: center;
-        gap: 4px;
-
-        .model-badge {
-          font-family: var(--font-mono, monospace);
-          font-size: 9.5px;
-          background: rgba(223, 38, 106, 0.2);
-          color: #fce7f3;
-          border: 1px solid rgba(223, 38, 106, 0.4);
-          padding: 1px 5px;
-          border-radius: 4px;
-        }
-
-        .dot-sep {
-          color: #64748b;
-        }
-
-        .status-text {
-          color: #94a3b8;
-        }
       }
     }
   }
@@ -513,33 +568,34 @@ function renderMarkdown(raw: string): string {
   display: flex;
   flex-direction: column;
   gap: 14px;
-  background: #f8fafc;
+  background: var(--bg-surface-lowest, #060e20);
 
   &::-webkit-scrollbar {
     width: 5px;
   }
 
   &::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
+    background: var(--border-subtle, rgba(248, 250, 252, 0.12));
     border-radius: 4px;
   }
 }
 
 /* Welcome Card */
 .welcome-card {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
+  background: var(--bg-surface, #0b1326);
+  border: 1px solid var(--border-hairline, rgba(248, 250, 252, 0.08));
   border-radius: 14px;
   padding: 16px;
   text-align: center;
-  box-shadow: 0 4px 12px rgba(11, 19, 38, 0.02);
+  box-shadow: var(--shadow-card, 0 4px 12px rgba(0, 0, 0, 0.2));
 
   .welcome-icon-box {
     width: 44px;
     height: 44px;
     margin: 0 auto 10px;
     border-radius: 12px;
-    background: #fdf2f6;
+    background: var(--accent-primary-container, rgba(223, 38, 106, 0.12));
+    border: 1px solid rgba(223, 38, 106, 0.25);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -549,13 +605,13 @@ function renderMarkdown(raw: string): string {
     font-family: var(--font-headline, sans-serif);
     font-size: 15px;
     font-weight: 700;
-    color: #0b1326;
+    color: var(--text-primary, #dae2fd);
     margin: 0 0 6px;
   }
 
   .welcome-desc {
     font-size: 12.5px;
-    color: #64748b;
+    color: var(--text-secondary, #94a3b8);
     line-height: 1.5;
     margin: 0 0 14px;
   }
@@ -564,7 +620,7 @@ function renderMarkdown(raw: string): string {
     font-family: var(--font-headline, sans-serif);
     font-size: 11.5px;
     font-weight: 700;
-    color: #334155;
+    color: var(--text-primary, #dae2fd);
     text-align: left;
     margin-bottom: 8px;
     display: flex;
@@ -578,11 +634,11 @@ function renderMarkdown(raw: string): string {
 
     .prompt-chip {
       padding: 8px 12px;
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
+      background: var(--bg-surface-container, #131b2e);
+      border: 1px solid var(--border-subtle, rgba(248, 250, 252, 0.08));
       border-radius: 8px;
       font-size: 12px;
-      color: #334155;
+      color: var(--text-primary, #dae2fd);
       text-align: left;
       cursor: pointer;
       display: flex;
@@ -591,18 +647,18 @@ function renderMarkdown(raw: string): string {
       transition: all 0.2s ease;
 
       &:hover {
-        background: #fdf2f6;
-        border-color: #fce7f3;
-        color: #df266a;
+        background: var(--accent-primary-container, rgba(223, 38, 106, 0.15));
+        border-color: var(--accent-primary, #df266a);
+        color: var(--accent-primary, #df266a);
 
         .chip-arrow {
           transform: translateX(2px);
-          color: #df266a;
+          color: var(--accent-primary, #df266a);
         }
       }
 
       .chip-arrow {
-        color: #94a3b8;
+        color: var(--text-muted, #64748b);
         transition: transform 0.2s ease;
       }
     }
@@ -623,13 +679,14 @@ function renderMarkdown(raw: string): string {
     }
 
     .msg-bubble {
-      background: #0b1326;
+      background: var(--accent-primary, #df266a);
       color: #ffffff;
       border-radius: 14px 14px 2px 14px;
       padding: 10px 14px;
       font-size: 13px;
       line-height: 1.45;
       max-width: 270px;
+      box-shadow: 0 4px 14px rgba(223, 38, 106, 0.3);
     }
   }
 
@@ -640,9 +697,9 @@ function renderMarkdown(raw: string): string {
       width: 26px;
       height: 26px;
       border-radius: 8px;
-      background: #fdf2f6;
-      color: #df266a;
-      border: 1px solid #fce7f3;
+      background: var(--accent-primary-container, rgba(223, 38, 106, 0.12));
+      color: var(--accent-primary, #df266a);
+      border: 1px solid rgba(223, 38, 106, 0.25);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -656,19 +713,19 @@ function renderMarkdown(raw: string): string {
     }
 
     .msg-bubble {
-      background: #ffffff;
-      border: 1px solid #e2e8f0;
+      background: var(--bg-surface, #0b1326);
+      border: 1px solid var(--border-hairline, rgba(248, 250, 252, 0.08));
       border-radius: 14px 14px 14px 2px;
       padding: 12px 14px;
       font-size: 13px;
       line-height: 1.5;
-      color: #1e293b;
-      box-shadow: 0 2px 8px rgba(11, 19, 38, 0.02);
+      color: var(--text-primary, #dae2fd);
+      box-shadow: var(--shadow-card, 0 2px 8px rgba(0, 0, 0, 0.15));
 
       &.msg-error {
-        background: #fff1f2;
-        border-color: #fecdd3;
-        color: #be123c;
+        background: rgba(239, 68, 68, 0.15);
+        border-color: rgba(239, 68, 68, 0.3);
+        color: #fca5a5;
       }
     }
   }
@@ -680,7 +737,7 @@ function renderMarkdown(raw: string): string {
 
     .msg-time {
       font-size: 10px;
-      color: #94a3b8;
+      color: var(--text-muted, #64748b);
       padding: 0 4px;
     }
   }
@@ -697,7 +754,7 @@ function renderMarkdown(raw: string): string {
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: #df266a;
+    background: var(--accent-primary, #df266a);
     animation: bounce 1.4s infinite ease-in-out both;
 
     &:nth-child(1) {
@@ -711,7 +768,6 @@ function renderMarkdown(raw: string): string {
 }
 
 @keyframes bounce {
-
   0%,
   80%,
   100% {
@@ -733,7 +789,7 @@ function renderMarkdown(raw: string): string {
   .followup-label {
     font-size: 11px;
     font-weight: 600;
-    color: #64748b;
+    color: var(--text-muted, #64748b);
   }
 
   .followup-chips {
@@ -743,17 +799,18 @@ function renderMarkdown(raw: string): string {
 
     .followup-chip {
       padding: 5px 10px;
-      background: #ffffff;
-      border: 1px solid #e2e8f0;
+      background: var(--bg-surface-container, #131b2e);
+      border: 1px solid var(--accent-secondary-border, rgba(99, 102, 241, 0.22));
       border-radius: 12px;
       font-size: 11.5px;
-      color: #4f46e5;
+      color: var(--accent-secondary-text, #a5b4fc);
       cursor: pointer;
       transition: all 0.2s ease;
 
       &:hover {
-        background: #eef2ff;
-        border-color: #c7d2fe;
+        background: var(--accent-secondary-container, rgba(99, 102, 241, 0.15));
+        border-color: var(--accent-primary, #df266a);
+        color: var(--text-primary, #ffffff);
       }
     }
   }
@@ -773,14 +830,19 @@ function renderMarkdown(raw: string): string {
     font-size: 13.5px;
     font-weight: 700;
     margin: 8px 0 4px;
-    color: #0b1326;
+    color: var(--text-primary, #dae2fd);
   }
 
   h5.chat-h5 {
     font-size: 12.5px;
     font-weight: 700;
     margin: 6px 0 3px;
-    color: #0b1326;
+    color: var(--text-primary, #dae2fd);
+  }
+
+  strong {
+    color: var(--text-primary, #ffffff);
+    font-weight: 700;
   }
 
   li.chat-li {
@@ -789,27 +851,29 @@ function renderMarkdown(raw: string): string {
   }
 
   .chat-link {
-    color: #df266a;
+    color: var(--accent-primary, #df266a);
     text-decoration: underline;
     font-weight: 600;
 
     &:hover {
-      color: #be185d;
+      color: var(--accent-primary-hover, #f43f7e);
     }
   }
 
   .chat-inline-code {
     font-family: var(--font-mono, monospace);
     font-size: 11.5px;
-    background: #f1f5f9;
-    color: #df266a;
+    background: var(--bg-surface-container, #131b2e);
+    color: var(--accent-primary, #df266a);
+    border: 1px solid var(--border-hairline, rgba(248, 250, 252, 0.08));
     padding: 1px 5px;
     border-radius: 4px;
   }
 
   .chat-code-block {
-    background: #0b1326;
-    color: #f8fafc;
+    background: var(--bg-surface-lowest, #060e20);
+    color: var(--text-primary, #dae2fd);
+    border: 1px solid var(--border-subtle, rgba(248, 250, 252, 0.1));
     border-radius: 8px;
     padding: 8px 10px;
     margin: 6px 0;
@@ -822,23 +886,23 @@ function renderMarkdown(raw: string): string {
 /* Footer */
 .panel-footer {
   padding: 10px 14px 8px;
-  background: #ffffff;
-  border-top: 1px solid #f1f5f9;
+  background: var(--bg-surface, #0b1326);
+  border-top: 1px solid var(--border-hairline, rgba(248, 250, 252, 0.08));
 
   .input-form {
     display: flex;
     align-items: center;
     gap: 8px;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
+    background: var(--bg-surface-container, #131b2e);
+    border: 1px solid var(--border-subtle, rgba(248, 250, 252, 0.1));
     border-radius: 12px;
     padding: 4px 6px 4px 12px;
     transition: all 0.2s ease;
 
     &:focus-within {
-      background: #ffffff;
-      border-color: #df266a;
-      box-shadow: 0 0 0 3px rgba(223, 38, 106, 0.1);
+      background: var(--bg-surface-high, #171f33);
+      border-color: var(--accent-primary, #df266a);
+      box-shadow: 0 0 0 3px var(--accent-primary-container, rgba(223, 38, 106, 0.12));
     }
 
     .chat-input {
@@ -847,10 +911,10 @@ function renderMarkdown(raw: string): string {
       background: transparent;
       outline: none;
       font-size: 12.5px;
-      color: #0b1326;
+      color: var(--text-primary, #dae2fd);
 
       &::placeholder {
-        color: #94a3b8;
+        color: var(--text-muted, #64748b);
         font-size: 12px;
       }
     }
@@ -859,7 +923,7 @@ function renderMarkdown(raw: string): string {
       width: 32px;
       height: 32px;
       border-radius: 9px;
-      background: #df266a;
+      background: var(--accent-primary, #df266a);
       border: none;
       color: #ffffff;
       display: flex;
@@ -869,7 +933,7 @@ function renderMarkdown(raw: string): string {
       transition: all 0.2s ease;
 
       &:hover:not(:disabled) {
-        background: #be185d;
+        background: var(--accent-primary-hover, #f43f7e);
         transform: scale(1.04);
       }
 
@@ -882,7 +946,7 @@ function renderMarkdown(raw: string): string {
 
   .footer-hint {
     font-size: 10px;
-    color: #94a3b8;
+    color: var(--text-muted, #64748b);
     text-align: center;
     margin-top: 5px;
   }

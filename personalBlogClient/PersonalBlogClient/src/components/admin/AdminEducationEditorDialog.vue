@@ -399,13 +399,13 @@ async function handleSubmit() {
 
 .input-custom-field {
   width: 100%;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
+  background: var(--bg-surface-lowest, #ffffff);
+  border: 1px solid var(--border-hairline, #e2e8f0);
   border-radius: 10px;
   padding: 10px 14px;
   font-family: var(--font-headline, sans-serif);
   font-size: 13.5px;
-  color: #0b1326;
+  color: var(--text-primary, #0b1326);
   outline: none;
   transition: all 0.2s ease;
 
@@ -417,14 +417,14 @@ async function handleSubmit() {
 
 .textarea-custom-field {
   width: 100%;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
+  background: var(--bg-surface-lowest, #ffffff);
+  border: 1px solid var(--border-hairline, #e2e8f0);
   border-radius: 10px;
   padding: 12px 14px;
   font-family: var(--font-body, sans-serif);
   font-size: 13.5px;
   line-height: 1.5;
-  color: #0b1326;
+  color: var(--text-primary, #0b1326);
   outline: none;
   resize: vertical;
   transition: all 0.2s ease;

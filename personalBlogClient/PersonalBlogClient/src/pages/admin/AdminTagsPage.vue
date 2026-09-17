@@ -334,8 +334,8 @@ onMounted(() => {
   flex-shrink: 0;
 
   .stat-card {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
+    background: var(--bg-surface-low, #ffffff);
+    border: 1px solid var(--border-hairline, #e2e8f0);
     border-radius: 14px;
     padding: 18px 20px;
     display: flex;
@@ -358,24 +358,24 @@ onMounted(() => {
       flex-shrink: 0;
 
       &.icon-rose {
-        background: #fdf2f6;
+        background: rgba(223, 38, 106, 0.12);
         color: #df266a;
-        border: 1px solid #fce7f3;
+        border: 1px solid rgba(223, 38, 106, 0.25);
       }
       &.icon-emerald {
-        background: #ecfdf5;
-        color: #059669;
-        border: 1px solid #d1fae5;
+        background: rgba(16, 185, 129, 0.12);
+        color: #10b981;
+        border: 1px solid rgba(16, 185, 129, 0.25);
       }
       &.icon-amber {
-        background: #fffbeb;
-        color: #d97706;
-        border: 1px solid #fef3c7;
+        background: rgba(245, 158, 11, 0.12);
+        color: #f59e0b;
+        border: 1px solid rgba(245, 158, 11, 0.25);
       }
       &.icon-indigo {
-        background: #eef2ff;
-        color: #4f46e5;
-        border: 1px solid #e0e7ff;
+        background: rgba(99, 102, 241, 0.12);
+        color: #818cf8;
+        border: 1px solid rgba(99, 102, 241, 0.25);
       }
     }
 
@@ -388,7 +388,7 @@ onMounted(() => {
         font-family: var(--font-headline, sans-serif);
         font-size: 22px;
         font-weight: 800;
-        color: #0b1326;
+        color: var(--text-primary, #0b1326);
         line-height: 1.2;
 
         &.top-tag-title {
@@ -403,7 +403,7 @@ onMounted(() => {
         font-family: var(--font-mono, monospace);
         font-size: 10.5px;
         font-weight: 700;
-        color: #64748b;
+        color: var(--text-muted, #64748b);
         letter-spacing: 0.06em;
         margin-top: 2px;
         white-space: nowrap;
@@ -449,9 +449,9 @@ onMounted(() => {
   width: 40px;
   height: 40px;
   border-radius: 10px;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  color: #64748b;
+  background: var(--bg-surface-low, #ffffff);
+  border: 1px solid var(--border-hairline, #e2e8f0);
+  color: var(--text-secondary, #64748b);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -473,9 +473,9 @@ onMounted(() => {
     font-family: var(--font-mono, monospace);
     font-size: 12.5px;
     font-weight: 700;
-    color: #059669;
-    background: #ecfdf5;
-    border: 1px solid #a7f3d0;
+    color: #34d399;
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid rgba(16, 185, 129, 0.3);
     padding: 4px 10px;
     border-radius: 6px;
     display: inline-flex;
@@ -486,7 +486,7 @@ onMounted(() => {
 .tag-slug-text {
   font-family: var(--font-mono, monospace);
   font-size: 12px;
-  color: #64748b;
+  color: var(--text-secondary, #64748b);
 }
 
 .post-count-badge {
@@ -499,22 +499,22 @@ onMounted(() => {
   align-items: center;
 
   &.badge-has-posts {
-    background: #eef2ff;
-    color: #4f46e5;
-    border: 1px solid #c7d2fe;
+    background: rgba(99, 102, 241, 0.15);
+    color: #818cf8;
+    border: 1px solid rgba(99, 102, 241, 0.3);
   }
 
   &.badge-empty-posts {
-    background: #f1f5f9;
-    color: #94a3b8;
-    border: 1px solid #e2e8f0;
+    background: var(--bg-surface-high, #f1f5f9);
+    color: var(--text-muted, #94a3b8);
+    border: 1px solid var(--border-hairline, #e2e8f0);
   }
 }
 
 .date-cell {
   font-family: var(--font-mono, monospace);
   font-size: 11.5px;
-  color: #64748b;
+  color: var(--text-secondary, #64748b);
 }
 
 /* Table Actions */
@@ -528,9 +528,9 @@ onMounted(() => {
     width: 30px;
     height: 30px;
     border-radius: 8px;
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    color: #64748b;
+    background: var(--bg-surface-low, #ffffff);
+    border: 1px solid var(--border-hairline, #e2e8f0);
+    color: var(--text-secondary, #64748b);
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -541,13 +541,13 @@ onMounted(() => {
     &.btn-edit:hover {
       color: #df266a;
       border-color: #df266a;
-      background: #fdf2f6;
+      background: rgba(223, 38, 106, 0.12);
     }
 
     &.btn-delete:hover {
       color: #e11d48;
       border-color: #e11d48;
-      background: #fff1f2;
+      background: rgba(225, 29, 72, 0.12);
     }
   }
 }
