@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using PersonalBlogServer.Hubs;
 using PersonalBlogServer.Models;
 using PersonalBlogServer.Services.Admin;
 using PersonalBlogServer.Services.Ai;
@@ -64,23 +65,26 @@ builder.Services.AddAuthentication(options =>
 // ============================================
 
 builder.Services.AddControllers();
+builder.Services.AddSignalR();
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddSingleton<IOtpService, OtpService>();
 builder.Services.AddScoped<IPublicLandingService, PublicLandingService>();
 builder.Services.AddScoped<IPublicAboutService, PublicAboutService>();
 builder.Services.AddScoped<IPublicPostService, PublicPostService>();
 builder.Services.AddScoped<IPublicTopicService, PublicTopicService>();
+builder.Services.AddScoped<IPublicContactService, PublicContactService>();
 builder.Services.AddScoped<IAdminPostService, AdminPostService>();
 builder.Services.AddScoped<IAdminCategoryService, AdminCategoryService>();
 builder.Services.AddScoped<IAdminTagService, AdminTagService>();
 builder.Services.AddScoped<IAdminCommentService, AdminCommentService>();
 builder.Services.AddScoped<IAdminProfileService, AdminProfileService>();
 builder.Services.AddScoped<IAdminAnalyticsService, AdminAnalyticsService>();
+builder.Services.AddScoped<IAdminContactService, AdminContactService>();
 builder.Services.AddScoped<ISiteSettingsService, SiteSettingsService>();
 builder.Services.AddHttpClient<IGeminiChatService, GeminiChatService>();
 
 // ============================================
-// Swagger
+// Swagger & CORS
 // ============================================
 builder.Services.AddCors(options =>
 {
@@ -92,7 +96,8 @@ builder.Services.AddCors(options =>
                 "https://pdq-personal-blog.vercel.app"
             )
             .AllowAnyHeader()
-            .AllowAnyMethod();
+            .AllowAnyMethod()
+            .AllowCredentials();
     });
 });
 
@@ -126,6 +131,7 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 var app = builder.Build();
+
 var enableSwagger =
     app.Environment.IsDevelopment() ||
     app.Configuration.GetValue<bool>("Swagger:Enabled");
@@ -149,8 +155,6 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
     ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
 });
 
-// HTTPS Redirection is handled by reverse proxy (e.g. Render / Cloudflare / Nginx)
-
 app.UseCors("AllowFrontend");
 
 app.UseAuthentication();
@@ -158,5 +162,6 @@ app.UseAuthorization();
 
 app.MapGet("/", () => Results.Redirect("/swagger"));
 app.MapControllers();
+app.MapHub<NotificationHub>("/hub/notifications");
 
 app.Run();
