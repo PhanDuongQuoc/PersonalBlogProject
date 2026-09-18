@@ -346,7 +346,7 @@ async function handleResetPassword() {
 .card-glow-backdrop {
   position: absolute;
   inset: -8px;
-  background: radial-gradient(circle, rgba(223, 38, 106, 0.1) 0%, rgba(99, 102, 241, 0.06) 50%, transparent 80%);
+  background: radial-gradient(circle, rgba(223, 38, 106, 0.15) 0%, rgba(99, 102, 241, 0.08) 50%, transparent 80%);
   border-radius: 24px;
   filter: blur(16px);
   pointer-events: none;
@@ -357,11 +357,11 @@ async function handleResetPassword() {
 .forgot-card {
   position: relative;
   z-index: 2;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
+  background: var(--bg-surface, #0b1326);
+  border: 1px solid var(--border-hairline, rgba(248, 250, 252, 0.08));
   border-radius: 18px;
   padding: 28px 28px 24px 28px;
-  box-shadow: 0 16px 36px -12px rgba(0, 0, 0, 0.08), 0 0 1px 1px rgba(0, 0, 0, 0.03);
+  box-shadow: var(--shadow-card, 0 20px 45px rgba(0, 0, 0, 0.5));
 }
 
 /* Top Status Badge */
@@ -371,8 +371,8 @@ async function handleResetPassword() {
   gap: 6px;
   padding: 4px 12px;
   border-radius: 9999px;
-  background: #fdf2f6;
-  border: 1px solid rgba(223, 38, 106, 0.2);
+  background: var(--accent-primary-container, rgba(223, 38, 106, 0.12));
+  border: 1px solid rgba(223, 38, 106, 0.25);
   margin-bottom: 14px;
 
   .badge-dot {
@@ -401,7 +401,7 @@ async function handleResetPassword() {
     font-size: 22px;
     font-weight: 800;
     letter-spacing: -0.025em;
-    color: #0b1326;
+    color: var(--text-primary, #dae2fd);
     margin: 0 0 4px 0;
     line-height: 1.2;
   }
@@ -409,7 +409,7 @@ async function handleResetPassword() {
   .forgot-subtitle {
     font-family: var(--font-body, sans-serif);
     font-size: 13px;
-    color: #64748b;
+    color: var(--text-secondary, #94a3b8);
     margin: 0;
     line-height: 1.45;
   }
@@ -417,8 +417,8 @@ async function handleResetPassword() {
 
 /* Dev OTP Hint Box */
 .dev-otp-box {
-  background: #f0fdf4;
-  border: 1px solid #bbf7d0;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.25);
   border-radius: 10px;
   padding: 10px 14px;
   margin-bottom: 14px;
@@ -432,7 +432,7 @@ async function handleResetPassword() {
     gap: 6px;
     font-size: 12px;
     font-weight: 600;
-    color: #166534;
+    color: #34d399;
   }
 
   .otp-code-highlight {
@@ -440,8 +440,8 @@ async function handleResetPassword() {
     font-size: 16px;
     font-weight: 800;
     letter-spacing: 0.12em;
-    color: #15803d;
-    background: #dcfce7;
+    color: #6ee7b7;
+    background: rgba(16, 185, 129, 0.2);
     padding: 2px 8px;
     border-radius: 6px;
   }
@@ -454,9 +454,9 @@ async function handleResetPassword() {
   gap: 8px;
   padding: 8px 12px;
   border-radius: 8px;
-  background: #fef2f2;
-  border: 1px solid #fecaca;
-  color: #dc2626;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #fca5a5;
   font-size: 12.5px;
   font-weight: 500;
   margin-bottom: 14px;
@@ -483,7 +483,7 @@ async function handleResetPassword() {
     font-family: var(--font-headline, sans-serif);
     font-size: 12.5px;
     font-weight: 700;
-    color: #1e293b;
+    color: var(--text-primary, #dae2fd);
     letter-spacing: -0.01em;
   }
 }
@@ -491,9 +491,9 @@ async function handleResetPassword() {
 /* Custom Quasar Input */
 :deep(.custom-input) {
   .q-field__control {
-    background: #f8fafc !important;
+    background: var(--bg-surface-container, #131b2e) !important;
     border-radius: 9px !important;
-    border: 1px solid #cbd5e1 !important;
+    border: 1px solid var(--border-subtle, rgba(248, 250, 252, 0.12)) !important;
     height: 44px !important;
     min-height: 44px !important;
     transition: all 0.2s ease;
@@ -506,24 +506,39 @@ async function handleResetPassword() {
 
   &.q-field--focused .q-field__control {
     border-color: #df266a !important;
-    box-shadow: 0 0 0 3px rgba(223, 38, 106, 0.15) !important;
-    background: #ffffff !important;
+    box-shadow: 0 0 0 3px var(--accent-primary-container, rgba(223, 38, 106, 0.18)) !important;
+    background: var(--bg-surface-high, #171f33) !important;
   }
 
   .q-field__native,
   input {
-    color: #0f172a !important;
+    color: var(--text-primary, #dae2fd) !important;
     font-size: 13.5px !important;
     font-family: var(--font-body, sans-serif);
     font-weight: 500;
 
     &::placeholder {
-      color: #94a3b8 !important;
+      color: var(--text-muted, #64748b) !important;
+    }
+
+    &:-webkit-autofill,
+    &:-webkit-autofill:hover, 
+    &:-webkit-autofill:focus, 
+    &:-webkit-autofill:active {
+      -webkit-box-shadow: 0 0 0 1000px var(--bg-surface-container, #131b2e) inset !important;
+      -webkit-text-fill-color: var(--text-primary, #dae2fd) !important;
+      caret-color: var(--text-primary, #dae2fd) !important;
+      transition: background-color 5000s ease-in-out 0s !important;
     }
   }
 
+  &.q-field--focused input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px var(--bg-surface-high, #171f33) inset !important;
+    -webkit-text-fill-color: var(--text-primary, #dae2fd) !important;
+  }
+
   .input-icon {
-    color: #64748b;
+    color: var(--text-muted, #64748b);
     font-size: 20px;
     transition: color 0.2s ease;
   }
@@ -541,10 +556,10 @@ async function handleResetPassword() {
 }
 
 .toggle-pwd-btn {
-  color: #64748b;
+  color: var(--text-muted, #64748b);
 
   &:hover {
-    color: #0b1326;
+    color: #ffffff;
   }
 }
 
@@ -569,7 +584,7 @@ async function handleResetPassword() {
     justify-content: center;
     gap: 8px;
     transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 4px 12px rgba(223, 38, 106, 0.3);
+    box-shadow: 0 4px 12px rgba(223, 38, 106, 0.35);
 
     .btn-arrow {
       transition: transform 0.2s ease;
@@ -578,7 +593,7 @@ async function handleResetPassword() {
     &:hover:not(:disabled) {
       background: linear-gradient(135deg, #f43f7e, #df266a);
       transform: translateY(-2px);
-      box-shadow: 0 6px 18px rgba(223, 38, 106, 0.4);
+      box-shadow: 0 6px 18px rgba(223, 38, 106, 0.5);
 
       .btn-arrow {
         transform: translateX(4px);
@@ -596,7 +611,7 @@ async function handleResetPassword() {
 .card-back-link {
   margin-top: 16px;
   padding-top: 12px;
-  border-top: 1px solid #f1f5f9;
+  border-top: 1px solid var(--border-hairline, rgba(248, 250, 252, 0.08));
 
   .back-link {
     display: inline-flex;
@@ -604,13 +619,13 @@ async function handleResetPassword() {
     gap: 6px;
     font-size: 12.5px;
     font-weight: 600;
-    color: #64748b;
+    color: var(--text-muted, #64748b);
     text-decoration: none;
     cursor: pointer;
     transition: color 0.2s ease;
 
     &:hover {
-      color: #df266a;
+      color: var(--accent-primary, #df266a);
     }
   }
 }

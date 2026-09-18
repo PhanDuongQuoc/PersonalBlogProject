@@ -113,6 +113,17 @@ code, kbd, samp, pre, .font-mono, .label-code, .label-caps {
   letter-spacing: 0.05em;
 }
 
+/* Browser Autofill Styling (Chrome/Edge/Safari/Firefox) */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px var(--bg-surface-container, #131b2e) inset !important;
+  -webkit-text-fill-color: var(--text-primary, #dae2fd) !important;
+  caret-color: var(--text-primary, #dae2fd) !important;
+  transition: background-color 5000s ease-in-out 0s !important;
+}
+
 /* ==========================================================================
    LIGHT MODE DESIGN SYSTEM OVERRIDES
    ========================================================================== */
@@ -159,6 +170,15 @@ body.portfolio-light {
   .q-page-container {
     background: var(--bg-canvas) !important;
     background-color: var(--bg-canvas) !important;
+  }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover, 
+  input:-webkit-autofill:focus, 
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px #f8fafc inset !important;
+    -webkit-text-fill-color: #0b1326 !important;
+    caret-color: #0b1326 !important;
   }
 }
 
