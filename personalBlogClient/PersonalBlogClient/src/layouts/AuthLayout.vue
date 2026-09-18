@@ -46,15 +46,15 @@ const currentYear = computed(() => new Date().getFullYear())
   height: 100vh;
   min-height: 100vh;
   max-height: 100vh;
-  background-color: #f8fafc;
-  color: #0b1326;
+  background-color: var(--bg-canvas, #060e20);
+  color: var(--text-primary, #dae2fd);
   position: relative;
   overflow: hidden;
   display: flex;
   flex-direction: column;
 }
 
-/* Ambient Lighting & Grid Background (Light Mode) */
+/* Ambient Lighting & Grid Background */
 .auth-bg-ambient {
   position: absolute;
   inset: 0;
@@ -66,7 +66,7 @@ const currentYear = computed(() => new Date().getFullYear())
     position: absolute;
     border-radius: 50%;
     filter: blur(120px);
-    opacity: 0.12;
+    opacity: 0.18;
     animation: orb-float 12s ease-in-out infinite alternate;
   }
 
@@ -90,7 +90,7 @@ const currentYear = computed(() => new Date().getFullYear())
   .ambient-grid-overlay {
     position: absolute;
     inset: 0;
-    background-image: radial-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+    background-image: radial-gradient(rgba(248, 250, 252, 0.06) 1px, transparent 1px);
     background-size: 32px 32px;
     opacity: 0.8;
   }
@@ -142,7 +142,7 @@ const currentYear = computed(() => new Date().getFullYear())
   }
 
   .brand-suffix {
-    color: #0b1326;
+    color: var(--text-primary, #dae2fd);
     font-weight: 600;
     font-size: 1.25rem;
     letter-spacing: -0.03em;
@@ -155,19 +155,19 @@ const currentYear = computed(() => new Date().getFullYear())
     font-family: var(--font-headline, sans-serif);
     font-size: 12.5px;
     font-weight: 600;
-    color: #475569;
+    color: var(--text-primary, #dae2fd);
     text-decoration: none;
     padding: 7px 16px;
     border-radius: 9999px;
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+    background: var(--bg-surface-container, #131b2e);
+    border: 1px solid var(--border-subtle, rgba(248, 250, 252, 0.1));
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     transition: all 0.2s ease;
 
     &:hover {
       color: #df266a;
       border-color: #df266a;
-      background: #fdf2f6;
+      background: var(--accent-primary-container, rgba(223, 38, 106, 0.15));
       transform: translateX(-2px);
     }
   }
@@ -202,7 +202,7 @@ const currentYear = computed(() => new Date().getFullYear())
   .auth-footer-content {
     font-family: var(--font-body, sans-serif);
     font-size: 11.5px;
-    color: #94a3b8;
+    color: var(--text-muted, #64748b);
     max-width: 1200px;
     margin: 0 auto;
   }

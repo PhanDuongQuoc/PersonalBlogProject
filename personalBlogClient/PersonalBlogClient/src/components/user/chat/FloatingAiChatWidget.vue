@@ -347,7 +347,7 @@ function renderMarkdown(raw: string): string {
   border-radius: 999px;
   background: var(--bg-surface, #0b1326);
   border: 1px solid rgba(223, 38, 106, 0.4);
-  color: #ffffff;
+  color: var(--text-primary, #dae2fd);
   display: flex;
   align-items: center;
   gap: 10px;
@@ -359,6 +359,10 @@ function renderMarkdown(raw: string): string {
     transform: translateY(-3px) scale(1.03);
     border-color: #df266a;
     box-shadow: 0 14px 30px rgba(11, 19, 38, 0.45), 0 0 22px rgba(223, 38, 106, 0.45);
+
+    .trigger-label {
+      color: #df266a;
+    }
   }
 
   .trigger-icon-box {
@@ -378,7 +382,8 @@ function renderMarkdown(raw: string): string {
     font-size: 13.5px;
     font-weight: 700;
     letter-spacing: 0.2px;
-    color: #f8fafc;
+    color: var(--text-primary, #dae2fd);
+    transition: color 0.2s ease;
   }
 
   .status-pulse-dot {

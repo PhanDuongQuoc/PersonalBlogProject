@@ -2088,54 +2088,70 @@ body:not(.portfolio-light) {
     }
   }
 
-  /* 16. Auth Layout Preservation (LoginPage & ForgotPasswordPage keep original light appearance) */
+  /* 16. Auth Layout (LoginPage & ForgotPasswordPage Dark Theme) */
   .auth-layout {
-    background-color: #f8fafc !important;
-    color: #0b1326 !important;
+    background-color: #060e20 !important;
+    color: #dae2fd !important;
+
+    .brand .brand-suffix {
+      color: #dae2fd !important;
+    }
+
+    .auth-back-btn {
+      background: #131b2e !important;
+      border: 1px solid rgba(248, 250, 252, 0.1) !important;
+      color: #dae2fd !important;
+
+      &:hover {
+        background: rgba(223, 38, 106, 0.15) !important;
+        border-color: #df266a !important;
+        color: #df266a !important;
+      }
+    }
 
     .login-card,
     .forgot-card {
-      background: #ffffff !important;
-      border: 1px solid #e2e8f0 !important;
-      box-shadow: 0 16px 36px -12px rgba(0, 0, 0, 0.08), 0 0 1px 1px rgba(0, 0, 0, 0.03) !important;
-      color: #0b1326 !important;
+      background: #0b1326 !important;
+      border: 1px solid rgba(248, 250, 252, 0.08) !important;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6) !important;
+      color: #dae2fd !important;
     }
 
     .login-title,
     .forgot-title {
-      color: #0b1326 !important;
+      color: #dae2fd !important;
     }
 
     .login-subtitle,
     .forgot-subtitle {
-      color: #64748b !important;
+      color: #94a3b8 !important;
     }
 
     .form-label {
-      color: #1e293b !important;
+      color: #dae2fd !important;
     }
 
     .custom-input {
       .q-field__control {
-        background: #f8fafc !important;
-        border: 1px solid #cbd5e1 !important;
-        color: #0f172a !important;
+        background: #131b2e !important;
+        border: 1px solid rgba(248, 250, 252, 0.12) !important;
+        color: #dae2fd !important;
       }
 
       &.q-field--focused .q-field__control {
-        background: #ffffff !important;
+        background: #171f33 !important;
         border-color: #df266a !important;
-        box-shadow: 0 0 0 3px rgba(223, 38, 106, 0.15) !important;
+        box-shadow: 0 0 0 3px rgba(223, 38, 106, 0.18) !important;
       }
 
       .q-field__native,
       .q-field__input,
       input {
-        color: #0f172a !important;
+        color: #dae2fd !important;
         background: transparent !important;
 
         &::placeholder {
-          color: #94a3b8 !important;
+          color: #64748b !important;
         }
       }
 
@@ -2148,8 +2164,20 @@ body:not(.portfolio-light) {
       }
     }
 
+    .toggle-pwd-btn {
+      color: #64748b !important;
+
+      &:hover {
+        color: #ffffff !important;
+      }
+    }
+
     .remember-checkbox .q-checkbox__label {
-      color: #475569 !important;
+      color: #94a3b8 !important;
+    }
+
+    .remember-checkbox .q-checkbox__bg {
+      border-color: rgba(248, 250, 252, 0.2) !important;
     }
 
     .forgot-link,
@@ -2157,23 +2185,27 @@ body:not(.portfolio-light) {
       color: #df266a !important;
     }
 
-    .auth-back-btn {
-      background: #ffffff !important;
-      border: 1px solid #e2e8f0 !important;
-      color: #475569 !important;
-    }
+    .dev-otp-box {
+      background: rgba(16, 185, 129, 0.12) !important;
+      border: 1px solid rgba(16, 185, 129, 0.25) !important;
 
-    .brand .brand-suffix {
-      color: #0b1326 !important;
+      .otp-hint-title {
+        color: #34d399 !important;
+      }
+
+      .otp-code-highlight {
+        color: #6ee7b7 !important;
+        background: rgba(16, 185, 129, 0.2) !important;
+      }
     }
 
     .card-footer-notice {
-      border-top: 1px solid #f1f5f9 !important;
+      border-top: 1px solid rgba(248, 250, 252, 0.08) !important;
       color: #64748b !important;
     }
 
     .auth-footer {
-      color: #94a3b8 !important;
+      color: #64748b !important;
     }
   }
 
