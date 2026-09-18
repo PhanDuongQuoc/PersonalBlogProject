@@ -1,15 +1,54 @@
 <template>
   <div class="pdq-ai-chat-widget">
-    <!-- 1. Floating Chat Trigger Button -->
+    <!-- Proactive Greeting Speech Bubble -->
+    <transition name="bubble-fade">
+      <div
+        v-if="!isOpen && showGreeting"
+        class="floating-greeting-bubble"
+        @click="openChatFromGreeting"
+      >
+        <button
+          type="button"
+          class="btn-close-greeting"
+          title="Đóng lời chào"
+          aria-label="Đóng lời chào"
+          @click.stop="dismissGreeting"
+        >
+          <q-icon name="fa-solid fa-xmark" size="11px" />
+        </button>
+
+        <div class="greeting-content">
+          <div class="greeting-header">
+            <span class="greeting-wave-icon">🤖</span>
+            <span class="greeting-badge">Trợ lý AI PDQ</span>
+          </div>
+          <p class="greeting-text">
+            Xin chào! Mình là Chatbot AI. Bạn cần tìm bài viết hay hỏi gì về tác giả không?
+          </p>
+          <div class="greeting-action">
+            <span class="action-hint">Bấm để trò chuyện ngay</span>
+            <q-icon name="fa-solid fa-arrow-right" size="11px" class="action-arrow" />
+          </div>
+        </div>
+        <div class="greeting-tail"></div>
+      </div>
+    </transition>
+
+    <!-- 1. Floating Chat Trigger Button (Circular Robot FAB) -->
     <transition name="pop-scale">
-      <button v-if="!isOpen" type="button" class="floating-chat-trigger" aria-label="Mở Trợ lý AI PDQ"
-        @click="toggleChat">
+      <button
+        v-if="!isOpen"
+        type="button"
+        class="floating-chat-trigger"
+        aria-label="Mở Trợ lý AI PDQ"
+        title="Trò chuyện cùng Trợ lý Robot AI PDQ"
+        @click="toggleChat"
+      >
         <div class="trigger-glow-ring"></div>
         <div class="trigger-icon-box">
-          <q-icon name="fa-solid fa-wand-magic-sparkles" size="18px" class="sparkle-icon" />
+          <q-icon name="fa-solid fa-robot" size="24px" class="robot-fab-icon" />
         </div>
-        <span class="trigger-label">Hỏi AI</span>
-        <span class="status-pulse-dot" title="AI Trực tuyến"></span>
+        <span class="status-pulse-dot" title="Robot AI Trực tuyến"></span>
       </button>
     </transition>
 
@@ -39,13 +78,10 @@
 
           <div class="header-actions">
             <!-- Maximize / Expand Dialog Toggle Button -->
-            <button
-              type="button"
-              class="btn-header-action btn-expand"
-              :title="isExpanded ? 'Thu nhỏ cửa sổ' : 'Phóng to thành hộp thoại lớn'"
-              @click="toggleExpand"
-            >
-              <q-icon :name="isExpanded ? 'fa-solid fa-compress' : 'fa-solid fa-up-right-and-down-left-from-center'" size="11px" />
+            <button type="button" class="btn-header-action btn-expand"
+              :title="isExpanded ? 'Thu nhỏ cửa sổ' : 'Phóng to thành hộp thoại lớn'" @click="toggleExpand">
+              <q-icon :name="isExpanded ? 'fa-solid fa-compress' : 'fa-solid fa-up-right-and-down-left-from-center'"
+                size="11px" />
             </button>
 
             <!-- Clear history button -->
@@ -155,13 +191,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, nextTick, watch } from "vue";
+import { ref, reactive, nextTick, watch, onMounted, onBeforeUnmount } from "vue";
 import type { ChatMessage } from "@/types/ai-chat";
 import { aiChatService } from "@/services/ai-chat.service";
 
 const isOpen = ref(false);
 const isExpanded = ref(false);
 const isTyping = ref(false);
+const showGreeting = ref(false);
+let greetingTimer: any = null;
+
 const inputMessage = ref("");
 const messagesContainer = ref<HTMLElement | null>(null);
 const inputRef = ref<HTMLInputElement | null>(null);
@@ -177,9 +216,36 @@ const followUpSuggestions = ref<string[]>([]);
 
 const messages = reactive<ChatMessage[]>([]);
 
+onMounted(() => {
+  // Show welcoming speech bubble after 1.5s if chat is not opened yet
+  greetingTimer = setTimeout(() => {
+    if (!isOpen.value) {
+      showGreeting.value = true;
+    }
+  }, 1500);
+});
+
+onBeforeUnmount(() => {
+  if (greetingTimer) clearTimeout(greetingTimer);
+});
+
+function openChatFromGreeting() {
+  showGreeting.value = false;
+  isOpen.value = true;
+  nextTick(() => {
+    scrollToBottom();
+    inputRef.value?.focus();
+  });
+}
+
+function dismissGreeting() {
+  showGreeting.value = false;
+}
+
 function toggleChat() {
   isOpen.value = !isOpen.value;
   if (isOpen.value) {
+    showGreeting.value = false;
     nextTick(() => {
       scrollToBottom();
       inputRef.value?.focus();
@@ -339,60 +405,229 @@ function renderMarkdown(raw: string): string {
   font-family: var(--font-body, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
 }
 
-/* 1. Floating Trigger Button */
-.floating-chat-trigger {
-  position: relative;
-  height: 52px;
-  padding: 0 20px 0 16px;
-  border-radius: 999px;
+/* 0. Proactive Greeting Speech Bubble */
+.floating-greeting-bubble {
+  position: absolute;
+  bottom: 68px;
+  right: 4px;
+  width: 260px;
   background: var(--bg-surface, #0b1326);
-  border: 1px solid rgba(223, 38, 106, 0.4);
-  color: var(--text-primary, #dae2fd);
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  border: 1px solid rgba(223, 38, 106, 0.35);
+  border-radius: 18px 18px 4px 18px;
+  padding: 14px 16px 12px;
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.45), 0 0 16px rgba(223, 38, 106, 0.15);
   cursor: pointer;
-  box-shadow: 0 10px 25px rgba(11, 19, 38, 0.35), 0 0 15px rgba(223, 38, 106, 0.25);
+  z-index: 10000;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  backdrop-filter: blur(12px);
 
   &:hover {
-    transform: translateY(-3px) scale(1.03);
+    transform: translateY(-3px) scale(1.02);
     border-color: #df266a;
-    box-shadow: 0 14px 30px rgba(11, 19, 38, 0.45), 0 0 22px rgba(223, 38, 106, 0.45);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55), 0 0 24px rgba(223, 38, 106, 0.3);
 
-    .trigger-label {
+    .action-arrow {
+      transform: translateX(4px);
+      color: #df266a;
+    }
+
+    .action-hint {
       color: #df266a;
     }
   }
 
-  .trigger-icon-box {
-    width: 32px;
-    height: 32px;
+  .btn-close-greeting {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #df266a 0%, #7c3aed 100%);
+    background: rgba(255, 255, 255, 0.08);
+    border: none;
+    color: var(--text-muted, #64748b);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #ffffff;
-    box-shadow: 0 2px 8px rgba(223, 38, 106, 0.4);
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: rgba(223, 38, 106, 0.25);
+      color: #df266a;
+    }
   }
 
-  .trigger-label {
-    font-family: var(--font-headline, sans-serif);
-    font-size: 13.5px;
-    font-weight: 700;
-    letter-spacing: 0.2px;
-    color: var(--text-primary, #dae2fd);
-    transition: color 0.2s ease;
+  .greeting-content {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    .greeting-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+
+      .greeting-wave-icon {
+        font-size: 14px;
+        animation: wave-bot 2s infinite ease-in-out;
+      }
+
+      .greeting-badge {
+        font-family: var(--font-headline, sans-serif);
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: #df266a;
+      }
+    }
+
+    .greeting-text {
+      font-size: 12.5px;
+      line-height: 1.45;
+      color: var(--text-primary, #dae2fd);
+      margin: 0;
+      font-weight: 500;
+    }
+
+    .greeting-action {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 2px;
+
+      .action-hint {
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--accent-secondary-text, #a5b4fc);
+        transition: color 0.2s ease;
+      }
+
+      .action-arrow {
+        color: var(--accent-secondary-text, #a5b4fc);
+        transition: all 0.2s ease;
+      }
+    }
+  }
+
+  .greeting-tail {
+    position: absolute;
+    bottom: -8px;
+    right: 20px;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid var(--bg-surface, #0b1326);
+    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.2));
+  }
+}
+
+@keyframes wave-bot {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-12deg); }
+  75% { transform: rotate(12deg); }
+}
+
+/* Bubble fade animation */
+.bubble-fade-enter-active,
+.bubble-fade-leave-active {
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.bubble-fade-enter-from,
+.bubble-fade-leave-to {
+  opacity: 0;
+  transform: translateY(12px) scale(0.92);
+}
+
+/* 1. Floating Trigger Button (Modern Circular Robot FAB) */
+.floating-chat-trigger {
+  position: relative;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #df266a 0%, #9333ea 50%, #6366f1 100%);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(223, 38, 106, 0.4), 0 0 20px rgba(147, 51, 234, 0.3);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: visible;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #df266a, #9333ea, #6366f1);
+    opacity: 0.45;
+    filter: blur(8px);
+    z-index: -1;
+    transition: opacity 0.3s ease, filter 0.3s ease;
+    animation: ring-pulse 3s infinite ease-in-out;
+  }
+
+  &:hover {
+    transform: translateY(-4px) scale(1.08);
+    box-shadow: 0 16px 36px rgba(223, 38, 106, 0.55), 0 0 30px rgba(147, 51, 234, 0.5);
+
+    &::before {
+      opacity: 0.85;
+      filter: blur(12px);
+    }
+
+    .robot-fab-icon {
+      transform: scale(1.15) rotate(8deg);
+    }
+  }
+
+  &:active {
+    transform: translateY(-1px) scale(0.96);
+  }
+
+  .trigger-icon-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+
+    .robot-fab-icon {
+      color: #ffffff;
+      filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.25));
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
   }
 
   .status-pulse-dot {
-    width: 8px;
-    height: 8px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 13px;
+    height: 13px;
     border-radius: 50%;
     background: #10b981;
+    border: 2.5px solid var(--bg-surface, #0b1326);
     box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
     animation: pulse-green 2s infinite;
+  }
+}
+
+@keyframes ring-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.4;
+  }
+  50% {
+    transform: scale(1.12);
+    opacity: 0.75;
   }
 }
 
@@ -773,6 +1008,7 @@ function renderMarkdown(raw: string): string {
 }
 
 @keyframes bounce {
+
   0%,
   80%,
   100% {
