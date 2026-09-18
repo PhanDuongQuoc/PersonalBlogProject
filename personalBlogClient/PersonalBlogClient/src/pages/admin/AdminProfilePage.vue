@@ -11,13 +11,8 @@
       <section class="profile-hero-card">
         <div class="hero-left">
           <div class="hero-avatar-wrap">
-            <img
-              v-if="form.avatarUrl"
-              :src="form.avatarUrl"
-              :alt="form.displayName || 'Author Avatar'"
-              class="hero-avatar-img"
-              @error="onAvatarError"
-            />
+            <img v-if="form.avatarUrl" :src="form.avatarUrl" :alt="form.displayName || 'Author Avatar'"
+              class="hero-avatar-img" @error="onAvatarError" />
             <div v-else class="hero-avatar-fallback">
               {{ (form.displayName || 'A').charAt(0).toUpperCase() }}
             </div>
@@ -52,22 +47,12 @@
         </div>
 
         <div class="hero-actions">
-          <a
-            href="/about"
-            target="_blank"
-            class="btn-preview-public"
-            title="Xem trang giới thiệu tác giả công khai"
-          >
+          <a href="/#/about" target="_blank" class="btn-preview-public" title="Xem trang giới thiệu tác giả công khai">
             <span>Xem trang công khai</span>
             <q-icon name="fa-solid fa-arrow-up-right-from-square" size="11px" />
           </a>
 
-          <button
-            type="button"
-            class="btn-save-primary"
-            :disabled="saving"
-            @click="handleSubmit"
-          >
+          <button type="button" class="btn-save-primary" :disabled="saving" @click="handleSubmit">
             <q-spinner v-if="saving" size="14px" color="white" />
             <q-icon v-else name="fa-solid fa-floppy-disk" size="13px" />
             <span>Lưu hồ sơ</span>
@@ -91,24 +76,16 @@
                   <label class="field-label-mono">
                     HỌ VÀ TÊN HIỂN THỊ <span class="text-danger">*</span>
                   </label>
-                  <input
-                    v-model="form.displayName"
-                    type="text"
-                    placeholder="Nhập tên hiển thị của bạn..."
-                    class="input-custom-field"
-                  />
+                  <input v-model="form.displayName" type="text" placeholder="Nhập tên hiển thị của bạn..."
+                    class="input-custom-field" />
                 </div>
 
                 <div class="form-group-field">
                   <label class="field-label-mono">
                     CHỨC DANH CÔNG VIỆC <span class="text-danger">*</span>
                   </label>
-                  <input
-                    v-model="form.jobTitle"
-                    type="text"
-                    placeholder="Ví dụ: Senior Fullstack Developer & AI Engineer"
-                    class="input-custom-field"
-                  />
+                  <input v-model="form.jobTitle" type="text"
+                    placeholder="Ví dụ: Senior Fullstack Developer & AI Engineer" class="input-custom-field" />
                 </div>
               </div>
 
@@ -117,26 +94,16 @@
                   <label class="field-label-mono">
                     SỐ NĂM KINH NGHIỆM
                   </label>
-                  <input
-                    v-model.number="form.yearsOfExperience"
-                    type="number"
-                    min="0"
-                    max="50"
-                    placeholder="3"
-                    class="input-custom-field"
-                  />
+                  <input v-model.number="form.yearsOfExperience" type="number" min="0" max="50" placeholder="3"
+                    class="input-custom-field" />
                 </div>
 
                 <div class="form-group-field">
                   <label class="field-label-mono">
                     ĐỊA ĐIỂM LÀM VIỆC
                   </label>
-                  <input
-                    v-model="form.location"
-                    type="text"
-                    placeholder="Ví dụ: Hồ Chí Minh, Việt Nam"
-                    class="input-custom-field"
-                  />
+                  <input v-model="form.location" type="text" placeholder="Ví dụ: Hồ Chí Minh, Việt Nam"
+                    class="input-custom-field" />
                 </div>
               </div>
 
@@ -145,13 +112,8 @@
                   <label class="field-label-mono">
                     EMAIL LIÊN HỆ
                   </label>
-                  <input
-                    v-model="form.email"
-                    type="email"
-                    placeholder="your-email@example.com"
-                    class="input-custom-field"
-                    disabled
-                  />
+                  <input v-model="form.email" type="email" placeholder="your-email@example.com"
+                    class="input-custom-field" disabled />
                   <span class="field-hint">Email đăng nhập tài khoản hệ thống (không thể đổi)</span>
                 </div>
 
@@ -159,12 +121,7 @@
                   <label class="field-label-mono">
                     SỐ ĐIỆN THOẠI
                   </label>
-                  <input
-                    v-model="form.phone"
-                    type="text"
-                    placeholder="0987 654 321"
-                    class="input-custom-field"
-                  />
+                  <input v-model="form.phone" type="text" placeholder="0987 654 321" class="input-custom-field" />
                 </div>
               </div>
             </div>
@@ -178,12 +135,9 @@
             </div>
             <div class="card-body">
               <div class="form-group-field">
-                <textarea
-                  v-model="form.bio"
-                  rows="3"
+                <textarea v-model="form.bio" rows="3"
                   placeholder="1 - 2 câu ngắn gọn giới thiệu bản thân hiển thị trên thẻ tác giả ở chân bài viết và trang chủ..."
-                  class="textarea-custom-field"
-                ></textarea>
+                  class="textarea-custom-field"></textarea>
               </div>
             </div>
           </div>
@@ -196,12 +150,9 @@
             </div>
             <div class="card-body">
               <div class="form-group-field">
-                <textarea
-                  v-model="form.aboutStory"
-                  rows="8"
+                <textarea v-model="form.aboutStory" rows="8"
                   placeholder="Chia sẻ hành trình học tập, đam mê lập trình, định hướng công nghệ và sứ mệnh của bạn. Nội dung này sẽ hiển thị trang trọng trên trang /about..."
-                  class="textarea-custom-field font-story"
-                ></textarea>
+                  class="textarea-custom-field font-story"></textarea>
               </div>
             </div>
           </div>
@@ -218,13 +169,8 @@
             <div class="card-body">
               <div class="avatar-preview-container">
                 <div class="avatar-preview-circle">
-                  <img
-                    v-if="form.avatarUrl"
-                    :src="form.avatarUrl"
-                    :alt="form.displayName || 'Avatar Preview'"
-                    class="preview-circle-img"
-                    @error="onAvatarError"
-                  />
+                  <img v-if="form.avatarUrl" :src="form.avatarUrl" :alt="form.displayName || 'Avatar Preview'"
+                    class="preview-circle-img" @error="onAvatarError" />
                   <div v-else class="preview-circle-placeholder">
                     <q-icon name="fa-solid fa-user" size="32px" />
                   </div>
@@ -232,12 +178,8 @@
 
                 <div class="avatar-url-input-wrap">
                   <label class="field-label-mono">ĐƯỜNG DẪN ẢNH (AVATAR URL)</label>
-                  <input
-                    v-model="form.avatarUrl"
-                    type="text"
-                    placeholder="https://images.unsplash.com/..."
-                    class="input-custom-field input-sm"
-                  />
+                  <input v-model="form.avatarUrl" type="text" placeholder="https://images.unsplash.com/..."
+                    class="input-custom-field input-sm" />
                   <span class="field-hint">Hỗ trợ link ảnh Unsplash, Cloudinary hoặc link ảnh trực tuyến</span>
                 </div>
               </div>
@@ -253,22 +195,14 @@
             <div class="card-body">
               <div class="form-group-field">
                 <label class="field-label-mono">LINK TẢI CV / RESUME (PDF)</label>
-                <input
-                  v-model="form.cvUrl"
-                  type="text"
-                  placeholder="https://example.com/cv-phanduongquoc.pdf"
-                  class="input-custom-field"
-                />
+                <input v-model="form.cvUrl" type="text" placeholder="https://example.com/cv-phanduongquoc.pdf"
+                  class="input-custom-field" />
               </div>
 
               <div class="form-group-field q-mt-md">
                 <label class="field-label-mono">WEBSITE CÁ NHÂN (PORTFOLIO)</label>
-                <input
-                  v-model="form.websiteUrl"
-                  type="text"
-                  placeholder="https://pdq-personal-blog.vercel.app"
-                  class="input-custom-field"
-                />
+                <input v-model="form.websiteUrl" type="text" placeholder="https://pdq-personal-blog.vercel.app"
+                  class="input-custom-field" />
               </div>
             </div>
           </div>
@@ -285,12 +219,8 @@
                   <q-icon name="fa-brands fa-github" size="12px" class="q-mr-xs text-dark" />
                   GITHUB PROFILE
                 </label>
-                <input
-                  v-model="form.githubUrl"
-                  type="text"
-                  placeholder="https://github.com/phanduongquoc"
-                  class="input-custom-field"
-                />
+                <input v-model="form.githubUrl" type="text" placeholder="https://github.com/phanduongquoc"
+                  class="input-custom-field" />
               </div>
 
               <div class="form-group-field q-mt-md">
@@ -298,12 +228,8 @@
                   <q-icon name="fa-brands fa-linkedin" size="12px" class="q-mr-xs text-indigo" />
                   LINKEDIN PROFILE
                 </label>
-                <input
-                  v-model="form.linkedinUrl"
-                  type="text"
-                  placeholder="https://linkedin.com/in/phanduongquoc"
-                  class="input-custom-field"
-                />
+                <input v-model="form.linkedinUrl" type="text" placeholder="https://linkedin.com/in/phanduongquoc"
+                  class="input-custom-field" />
               </div>
 
               <div class="form-group-field q-mt-md">
@@ -311,12 +237,8 @@
                   <q-icon name="fa-brands fa-facebook" size="12px" class="q-mr-xs text-blue-8" />
                   FACEBOOK PROFILE
                 </label>
-                <input
-                  v-model="form.facebookUrl"
-                  type="text"
-                  placeholder="https://facebook.com/..."
-                  class="input-custom-field"
-                />
+                <input v-model="form.facebookUrl" type="text" placeholder="https://facebook.com/..."
+                  class="input-custom-field" />
               </div>
 
               <div class="form-group-field q-mt-md">
@@ -324,12 +246,8 @@
                   <q-icon name="fa-brands fa-x-twitter" size="12px" class="q-mr-xs text-dark" />
                   TWITTER / X PROFILE
                 </label>
-                <input
-                  v-model="form.twitterUrl"
-                  type="text"
-                  placeholder="https://x.com/..."
-                  class="input-custom-field"
-                />
+                <input v-model="form.twitterUrl" type="text" placeholder="https://x.com/..."
+                  class="input-custom-field" />
               </div>
             </div>
           </div>
