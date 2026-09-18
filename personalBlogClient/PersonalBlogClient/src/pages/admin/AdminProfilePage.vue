@@ -1,10 +1,12 @@
 <template>
   <q-page class="admin-profile-page">
-    <q-inner-loading :showing="loading">
-      <q-spinner-tail size="48px" color="rose-primary" />
-    </q-inner-loading>
+    <!-- 0. Page Loading State -->
+    <div v-if="loading" class="page-loading-box">
+      <q-spinner-tail color="pink-7" size="48px" />
+      <span class="loading-text">Đang tải thông tin tác giả...</span>
+    </div>
 
-    <div v-if="!loading" class="profile-layout-container">
+    <div v-else class="profile-layout-container">
       <!-- 1. Hero Author Profile Card -->
       <section class="profile-hero-card">
         <div class="hero-left">
@@ -804,6 +806,25 @@ onMounted(() => {
     display: flex;
     flex-direction: column;
     gap: 4px;
+  }
+}
+
+/* Page Loading State */
+.page-loading-box {
+  padding: 120px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  min-height: 400px;
+
+  .loading-text {
+    font-family: var(--font-headline, sans-serif);
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-secondary, #94a3b8);
+    letter-spacing: 0.2px;
   }
 }
 </style>
