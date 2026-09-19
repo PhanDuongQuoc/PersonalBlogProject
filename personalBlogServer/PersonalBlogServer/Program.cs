@@ -82,9 +82,10 @@ builder.Services.AddScoped<IAdminAnalyticsService, AdminAnalyticsService>();
 builder.Services.AddScoped<IAdminContactService, AdminContactService>();
 builder.Services.AddScoped<ISiteSettingsService, SiteSettingsService>();
 builder.Services.AddHttpClient<IGeminiChatService, GeminiChatService>();
+builder.Services.AddHttpClient<IGeminiAdminChatService, GeminiAdminChatService>();
 
 // ============================================
-// Swagger & CORS
+// Swagger & CORSs
 // ============================================
 builder.Services.AddCors(options =>
 {

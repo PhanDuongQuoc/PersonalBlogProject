@@ -359,6 +359,9 @@
     <q-page-container class="admin-container">
       <router-view />
     </q-page-container>
+
+    <!-- Global Floating Admin AI Copilot Chat Widget -->
+    <FloatingAdminAiChatWidget />
   </q-layout>
 </template>
 
@@ -369,6 +372,7 @@ import { useQuasar } from 'quasar'
 import { useAuthStore } from '@/stores/auth.store'
 import { adminContactService } from '@/services/admin-contact.service'
 import { signalRService } from '@/services/signalr.service'
+import FloatingAdminAiChatWidget from '@/components/admin/chat/FloatingAdminAiChatWidget.vue'
 
 import type { ContactMessage } from '@/types/admin-contact'
 import { formatTimeAgo } from '@/utils/date'

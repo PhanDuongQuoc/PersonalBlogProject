@@ -2,18 +2,9 @@
   <div class="pdq-ai-chat-widget">
     <!-- Proactive Greeting Speech Bubble -->
     <transition name="bubble-fade">
-      <div
-        v-if="!isOpen && showGreeting"
-        class="floating-greeting-bubble"
-        @click="openChatFromGreeting"
-      >
-        <button
-          type="button"
-          class="btn-close-greeting"
-          title="Đóng lời chào"
-          aria-label="Đóng lời chào"
-          @click.stop="dismissGreeting"
-        >
+      <div v-if="!isOpen && showGreeting" class="floating-greeting-bubble" @click="openChatFromGreeting">
+        <button type="button" class="btn-close-greeting" title="Đóng lời chào" aria-label="Đóng lời chào"
+          @click.stop="dismissGreeting">
           <q-icon name="fa-solid fa-xmark" size="11px" />
         </button>
 
@@ -36,14 +27,8 @@
 
     <!-- 1. Floating Chat Trigger Button (Circular Robot FAB) -->
     <transition name="pop-scale">
-      <button
-        v-if="!isOpen"
-        type="button"
-        class="floating-chat-trigger"
-        aria-label="Mở Trợ lý AI PDQ"
-        title="Trò chuyện cùng Trợ lý Robot AI PDQ"
-        @click="toggleChat"
-      >
+      <button v-if="!isOpen" type="button" class="floating-chat-trigger" aria-label="Mở Trợ lý AI PDQ"
+        title="Trò chuyện cùng Trợ lý Robot AI PDQ" @click="toggleChat">
         <div class="trigger-glow-ring"></div>
         <div class="trigger-icon-box">
           <q-icon name="fa-solid fa-robot" size="24px" class="robot-fab-icon" />
@@ -101,7 +86,7 @@
           <!-- Welcome Screen (When no conversation yet) -->
           <div v-if="messages.length === 0" class="welcome-card">
             <div class="welcome-icon-box">
-              <q-icon name="fa-solid fa-sparkles" size="24px" class="text-rose" />
+              <q-icon name="fa-solid fa-robot" size="24px" class="text-rose" />
             </div>
             <h4 class="welcome-title">Xin chào! 👋</h4>
             <p class="welcome-desc">
@@ -182,7 +167,7 @@
             </button>
           </form>
           <div class="footer-hint">
-            <span>Powered by Gemini AI • Nhấn Enter để gửi</span>
+            <span>Powered by PDQ AI • Nhấn Enter để gửi</span>
           </div>
         </footer>
       </div>
@@ -525,9 +510,19 @@ function renderMarkdown(raw: string): string {
 }
 
 @keyframes wave-bot {
-  0%, 100% { transform: rotate(0deg); }
-  25% { transform: rotate(-12deg); }
-  75% { transform: rotate(12deg); }
+
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+
+  25% {
+    transform: rotate(-12deg);
+  }
+
+  75% {
+    transform: rotate(12deg);
+  }
 }
 
 /* Bubble fade animation */
@@ -620,11 +615,13 @@ function renderMarkdown(raw: string): string {
 }
 
 @keyframes ring-pulse {
+
   0%,
   100% {
     transform: scale(1);
     opacity: 0.4;
   }
+
   50% {
     transform: scale(1.12);
     opacity: 0.75;
