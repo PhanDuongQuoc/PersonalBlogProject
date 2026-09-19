@@ -14,10 +14,10 @@
             <span class="greeting-badge">ADMIN AI</span>
           </div>
           <p class="greeting-text">
-            Chào Admin! Cần hỗ trợ lên dàn ý bài viết, tối ưu SEO hay phân tích số liệu không?
+            Chào Admin! Cần hỗ trợ lên dàn ý bài viết, vẽ biểu đồ thống kê hay tối ưu SEO không?
           </p>
           <div class="greeting-action">
-            <span class="action-hint">Bấm để mở Copilot</span>
+            <span class="action-hint">Bấm để mở ChatBot</span>
             <q-icon name="fa-solid fa-arrow-right" size="11px" class="action-arrow" />
           </div>
         </div>
@@ -94,7 +94,8 @@
             <h4 class="welcome-title">Xin chào Admin! 🚀</h4>
             <p class="welcome-desc">
               Tôi là <strong>PDQ Admin AI</strong> — trợ lý AI đắc lực hỗ trợ bạn sáng tạo nội dung,
-              lên dàn ý bài viết kỹ thuật, tối ưu hóa SEO, phân tích số liệu và hỗ trợ kỹ thuật .NET 9 & Vue 3.
+              <strong>trực quan hóa biểu đồ thống kê</strong>, tối ưu SEO, phân tích số liệu và hỗ trợ kỹ thuật .NET 9 &
+              Vue 3.
             </p>
 
             <div class="quick-prompts-title">
@@ -125,14 +126,46 @@
 
             <!-- Message Bubble -->
             <div class="msg-bubble-container">
-              <div class="msg-bubble" :class="{ 'msg-error': msg.isError }">
+              <div class="msg-bubble"
+                :class="{ 'msg-error': msg.isError, 'has-chart': getChartsFromMessage(msg.content).length > 0 }">
                 <!-- User Plain Text -->
                 <div v-if="msg.role === 'user'" class="user-text">
                   {{ msg.content }}
                 </div>
 
-                <!-- Model Formatted Markdown -->
+                <!-- Model Formatted Markdown (with chart blocks cleaned) -->
                 <div v-else class="model-markdown" v-html="renderMarkdown(msg.content)"></div>
+
+                <!-- Dynamic Interactive Highcharts Charts inside chat (Identical to Analytics Cards) -->
+                <div v-for="(chartOpt, cIdx) in getChartsFromMessage(msg.content)"
+                  :key="`chart-${msg.timestamp}-${cIdx}`" class="chat-chart-card">
+                  <header class="chart-card-header">
+                    <div class="header-title-group">
+                      <div class="title-icon-box">
+                        <q-icon :name="getChartIcon(chartOpt)" size="14px" />
+                      </div>
+                      <h4 class="chart-title">{{ getChartTitle(chartOpt) }}</h4>
+                    </div>
+
+                    <!-- Controls: Tag + Export Excel CSV + Export Image PNG -->
+                    <div class="header-controls-group">
+                      <span class="chart-type-tag">{{ getChartTypeLabel(chartOpt) }}</span>
+                      <button type="button" class="export-btn btn-excel" title="Xuất dữ liệu Excel (.CSV)"
+                        @click="exportChartCsv(chartOpt)">
+                        <q-icon name="fa-solid fa-file-excel" size="12px" />
+                      </button>
+                      <button type="button" class="export-btn btn-ppt" title="Tải ảnh PNG biểu đồ"
+                        @click="exportChartPng(`chart-${msg.timestamp}-${cIdx}`)">
+                        <q-icon name="fa-solid fa-image" size="12px" />
+                      </button>
+                    </div>
+                  </header>
+
+                  <main class="chart-card-body">
+                    <AdminHighchart :ref="(el: any) => setChartInstanceRef(el, `chart-${msg.timestamp}-${cIdx}`)"
+                      :options="getSanitizedChartOptions(chartOpt)" :height="isExpanded ? '340px' : '260px'" />
+                  </main>
+                </div>
 
                 <!-- Copy Message Button for Model Reply -->
                 <button v-if="msg.role !== 'user' && !msg.isError" type="button" class="btn-copy-msg"
@@ -175,8 +208,8 @@
         <footer class="panel-footer">
           <form class="input-form" @submit.prevent="handleSend">
             <input ref="inputRef" v-model="inputMessage" type="text"
-              placeholder="Hỏi Copilot về bài viết, SEO, code .NET/Vue, phân tích..." class="chat-input"
-              :disabled="isTyping" maxlength="1000" @keydown.enter.prevent="handleSend" />
+              placeholder="Hỏi về bài viết, SEO, vẽ biểu đồ, code .NET/Vue..." class="chat-input" :disabled="isTyping"
+              maxlength="1000" @keydown.enter.prevent="handleSend" />
 
             <button type="submit" class="btn-send" :disabled="!inputMessage.trim() || isTyping"
               title="Gửi tin nhắn (Enter)">
@@ -196,8 +229,10 @@
 <script setup lang="ts">
 import { ref, reactive, nextTick, onMounted, onBeforeUnmount } from "vue";
 import { useQuasar } from "quasar";
+import type Highcharts from "highcharts";
 import type { ChatMessage } from "@/types/ai-chat";
 import { adminAiChatService } from "@/services/admin-ai-chat.service";
+import AdminHighchart from "@/components/admin/analytics/AdminHighchart.vue";
 
 const $q = useQuasar();
 
@@ -212,9 +247,9 @@ const messagesContainer = ref<HTMLElement | null>(null);
 const inputRef = ref<HTMLInputElement | null>(null);
 
 const defaultPrompts = [
+  "Vẽ biểu đồ phân bố bài viết theo chuyên mục",
+  "Vẽ biểu đồ xu hướng lượt xem bài viết",
   "Lập dàn ý bài viết mới về Clean Architecture trong .NET 9",
-  "Gợi ý 5 chủ đề blog công nghệ đang thịnh hành",
-  "Phân tích và tối ưu hóa SEO cho các bài viết",
   "Soạn email chuyên nghiệp phản hồi cơ hội việc làm"
 ];
 
@@ -357,7 +392,9 @@ function formatTime(timestamp?: Date | string): string {
 }
 
 function copyToClipboard(text: string) {
-  navigator.clipboard.writeText(text).then(() => {
+  // Strip chart block from clipboard text if any for clean copy
+  const cleanText = text.replace(/```(?:chart:highcharts|chart|json:chart)\n[\s\S]*?```/gi, "").trim();
+  navigator.clipboard.writeText(cleanText || text).then(() => {
     $q.notify({
       message: "Đã sao chép nội dung vào bộ nhớ tạm",
       color: "positive",
@@ -368,11 +405,389 @@ function copyToClipboard(text: string) {
   });
 }
 
-// Lightweight, safe Markdown formatting
+/**
+ * Safely parse chart object from code string
+ */
+function parseChartBlock(content: string): Highcharts.Options | null {
+  if (!content) return null;
+  const trimmed = content.trim();
+
+  // 1. Try standard JSON.parse
+  try {
+    const parsed = JSON.parse(trimmed);
+    if (parsed && typeof parsed === "object" && (parsed.series || parsed.chart || parsed.title)) {
+      return parsed;
+    }
+  } catch {
+    // Continue to fallback
+  }
+
+  // 2. Try cleaning up common JSON issues:
+  // - "formatter": "function() { ... }"
+  // - trailing commas
+  try {
+    const sanitized = trimmed
+      .replace(/"?formatter"?\s*:\s*(?:function\s*\([^)]*\)\s*\{[\s\S]*?\}|"[^"]*")/gi, '"formatter": null')
+      .replace(/,\s*([\]}])/g, "$1");
+
+    const parsed = JSON.parse(sanitized);
+    if (parsed && typeof parsed === "object" && (parsed.series || parsed.chart || parsed.title)) {
+      return parsed;
+    }
+  } catch {
+    // Continue to JS evaluation fallback
+  }
+
+  // 3. Fallback: Safe JavaScript object evaluation
+  try {
+    const fn = new Function(`return (${trimmed});`);
+    const parsed = fn();
+    if (parsed && typeof parsed === "object" && (parsed.series || parsed.chart || parsed.title)) {
+      return parsed;
+    }
+  } catch (e) {
+    console.warn("Could not parse chart block:", e);
+  }
+
+  return null;
+}
+
+/**
+ * Extract chart options from model response message
+ */
+function getChartsFromMessage(raw: string): Highcharts.Options[] {
+  if (!raw) return [];
+  const charts: Highcharts.Options[] = [];
+  const regex = /```([a-zA-Z0-9_:-]*)\n([\s\S]*?)```/g;
+  let match: RegExpExecArray | null;
+
+  while ((match = regex.exec(raw)) !== null) {
+    const lang = (match[1] || "").toLowerCase().trim();
+    const code = match[2];
+    if (!code) continue;
+
+    const isChartTag = lang.includes("chart") || lang.includes("highcharts");
+    const looksLikeChart = (code.includes("series") || code.includes("chart")) &&
+      (code.includes("xAxis") || code.includes("categories") || code.includes("data") || code.includes("yAxis"));
+
+    if (isChartTag || looksLikeChart) {
+      const chartOpt = parseChartBlock(code);
+      if (chartOpt) {
+        charts.push(chartOpt);
+      }
+    }
+  }
+
+  return charts;
+}
+
+const chartInstances = ref<Map<string, any>>(new Map());
+
+function setChartInstanceRef(el: any, key: string) {
+  if (el) {
+    chartInstances.value.set(key, el);
+  } else {
+    chartInstances.value.delete(key);
+  }
+}
+
+function getChartTitle(opt: Highcharts.Options): string {
+  if (opt.title && opt.title.text) {
+    return opt.title.text;
+  }
+  return "Biểu đồ thống kê & Phân tích";
+}
+
+function getChartIcon(opt: Highcharts.Options): string {
+  const chartType = (opt.chart?.type || (opt.series && opt.series[0] ? (opt.series[0] as any).type : "") || "").toLowerCase();
+  if (chartType === "pie") return "fa-solid fa-chart-pie";
+  if (chartType === "column" || chartType === "bar") return "fa-solid fa-chart-column";
+  return "fa-solid fa-chart-line";
+}
+
+function getChartTypeLabel(opt: Highcharts.Options): string {
+  const chartType = (opt.chart?.type || (opt.series && opt.series[0] ? (opt.series[0] as any).type : "") || "").toLowerCase();
+  if (chartType === "areaspline") return "Xu hướng (Areaspline)";
+  if (chartType === "spline" || chartType === "line") return "Đường (Spline)";
+  if (chartType === "column") return "Cột (Column)";
+  if (chartType === "bar") return "Thanh ngang (Bar)";
+  if (chartType === "pie") return "Cơ cấu (Donut)";
+  return "Trực quan hóa";
+}
+
+function exportChartPng(key: string) {
+  const chartComp = chartInstances.value.get(key);
+  if (chartComp && typeof chartComp.exportAsImage === "function") {
+    chartComp.exportAsImage("image/png");
+    $q.notify({
+      message: "Đang tải ảnh biểu đồ PNG...",
+      color: "positive",
+      icon: "fa-solid fa-download",
+      timeout: 1500,
+      position: "top"
+    });
+  } else {
+    $q.notify({
+      message: "Chưa thể trích xuất ảnh biểu đồ này",
+      color: "warning",
+      timeout: 1500,
+      position: "top"
+    });
+  }
+}
+
+function exportChartCsv(chartOpt: Highcharts.Options) {
+  try {
+    const title = getChartTitle(chartOpt);
+    const categories = (chartOpt.xAxis as any)?.categories || [];
+    const seriesList = (chartOpt.series as any[]) || [];
+
+    let csv = "";
+    if (categories.length > 0) {
+      csv += "Thời gian / Danh mục," + seriesList.map((s) => `"${s.name || "Giá trị"}"`).join(",") + "\n";
+      for (let i = 0; i < categories.length; i++) {
+        const row = [`"${categories[i]}"`];
+        for (const s of seriesList) {
+          const val = Array.isArray(s.data) ? (typeof s.data[i] === "object" ? s.data[i]?.y : s.data[i]) : 0;
+          row.push(val ?? 0);
+        }
+        csv += row.join(",") + "\n";
+      }
+    } else if (seriesList.length > 0 && Array.isArray(seriesList[0].data)) {
+      csv += "Tên,Giá trị\n";
+      for (const item of seriesList[0].data) {
+        if (typeof item === "object" && item !== null) {
+          csv += `"${item.name || ""}",${item.y || 0}\n`;
+        } else {
+          csv += `"${item}",${item}\n`;
+        }
+      }
+    }
+
+    if (!csv) {
+      $q.notify({ message: "Không có dữ liệu để xuất CSV", color: "warning", position: "top" });
+      return;
+    }
+
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = `${title.toLowerCase().replace(/[^a-z0-9]/g, "-")}.csv`;
+    link.click();
+    $q.notify({ message: "Đã xuất tệp CSV thành công!", color: "positive", icon: "fa-solid fa-check", position: "top" });
+  } catch (err) {
+    console.error("CSV export error:", err);
+    $q.notify({ message: "Lỗi khi xuất tệp CSV", color: "negative", position: "top" });
+  }
+}
+
+/**
+ * Adjust chart options to match exact Analytics page styling and aesthetics
+ */
+function getSanitizedChartOptions(opt: Highcharts.Options): Highcharts.Options {
+  const chartType = (opt.chart?.type || (opt.series && opt.series[0] ? (opt.series[0] as any).type : "") || "areaspline").toLowerCase();
+
+  // Process series to ensure palette colors and types
+  const palette = ["#df266a", "#4f46e5", "#06b6d4", "#f59e0b", "#10b981", "#8b5cf6", "#ec4899", "#3b82f6"];
+  const sanitizedSeries = (opt.series || []).map((s: any, idx: number) => {
+    let sColor = s.color || palette[idx % palette.length];
+    const sName = (s.name || "").toLowerCase();
+    if (sName.includes("lượt xem") || sName.includes("view")) {
+      sColor = "#df266a"; // Rose
+    } else if (sName.includes("độc giả") || sName.includes("reader") || sName.includes("người đọc")) {
+      sColor = "#4f46e5"; // Indigo
+    }
+
+    return {
+      ...s,
+      type: s.type || chartType,
+      color: sColor
+    };
+  });
+
+  return {
+    chart: {
+      type: chartType as any,
+      backgroundColor: "transparent",
+      style: {
+        fontFamily: "var(--font-body, 'Plus Jakarta Sans', sans-serif)"
+      },
+      spacing: [12, 10, 12, 10],
+      ...(opt.chart || {})
+    },
+    title: {
+      text: "" // Canvas title empty since it's displayed in the card header bar
+    },
+    credits: {
+      enabled: false
+    },
+    xAxis: {
+      lineColor: "rgba(248, 250, 252, 0.12)",
+      tickColor: "rgba(248, 250, 252, 0.12)",
+      labels: {
+        style: {
+          color: "#94a3b8",
+          fontSize: "11px",
+          fontFamily: "var(--font-mono, monospace)"
+        }
+      },
+      crosshair: {
+        width: 1,
+        color: "#cbd5e1",
+        dashStyle: "Dash"
+      },
+      ...(opt.xAxis || {})
+    },
+    yAxis: {
+      gridLineColor: "rgba(248, 250, 252, 0.06)",
+      gridLineDashStyle: "Solid",
+      title: { text: "" },
+      labels: {
+        style: {
+          color: "#94a3b8",
+          fontSize: "11px",
+          fontFamily: "var(--font-mono, monospace)"
+        },
+        formatter: function () {
+          const val = Number(this.value);
+          if (val >= 1000) return (val / 1000).toFixed(0) + "k";
+          return val.toString();
+        }
+      },
+      ...(opt.yAxis || {})
+    },
+    tooltip: {
+      shared: true,
+      useHTML: true,
+      backgroundColor: "#0b1326",
+      borderColor: "rgba(248, 250, 252, 0.15)",
+      borderRadius: 10,
+      shadow: {
+        color: "rgba(0, 0, 0, 0.6)",
+        offsetX: 0,
+        offsetY: 4,
+        opacity: 0.4,
+        width: 12
+      },
+      style: {
+        color: "#dae2fd",
+        fontSize: "12px",
+        fontFamily: "var(--font-body, 'Plus Jakarta Sans', sans-serif)"
+      },
+      headerFormat: '<div style="font-weight:700;margin-bottom:4px;color:#f8fafc;font-size:12px;">{point.key}</div>',
+      pointFormat:
+        '<div style="display:flex;align-items:center;gap:6px;font-size:12px;margin-top:2px;">' +
+        '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background-color:{series.color}"></span>' +
+        '<span style="color:#cbd5e1">{series.name}:</span> <b style="color:#ffffff">{point.y:,.0f}</b>' +
+        '</div>',
+      ...(opt.tooltip || {})
+    },
+    plotOptions: {
+      areaspline: {
+        fillOpacity: 0.12,
+        lineWidth: 3,
+        marker: {
+          enabled: false,
+          radius: 4,
+          symbol: "circle",
+          states: {
+            hover: {
+              enabled: true,
+              lineWidth: 2,
+              lineColor: "#ffffff"
+            }
+          }
+        }
+      },
+      spline: {
+        lineWidth: 3,
+        marker: {
+          enabled: false,
+          radius: 4,
+          symbol: "circle",
+          states: {
+            hover: {
+              enabled: true,
+              lineWidth: 2,
+              lineColor: "#ffffff"
+            }
+          }
+        }
+      },
+      column: {
+        borderRadius: 6,
+        borderWidth: 0,
+        colorByPoint: Boolean(opt.series && opt.series.length === 1),
+        colors: [
+          "#f97316",
+          "#df266a",
+          "#4f46e5",
+          "#10b981",
+          "#06b6d4",
+          "#8b5cf6",
+          "#ec4899"
+        ]
+      },
+      bar: {
+        borderRadius: 6,
+        borderWidth: 0
+      },
+      pie: {
+        innerSize: "62%",
+        borderWidth: 2,
+        borderColor: "#0b1326",
+        allowPointSelect: true,
+        cursor: "pointer",
+        dataLabels: {
+          enabled: true,
+          format: "<b>{point.name}</b>: {point.percentage:.0f}%",
+          style: {
+            fontSize: "11px",
+            color: "#94a3b8"
+          },
+          distance: 14
+        },
+        showInLegend: true
+      },
+      ...(opt.plotOptions || {})
+    },
+    legend: {
+      itemStyle: {
+        color: "#dae2fd",
+        fontWeight: "600",
+        fontSize: "12px"
+      },
+      itemHoverStyle: {
+        color: "#df266a"
+      },
+      ...(opt.legend || {})
+    },
+    series: sanitizedSeries as any
+  };
+}
+
+// Lightweight, safe Markdown formatting with chart blocks stripped out
 function renderMarkdown(raw: string): string {
   if (!raw) return "";
 
-  let html = raw
+  // 1. Remove all code blocks that are recognized as charts so they don't show up as code
+  const regex = /```([a-zA-Z0-9_:-]*)\n([\s\S]*?)```/g;
+  let cleaned = raw.replace(regex, (fullMatch, lang, code) => {
+    const l = (lang || "").toLowerCase().trim();
+    const isChartTag = l.includes("chart") || l.includes("highcharts");
+    const looksLikeChart = (code && (code.includes("series") || code.includes("chart"))) &&
+      (code.includes("xAxis") || code.includes("categories") || code.includes("data") || code.includes("yAxis"));
+
+    if (isChartTag || looksLikeChart) {
+      const chartOpt = parseChartBlock(code);
+      if (chartOpt) {
+        return ""; // Strip from markdown text!
+      }
+    }
+    return fullMatch;
+  }).trim();
+
+  let html = cleaned
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;");
@@ -675,8 +1090,8 @@ function renderMarkdown(raw: string): string {
 
 /* 2. Chat Panel */
 .ai-chat-panel {
-  width: 390px;
-  height: 560px;
+  width: 440px;
+  height: 600px;
   max-width: calc(100vw - 32px);
   max-height: calc(100vh - 48px);
   background: var(--bg-surface, #0f172a);
@@ -694,10 +1109,10 @@ function renderMarkdown(raw: string): string {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: min(920px, 94vw);
-    height: min(800px, 88vh);
+    width: min(960px, 94vw);
+    height: min(840px, 90vh);
     max-width: 94vw;
-    max-height: 88vh;
+    max-height: 90vh;
     border-radius: 22px;
     z-index: 10001;
     box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.15);
@@ -707,13 +1122,13 @@ function renderMarkdown(raw: string): string {
     }
 
     .welcome-card {
-      max-width: 650px;
+      max-width: 700px;
       margin: 16px auto;
       padding: 24px 28px;
     }
 
     .user-msg .msg-bubble {
-      max-width: 650px;
+      max-width: 700px;
       font-size: 13.5px;
     }
 
@@ -723,7 +1138,7 @@ function renderMarkdown(raw: string): string {
 
     .model-msg .msg-bubble {
       font-size: 13.5px;
-      padding: 14px 18px;
+      padding: 16px 20px;
     }
   }
 }
@@ -1010,6 +1425,11 @@ function renderMarkdown(raw: string): string {
     line-height: 1.5;
     word-break: break-word;
     position: relative;
+
+    &.has-chart {
+      width: 100%;
+      min-width: 320px;
+    }
   }
 
   &.user-msg {
@@ -1029,6 +1449,7 @@ function renderMarkdown(raw: string): string {
   &.model-msg {
     .msg-bubble-container {
       align-items: flex-start;
+      width: 100%;
     }
 
     .msg-bubble {
@@ -1070,6 +1491,123 @@ function renderMarkdown(raw: string): string {
     &:hover .btn-copy-msg {
       opacity: 1;
     }
+  }
+}
+
+/* Chat Chart Card - Identical to Analytics Page */
+.chat-chart-card {
+  width: 100%;
+  background: var(--bg-surface, #0b1326);
+  border: 1px solid var(--border-hairline, rgba(248, 250, 252, 0.08));
+  border-radius: 16px;
+  box-shadow: var(--shadow-card, 0 4px 20px rgba(0, 0, 0, 0.3));
+  padding: 16px 18px 14px;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  transition: all 0.25s ease;
+
+  &:hover {
+    box-shadow: var(--shadow-card-hover, 0 8px 26px rgba(0, 0, 0, 0.45));
+    border-color: rgba(223, 38, 106, 0.35);
+  }
+
+  .chart-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+
+    .header-title-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      .title-icon-box {
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+        background: var(--accent-primary-container, rgba(223, 38, 106, 0.12));
+        color: var(--accent-primary, #df266a);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(223, 38, 106, 0.25);
+        flex-shrink: 0;
+      }
+
+      .chart-title {
+        font-family: var(--font-headline, sans-serif);
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--text-primary, #dae2fd);
+        margin: 0;
+        letter-spacing: -0.01em;
+        line-height: 1.3;
+      }
+    }
+
+    .header-controls-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+
+      .chart-type-tag {
+        font-size: 10.5px;
+        font-weight: 600;
+        padding: 4px 8px;
+        border-radius: 6px;
+        background: var(--bg-surface-container, #131b2e);
+        border: 1px solid var(--border-subtle, rgba(248, 250, 252, 0.12));
+        color: var(--text-primary, #dae2fd);
+      }
+
+      .export-btn {
+        width: 28px;
+        height: 28px;
+        border-radius: 6px;
+        border: 1px solid transparent;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+        &.btn-excel {
+          background: rgba(99, 102, 241, 0.15);
+          color: #a5b4fc;
+          border-color: rgba(99, 102, 241, 0.25);
+
+          &:hover {
+            background: #4f46e5;
+            color: #ffffff;
+            transform: translateY(-1px);
+            box-shadow: 0 3px 10px rgba(79, 70, 229, 0.3);
+          }
+        }
+
+        &.btn-ppt {
+          background: rgba(234, 88, 12, 0.15);
+          color: #fb923c;
+          border-color: rgba(234, 88, 12, 0.25);
+
+          &:hover {
+            background: #ea580c;
+            color: #ffffff;
+            transform: translateY(-1px);
+            box-shadow: 0 3px 10px rgba(234, 88, 12, 0.3);
+          }
+        }
+      }
+    }
+  }
+
+  .chart-card-body {
+    flex: 1;
+    width: 100%;
   }
 }
 

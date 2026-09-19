@@ -58,7 +58,7 @@ public class GeminiChatService : IGeminiChatService
         }
 
         var apiKey = _configuration["Gemini:ApiKey"];
-        var model = _configuration["Gemini:Model"] ?? "gemini-2.5-flash";
+        var model = _configuration["Gemini:Model"] ?? "gemini-flash-latest";
 
         if (string.IsNullOrWhiteSpace(apiKey))
         {
@@ -122,20 +122,38 @@ public class GeminiChatService : IGeminiChatService
                 }
             };
 
-            var jsonContent = new StringContent(
-                JsonSerializer.Serialize(payload),
-                Encoding.UTF8,
-                "application/json"
-            );
+            // 3. Candidate models to handle temporary Google 503 or 429 spikes automatically
+            var candidateModels = new List<string> { model, "gemini-3.5-flash", "gemini-3.8-flash", "gemini-flash-lite-latest", "gemini-flash-latest" }
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToList();
 
-            var endpoint = $"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={apiKey}";
-            var response = await _httpClient.PostAsync(endpoint, jsonContent, cancellationToken);
+            string? responseBody = null;
+            bool isSuccess = false;
 
-            var responseBody = await response.Content.ReadAsStringAsync(cancellationToken);
-
-            if (!response.IsSuccessStatusCode)
+            foreach (var targetModel in candidateModels)
             {
-                _logger.LogError("Gemini API error {StatusCode}: {ResponseBody}", response.StatusCode, responseBody);
+                var endpoint = $"https://generativelanguage.googleapis.com/v1beta/models/{targetModel}:generateContent?key={apiKey}";
+                var jsonContent = new StringContent(
+                    JsonSerializer.Serialize(payload),
+                    Encoding.UTF8,
+                    "application/json"
+                );
+
+                var response = await _httpClient.PostAsync(endpoint, jsonContent, cancellationToken);
+                responseBody = await response.Content.ReadAsStringAsync(cancellationToken);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    isSuccess = true;
+                    break;
+                }
+
+                _logger.LogWarning("Gemini API call to {Model} returned {StatusCode}. Trying fallback model...", targetModel, response.StatusCode);
+            }
+
+            if (!isSuccess || string.IsNullOrWhiteSpace(responseBody))
+            {
+                _logger.LogError("All candidate Gemini models failed. Last response: {ResponseBody}", responseBody);
                 return new AiChatResponse
                 {
                     Success = false,
@@ -143,10 +161,12 @@ public class GeminiChatService : IGeminiChatService
                 };
             }
 
-            // 4. Parse Gemini JSON response
+            // 4. Parse Gemini JSON response (supports multi-part and thinking responses)
             var jsonNode = JsonNode.Parse(responseBody);
-            var replyText = jsonNode?["candidates"]?[0]?["content"]?[parts()]?[0]?["text"]?.ToString()
-                            ?? jsonNode?["candidates"]?[0]?["content"]?["parts"]?[0]?["text"]?.ToString();
+            var partsArray = jsonNode?["candidates"]?[0]?["content"]?["parts"]?.AsArray();
+            var replyText = partsArray != null
+                ? string.Join("\n", partsArray.Select(p => p?["text"]?.ToString()).Where(t => !string.IsNullOrWhiteSpace(t)))
+                : jsonNode?["candidates"]?[0]?["content"]?["parts"]?[0]?["text"]?.ToString();
 
             if (string.IsNullOrWhiteSpace(replyText))
             {
